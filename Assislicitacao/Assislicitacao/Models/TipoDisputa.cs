@@ -1,5 +1,5 @@
 ﻿namespace Assislicitacao.Models {
-    public class TipoDisputa {
+    public class TipoDisputa : EntidadeDominio {
         public string Tipo { get; set; }
     }
 }

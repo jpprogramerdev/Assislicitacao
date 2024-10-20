@@ -5,7 +5,7 @@ namespace Assislicitacao.DAO {
     public class DAOSQLServer : IDAODatabase {
         public string StrConn { get; private set; }
         public DAOSQLServer() {
-            StrConn = "Server=GORDOX\\SQLEXPRESS;Database=Assislicitacao;Integrated Security=SSPI;TrustServerCertificate=True;";
+            StrConn = "Server=GORDOX\\SQLEXPRESS;Database=Assisliticacao;Integrated Security=SSPI;TrustServerCertificate=True;";
         }
 
         public SqlConnection Open() {

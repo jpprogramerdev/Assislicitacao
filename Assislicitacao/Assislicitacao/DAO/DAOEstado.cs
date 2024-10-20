@@ -31,10 +31,14 @@ namespace Assislicitacao.DAO {
                                 Nome = reader.GetString(reader.GetOrdinal("EST_NOME")),
                                 UF = reader.GetString(reader.GetOrdinal("EST_UF"))
                             };
+
+                            ListEstados.Add(Estado);
                         }
                     }
                 }
+                database.FecharConexao(conn);
             }
+            return ListEstados;
         }
 
         public bool Update(EntidadeDominio entidade) {

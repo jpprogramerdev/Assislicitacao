@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="numero-licitacao">Numero edital:</label>
-        <input type="text" class="form-control" id="numero-licitacao" placeholder="Numero">a
+        <input type="text" class="form-control" id="numero-licitacao" placeholder="Numero">
     </div>
     <div class="form-group">
         <label for="tipo-disputa-licitacao">Tipo de disputa:</label>
@@ -38,8 +38,13 @@
     <div class="form-group">
         <label for="estado-licitacao">Estado:</label>
         <select class="form-control" id="tipo-disputa-licitacao">
-            <option>São Paulo</option>
-            <option>Rio de Janeiro</option>
+            @{
+                IFacadeGeneric facadeEstado = new FacadeEstado();
+
+                foreach (Estado estado in facadeEstado.SelecionarTodos()) {
+                    <option value="@estado.Id">@estado.Nome - @estado.UF</option>
+                }
+            }
         </select>
     </div>
     <div class="form-group">

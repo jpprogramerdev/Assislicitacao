@@ -10,5 +10,9 @@ namespace Assislicitacao.Facade {
         public List<EntidadeDominio> SelecionarTodos() {
             throw new NotImplementedException();
         }
+
+        public List<EntidadeDominio> SelecionarTodosPeloId(int Id) {
+            throw new NotImplementedException();
+        }
     }
 }

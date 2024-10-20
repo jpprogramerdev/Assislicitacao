@@ -14,5 +14,9 @@ namespace Assislicitacao.Facade {
             DAO = new DAOEstado();
             return DAO.Select();
         }
+
+        public List<EntidadeDominio> SelecionarTodosPeloId(int Id) {
+            throw new NotImplementedException();
+        }
     }
 }

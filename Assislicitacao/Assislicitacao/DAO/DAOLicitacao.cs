@@ -15,7 +15,7 @@ namespace Assislicitacao.DAO {
             throw new NotImplementedException();
         }
 
-        public List<EntidadeDominio> SelectAllWhereId() {
+        public List<EntidadeDominio> SelectAllWhereId(int id) {
             throw new NotImplementedException();
         }
 

@@ -41,7 +41,7 @@ namespace Assislicitacao.DAO {
             return ListEstados;
         }
 
-        public List<EntidadeDominio> SelectAllWhereId() {
+        public List<EntidadeDominio> SelectAllWhereId(int id) {
             throw new NotImplementedException();
         }
 

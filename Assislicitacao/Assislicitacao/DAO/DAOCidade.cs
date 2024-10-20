@@ -1,9 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Assislicitacao.DAO.Intefaces;
+using Assislicitacao.Models;
 
 namespace Assislicitacao.DAO {
-    public class DAOCidade : Controller {
-        public IActionResult Index() {
-            return View();
+    public class DAOCidade : IDAOGeneric {
+        public bool Delete(EntidadeDominio entidade) {
+            throw new NotImplementedException();
+        }
+
+        public bool Insert(EntidadeDominio entidade) {
+            throw new NotImplementedException();
+        }
+
+        public List<EntidadeDominio> Select() {
+            throw new NotImplementedException();
+        }
+
+        public List<EntidadeDominio> SelectAllWhereId(int id) {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(EntidadeDominio entidade) {
+            throw new NotImplementedException();
         }
     }
 }

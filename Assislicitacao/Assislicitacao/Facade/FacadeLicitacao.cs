@@ -6,5 +6,9 @@ namespace Assislicitacao.Facade {
         public bool Salvar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
+
+        public List<EntidadeDominio> SelecionarTodos() {
+            throw new NotImplementedException();
+        }
     }
 }

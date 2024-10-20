@@ -12,7 +12,7 @@ namespace Assislicitacao.Facade {
         }
 
         public List<EntidadeDominio> SelecionarTodos() {
-            DAO = new DAOLicitacao();
+            DAO = new DAOTipoLicitacao();
             return DAO.Select();
         }
     }

@@ -2,9 +2,13 @@
     <div class="form-group">
         <label for="tipo-licitacao">Tipo de licitação:</label>
         <select class="form-control" id="tipo-licitacao">
-            <option>Pregão Eletrônico</option>
-            <option>Dispensa de licitacao</option>
-            <option>Pregão Presencial</option>
+            @{
+                IFacadeGeneric facadeTipoLicitacao = new FacadeTipoLicitacao();
+
+                foreach(TipoLicitacao tipo in facadeTipoLicitacao.SelecionarTodos()) {
+                    <option value="@tipo.Id">@tipo.Tipo</option>
+                }
+            }
         </select>
     </div>
     <div class="form-group">

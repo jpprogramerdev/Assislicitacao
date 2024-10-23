@@ -1,8 +1,11 @@
-﻿using Assislicitacao.Facade.Interfaces;
+﻿using Assislicitacao.DAO;
+using Assislicitacao.DAO.Intefaces;
+using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
 
 namespace Assislicitacao.Facade {
     public class FacadeCidade : IFacadeGeneric {
+        public IDAOGeneric DAO { get; set; }
         public bool Salvar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
@@ -12,7 +15,8 @@ namespace Assislicitacao.Facade {
         }
 
         public List<EntidadeDominio> SelecionarTodosPeloId(int Id) {
-            throw new NotImplementedException();
+            DAO = new DAOCidade();
+            return DAO.SelectAllWhereId(Id);
         }
     }
 }

@@ -37,7 +37,7 @@
     </div>
     <div class="form-group">
         <label for="estado-licitacao">Estado:</label>
-        <select class="form-control" id="tipo-disputa-licitacao">
+        <select class="form-control" id="estado-licitacao">
             @{
                 IFacadeGeneric facadeEstado = new FacadeEstado();
 
@@ -48,10 +48,9 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="estado-licitacao">Cidade:</label>
-        <select class="form-control" id="tipo-disputa-licitacao">
-            <option>Mogi das Cruzes</option>
-            <option>Rio de Janeiro</option>
+        <label for="cidade-licitacao">Cidade:</label>
+        <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro">
+            <option value="">Selecione um estado primeiro</option>
         </select>
     </div>
     <div class="form-group">
@@ -63,3 +62,38 @@
         <input type="text" class="form-control" id="portal-licitacao">
     </div>
 </form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#estado-licitacao').change(function () {
+            var estadoId = $(this).val();
+
+            if (estadoId) {
+                $.ajax({
+                    url: '@Url.Action("GetCidadePorEstado", "Cidade")', // Atualiza o nome da controller
+                    type: 'GET',
+                    data: { estadoId: estadoId },
+                    success: function (cidades) {
+                        console.log(cidades);
+                        var cidadeSelect = $('#cidade-licitacao');
+                        cidadeSelect.empty(); // Limpa as opções antigas
+
+                        if (cidades.length > 0) {
+                            $.each(cidades, function (index, cidade) {
+                                cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
+                            });
+                        } else {
+                            cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
+                        }
+                    },
+                    error: function () {
+                        alert('Erro ao carregar as cidades.');
+                    }
+                });
+            } else {
+                $('#cidade-licitacao').empty().append('<option>Selecione um estado primeiro</option>');
+            }
+        });
+    })
+</script>

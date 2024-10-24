@@ -1,7 +1,23 @@
-﻿<form>
+﻿@model Licitacao
+
+@{
+    if (TempData["SucessoCadastroLicitacao"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoCadastroLicitacao"]
+        </div>
+    } else if (TempData["FalhaCadastroLicitacao"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaCadastroLicitacao"]
+        </div>
+    }
+
+    ViewData["Title"] = "Cadastrar Licitação ";
+}
+
+<form asp-action="Salvar" asp-controller="Licitacao" method="post">
     <div class="form-group">
         <label for="tipo-licitacao">Tipo de licitação:</label>
-        <select class="form-control" id="tipo-licitacao">
+        <select class="form-control" id="tipo-licitacao" asp-for="@Model.TipoLicitacao.Id">
             @{
                 IFacadeGeneric facadeTipoLicitacao = new FacadeTipoLicitacao();
 
@@ -13,15 +29,15 @@
     </div>
     <div class="form-group">
         <label for="objeto-licitacao">Objeto da licitação:</label>
-        <input type="text" class="form-control" id="objeto-licitacao" placeholder="Objeto">
+        <input type="text" class="form-control" id="objeto-licitacao" placeholder="Objeto" asp-for="@Model.Objeto">
     </div>
     <div class="form-group">
         <label for="numero-licitacao">Numero edital:</label>
-        <input type="text" class="form-control" id="numero-licitacao" placeholder="Numero">
+        <input type="text" class="form-control" id="numero-licitacao" placeholder="Numero" asp-for="@Model.Numero">
     </div>
     <div class="form-group">
         <label for="tipo-disputa-licitacao">Tipo de disputa:</label>
-        <select class="form-control" id="tipo-disputa-licitacao">
+        <select class="form-control" id="tipo-disputa-licitacao" asp-for="@Model.TipoDisputa.Id">
             @{
                 IFacadeGeneric facadeTipoDisputa = new FacadeTipoDisputa();
 
@@ -33,15 +49,15 @@
     </div>
     <div class="form-group">
         <label for="data-licitacao">Data da licitação:</label>
-        <input type="date" class="form-control" id="data-licitacao">
+        <input type="date" class="form-control" id="data-licitacao" asp-for="@Model.Data">
     </div>
     <div class="form-group">
         <label for="preço-estimado-licitacao">Preço estimado:</label>
-        <input type="number" class="form-control" id="preço-estimado-licitacao">
+        <input type="number" class="form-control" id="preço-estimado-licitacao" asp-for="@Model.ValorEstimado">
     </div>
     <div class="form-group">
         <label for="estado-licitacao">Estado:</label>
-        <select class="form-control" id="estado-licitacao">
+        <select class="form-control" id="estado-licitacao" asp-for="@Model.Cidade.Estado.Id">
             @{
                 IFacadeGeneric facadeEstado = new FacadeEstado();
 
@@ -53,18 +69,27 @@
     </div>
     <div class="form-group">
         <label for="cidade-licitacao">Cidade:</label>
-        <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro">
+        <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro" asp-for="@Model.Cidade.Id">
             <option value="">Selecione um estado primeiro</option>
         </select>
     </div>
     <div class="form-group">
         <label for="orgao-licitacao">Orgão:</label>
-        <input type="text" class="form-control" id="orgao-licitacao">
+        <input type="text" class="form-control" id="orgao-licitacao" asp-for="@Model.Orgao"> 
     </div>
     <div class="form-group">
-        <label for="portal-licitacao">Portal:</label>
-        <input type="text" class="form-control" id="portal-licitacao">
+        <label for="estado-licitacao">Portal:</label>
+        <select class="form-control" id="estado-licitacao" asp-for="@Model.Portal.Id">
+            @{
+                IFacadeGeneric facadePortal = new FacadePortal();
+
+                foreach (Portal Portal in facadePortal.SelecionarTodos()) {
+                    <option value="@Portal.Id">@Portal.Nome</option>
+                }
+            }
+        </select>
     </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -75,13 +100,13 @@
 
             if (estadoId) {
                 $.ajax({
-                    url: '@Url.Action("GetCidadePorEstado", "Cidade")', // Atualiza o nome da controller
+                    url: '@Url.Action("GetCidadePorEstado", "Cidade")',
                     type: 'GET',
                     data: { estadoId: estadoId },
                     success: function (cidades) {
                         console.log(cidades);
                         var cidadeSelect = $('#cidade-licitacao');
-                        cidadeSelect.empty(); // Limpa as opções antigas
+                        cidadeSelect.empty();
 
                         if (cidades.length > 0) {
                             $.each(cidades, function (index, cidade) {

@@ -11,7 +11,7 @@ namespace Assislicitacao.Facade {
         }
 
         public List<EntidadeDominio> SelecionarTodos() {
-            DAO = new DAOPortal;
+            DAO = new DAOPortal();
             return DAO.Select();
         }
 

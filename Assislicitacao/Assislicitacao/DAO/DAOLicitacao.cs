@@ -2,6 +2,7 @@
 using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Assislicitacao.DAO {
@@ -44,7 +45,52 @@ namespace Assislicitacao.DAO {
         }
 
         public List<EntidadeDominio> Select() {
-            throw new NotImplementedException();
+            string Select = "SELECT * FROM vw_LicitacoesDetalhadas;";
+
+            List<EntidadeDominio> ListLicitacoes = new();
+
+            database = new FacadeSQLServer();
+
+            using (SqlConnection conn = database.AbrirConexao()) {
+                using (SqlCommand query = new(Select, conn)) {
+                    using (SqlDataReader reader = query.ExecuteReader()) {
+                        while (reader.Read()) {
+                            Licitacao Licitacao = new Licitacao {
+                                Numero = reader.GetString(reader.GetOrdinal("LCT_NUMERO")),
+                                Objeto = reader.GetString(reader.GetOrdinal("LCT_OBJETO")),
+                                Data = reader.GetDateTime(reader.GetOrdinal("LCT_DATA")),
+                                ValorEstimado = (double)reader.GetDecimal(reader.GetOrdinal("LCT_ESTIMADO")),
+                                Confirmado = reader.GetBoolean(reader.GetOrdinal("LCT_CONFIRMACAO"))
+                            };
+
+                            Licitacao.TipoLicitacao = new TipoLicitacao {
+                                Sigla = reader.GetString(reader.GetOrdinal("TPL_SIGLA"))
+                            };
+
+                            Licitacao.TipoDisputa = new TipoDisputa {
+                                Tipo = reader.GetString(reader.GetOrdinal("TDP_TIPO"))
+                            };
+
+                            Licitacao.Cidade = new Cidade {
+                                Nome = reader.GetString(reader.GetOrdinal("CID_NOME"))
+                            };
+
+                            Licitacao.Portal = new Portal {
+                                Nome = reader.GetString(reader.GetOrdinal("PRT_NOME")),
+                                Link = reader.GetString(reader.GetOrdinal("PRT_LINK"))
+                            };
+
+                            Licitacao.Cidade.Estado = new Estado {
+                                UF = reader.GetString(reader.GetOrdinal("EST_UF"))
+                            };
+
+                            ListLicitacoes.Add(Licitacao);
+                        }
+                    }
+                }
+                database.FecharConexao(conn);
+            }
+            return ListLicitacoes;
         }
 
         public List<EntidadeDominio> SelectAllWhereId(int id) {

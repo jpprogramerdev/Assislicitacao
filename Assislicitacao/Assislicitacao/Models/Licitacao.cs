@@ -1,5 +1,12 @@
 ﻿namespace Assislicitacao.Models {
     public class Licitacao : EntidadeDominio {
+        public Licitacao(){
+            Cidade = new();
+            Portal = new();
+            TipoLicitacao = new();
+            TipoDisputa = new();
+        }
+
         public string Numero { get; set; } //cada licitacao é identificada pela adminitração publica por um numero. EX: PREGÃO ELETRÔNICO 90020/2024
         public string Objeto { get; set; } //objeto é o que será ofertado/contratado pela administração publica. EX: AQUISIÇÃO DE LUMINARIAS LED
         public DateTime Data { get; set; }

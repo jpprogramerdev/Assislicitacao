@@ -9,6 +9,11 @@ namespace Assislicitacao.Controllers {
         public IActionResult Cadastrar() {
             return View();
         }
+        public IActionResult ExibirTodasLicitacoes() {
+            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+
+            return View(facadeLicitacao.SelecionarTodos().Cast<Licitacao>());
+        }
 
         [HttpPost]
         public IActionResult Salvar(Licitacao Licitacao) {

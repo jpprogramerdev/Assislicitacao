@@ -12,7 +12,8 @@ namespace Assislicitacao.Facade {
         }
 
         public List<EntidadeDominio> SelecionarTodos() {
-            throw new NotImplementedException();
+            DAO = new DAOLicitacao();
+            return DAO.Select();
         }
 
         public List<EntidadeDominio> SelecionarTodosPeloId(int Id) {

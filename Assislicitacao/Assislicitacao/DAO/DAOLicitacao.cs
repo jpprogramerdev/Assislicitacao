@@ -28,7 +28,7 @@ namespace Assislicitacao.DAO {
                         query.Parameters.AddWithValue("@Objeto", Licitacao.Objeto);
                         query.Parameters.AddWithValue("@Data", Licitacao.Data);
                         query.Parameters.AddWithValue("@Estimado", Licitacao.ValorEstimado);
-                        query.Parameters.AddWithValue("@Confirmacao", 0);
+                        query.Parameters.AddWithValue("@Confirmacao", Licitacao.Confirmado == true? 1: 0);
                         query.Parameters.AddWithValue("@CidadeID", Licitacao.Cidade.Id);
                         query.Parameters.AddWithValue("@PortalID", Licitacao.Portal.Id);
                         query.Parameters.AddWithValue("@TipoLicitacaoID", Licitacao.TipoLicitacao.Id);

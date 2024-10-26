@@ -10,7 +10,25 @@ namespace Assislicitacao.DAO {
         public IFacadeDatabase database { get; set; }
 
         public bool Delete(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            string Delete = "DELETE LICITACOES WHERE LCT_ID = @Id";
+
+            Licitacao Licitacao = (Licitacao)entidade;
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Delete, conn)) {
+                        query.Parameters.AddWithValue("@Id", Licitacao.Id);
+                        query.ExecuteNonQuery();
+                    }
+                    database.FecharConexao(conn);
+                }
+
+                return true;
+            }catch(Exception ex) {
+                return false;
+            }
         }
 
         public bool Insert(EntidadeDominio entidade) {

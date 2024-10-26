@@ -27,5 +27,11 @@ namespace Assislicitacao.Controllers {
 
             return View("Cadastrar");
         }
+
+        [HttpGet]
+        public IActionResult Apagar(int id) {
+
+            return View("ExibirTodasLicitacoes");
+        }
     }
 }

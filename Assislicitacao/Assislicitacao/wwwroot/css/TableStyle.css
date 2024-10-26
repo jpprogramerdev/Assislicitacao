@@ -1,0 +1,15 @@
+﻿.grp-btn-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+table th {
+    text-align: center;
+}
+
+table {
+    text-align: center;
+}

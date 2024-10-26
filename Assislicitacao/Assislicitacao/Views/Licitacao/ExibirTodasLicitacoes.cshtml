@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Exibir todas licitações ";
 }
-
+<link rel="stylesheet" href="~/css/TableStyle.css" asp-append-version="true" />
 
 <table class="table">
     <thead>
@@ -17,6 +17,7 @@
             <th scope="col">Estimado</th>
             <th scope="col">Portal</th>
             <th scope="col">Confirmado</th>
+            <th scope="col">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -33,9 +34,15 @@
                     <td><a href="@licitacao.Portal.Link">@licitacao.Portal.Nome</a></td>
                     @if (licitacao.Confirmado) {
                         <td>Sim</td>
-                    }else{
+                    } else {
                         <td>Não</td>
                     }
+                    <td>
+                        <div class="grp-btn-actions">
+                            <a class="btn btn-secondary btn-sm" asp-area="" asp-controller="" asp-action="">Atualizar</a>
+                            <a class="btn btn-danger btn-sm" asp-area="" asp-controller="" asp-action="">Apagar</a>
+                        </div>
+                    </td>
                 </tr>
             }
         }

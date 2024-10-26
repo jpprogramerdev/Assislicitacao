@@ -74,6 +74,7 @@ namespace Assislicitacao.DAO {
                     using (SqlDataReader reader = query.ExecuteReader()) {
                         while (reader.Read()) {
                             Licitacao Licitacao = new Licitacao {
+                                Id = reader.GetInt32(reader.GetOrdinal("LCT_ID")),
                                 Numero = reader.GetString(reader.GetOrdinal("LCT_NUMERO")),
                                 Objeto = reader.GetString(reader.GetOrdinal("LCT_OBJETO")),
                                 Data = reader.GetDateTime(reader.GetOrdinal("LCT_DATA")),

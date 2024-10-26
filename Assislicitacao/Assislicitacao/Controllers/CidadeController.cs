@@ -8,18 +8,8 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public JsonResult GetCidadePorEstado(int estadoId) {
             IFacadeGeneric facadeCidade = new FacadeCidade();
-            var Cidades = CastingCidade(facadeCidade.SelecionarTodosPeloId(estadoId));
+            var Cidades = facadeCidade.SelecionarTodosPeloId(estadoId).Cast<Cidade>();
             return Json(Cidades.Select(c => new { c.Id, c.Nome }));
-        }
-
-        private List<Cidade> CastingCidade(List<EntidadeDominio> ListEntidade) {
-            List<Cidade> Cidades = new();
-
-            foreach(Cidade Cidade in ListEntidade) {
-                Cidades.Add(Cidade);
-            }
-
-            return Cidades;
         }
     }
 }

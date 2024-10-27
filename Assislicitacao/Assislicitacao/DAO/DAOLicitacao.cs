@@ -9,7 +9,7 @@ namespace Assislicitacao.DAO {
     public class DAOLicitacao : IDAOGeneric {
         public IFacadeDatabase database { get; set; }
 
-        public bool Delete(EntidadeDominio entidade) {
+        public bool Delete(int id) {
             string Delete = "DELETE LICITACOES WHERE LCT_ID = @Id";
 
             Licitacao Licitacao = (Licitacao)entidade;

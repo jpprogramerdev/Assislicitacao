@@ -9,7 +9,7 @@ namespace Assislicitacao.DAO {
     public class DAOTipoDisputa : IDAOGeneric {
         public IFacadeDatabase database { get; set; }
         
-        public bool Delete(EntidadeDominio entidade) {
+        public bool Delete(int id) {
             throw new NotImplementedException();
         }
 

@@ -8,7 +8,7 @@ namespace Assislicitacao.DAO {
     public class DAOPortal : IDAOGeneric {
         public IFacadeDatabase database { get; set; }
 
-        public bool Delete(EntidadeDominio entidade) {
+        public bool Delete(int id) {
             throw new NotImplementedException();
         }
 

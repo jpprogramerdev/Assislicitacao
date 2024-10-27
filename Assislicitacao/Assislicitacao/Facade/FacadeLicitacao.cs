@@ -6,6 +6,11 @@ using Assislicitacao.Models;
 namespace Assislicitacao.Facade {
     public class FacadeLicitacao : IFacadeGeneric {
         public IDAOGeneric DAO { get; set; }
+
+        public bool Apagar(int Id) {
+            throw new NotImplementedException();
+        }
+
         public bool Salvar(EntidadeDominio entidade) {
             DAO = new DAOLicitacao();
             return DAO.Insert(entidade);

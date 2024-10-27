@@ -6,7 +6,11 @@ using Assislicitacao.Models;
 namespace Assislicitacao.Facade {
     public class FacadeTipoDisputa : IFacadeGeneric {
         public IDAOGeneric DAO { get; set; }
-        
+
+        public bool Apagar(int Id) {
+            throw new NotImplementedException();
+        }
+
         public bool Salvar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }

@@ -8,7 +8,8 @@ namespace Assislicitacao.Facade {
         public IDAOGeneric DAO { get; set; }
 
         public bool Apagar(int Id) {
-            throw new NotImplementedException();
+            DAO = new DAOLicitacao();
+            return DAO.Delete(Id);
         }
 
         public bool Salvar(EntidadeDominio entidade) {

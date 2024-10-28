@@ -30,8 +30,15 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public IActionResult Apagar(int id) {
+            IFacadeGeneric facadelicitacao = new FacadeLicitacao();
 
-            return View("ExibirTodasLicitacoes");
+            if (facadelicitacao.Apagar(id)) {
+                TempData["LicitacaoApagadaSucesso"] = "Licitação apagada com sucesso";
+            } else {
+                TempData["LicitacaoApagadaFalha"] = "Falha ao apagar licitação";
+            }
+
+            return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
         }
     }
 }

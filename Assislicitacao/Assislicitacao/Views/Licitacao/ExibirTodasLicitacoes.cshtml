@@ -2,6 +2,16 @@
 
 @{
     ViewData["Title"] = "Exibir todas licitações ";
+
+    if (TempData["LicitacaoApagadaSucesso"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["LicitacaoApagadaSucesso"]
+        </div>
+    } else if (TempData["LicitacaoApagadaFalha"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["LicitacaoApagadaFalha"]
+        </div>
+    }
 }
 <link rel="stylesheet" href="~/css/TableStyle.css" asp-append-version="true" />
 
@@ -39,8 +49,8 @@
                     }
                     <td>
                         <div class="grp-btn-actions">
-                            <a class="btn btn-secondary btn-sm" asp-area="" asp-controller="" asp-action="">Atualizar</a>
-                            <a class="btn btn-danger btn-sm" asp-area="" asp-controller="" asp-action="">Apagar</a>
+                            <a class="btn btn-secondary btn-sm" asp-controller="" asp-action="">Atualizar</a>
+                            <a class="btn btn-danger btn-sm" asp-controller="Licitacao" asp-action="Apagar" asp-route-id="@licitacao.Id">Apagar</a>
                         </div>
                     </td>
                 </tr>

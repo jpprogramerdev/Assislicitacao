@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\TableStyle.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\ValidarData.js" />
   </ItemGroup>
 

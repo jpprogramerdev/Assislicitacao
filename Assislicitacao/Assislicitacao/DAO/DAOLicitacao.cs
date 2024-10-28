@@ -12,14 +12,12 @@ namespace Assislicitacao.DAO {
         public bool Delete(int id) {
             string Delete = "DELETE LICITACOES WHERE LCT_ID = @Id";
 
-            Licitacao Licitacao = (Licitacao)entidade;
-
             database = new FacadeSQLServer();
 
             try {
                 using (SqlConnection conn = database.AbrirConexao()) {
                     using (SqlCommand query = new(Delete, conn)) {
-                        query.Parameters.AddWithValue("@Id", Licitacao.Id);
+                        query.Parameters.AddWithValue("@Id", id);
                         query.ExecuteNonQuery();
                     }
                     database.FecharConexao(conn);

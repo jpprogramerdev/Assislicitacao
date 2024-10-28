@@ -25,7 +25,7 @@ namespace Assislicitacao.Controllers {
                 TempData["SucessoCadastroLicitacao"] = "Licitação cadastrada com sucesso";
             }
 
-            return View("Cadastrar");
+            return RedirectToAction("Cadastrar","Licitacao");
         }
 
         [HttpGet]

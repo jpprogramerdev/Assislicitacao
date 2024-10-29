@@ -8,6 +8,7 @@ AS
 		TPL_ID,
 		TDP_ID,
 		PRT_ID,
+		CID_ID,
 		TPL_SIGLA, 
 		LCT_NUMERO, 
 		LCT_OBJETO, 

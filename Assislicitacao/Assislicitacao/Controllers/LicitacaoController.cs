@@ -15,6 +15,15 @@ namespace Assislicitacao.Controllers {
             return View(facadeLicitacao.SelecionarTodos().Cast<Licitacao>());
         }
 
+        [HttpGet]
+        public IActionResult AtualizarLicitacao(int id) {
+            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+            List<Licitacao> ListLicitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+
+            Licitacao Licitacao = ListLicitacoes.FirstOrDefault(l => l.Id == id);
+            return View(Licitacao);
+        }
+
         [HttpPost]
         public IActionResult Salvar(Licitacao Licitacao) {
             IFacadeGeneric facadeLicitacao = new FacadeLicitacao();

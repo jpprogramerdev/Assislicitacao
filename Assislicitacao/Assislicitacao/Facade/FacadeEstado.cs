@@ -11,6 +11,10 @@ namespace Assislicitacao.Facade {
             throw new NotImplementedException();
         }
 
+        public bool Atualizar(EntidadeDominio entidadeDominio) {
+            throw new NotImplementedException();
+        }
+
         public bool Salvar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }

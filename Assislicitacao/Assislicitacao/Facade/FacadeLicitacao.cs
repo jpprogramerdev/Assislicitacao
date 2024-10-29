@@ -12,6 +12,10 @@ namespace Assislicitacao.Facade {
             return DAO.Delete(Id);
         }
 
+        public bool Atualizar(EntidadeDominio entidadeDominio) {
+            throw new NotImplementedException();
+        }
+
         public bool Salvar(EntidadeDominio entidade) {
             DAO = new DAOLicitacao();
             return DAO.Insert(entidade);

@@ -3,7 +3,11 @@ USE Assisliticacao;
 CREATE VIEW vw_LicitacoesDetalhadas
 AS
 	SELECT 
-		LCT_ID, 
+		LCT_ID,
+		EST_ID,
+		TPL_ID,
+		TDP_ID,
+		PRT_ID,
 		TPL_SIGLA, 
 		LCT_NUMERO, 
 		LCT_OBJETO, 

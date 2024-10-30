@@ -81,23 +81,28 @@ namespace Assislicitacao.DAO {
                             };
 
                             Licitacao.TipoLicitacao = new TipoLicitacao {
+                                Id = reader.GetInt32(reader.GetOrdinal("TPL_Id")),
                                 Sigla = reader.GetString(reader.GetOrdinal("TPL_SIGLA"))
                             };
 
                             Licitacao.TipoDisputa = new TipoDisputa {
+                                Id = reader.GetInt32(reader.GetOrdinal("TDP_ID")),
                                 Tipo = reader.GetString(reader.GetOrdinal("TDP_TIPO"))
                             };
 
                             Licitacao.Cidade = new Cidade {
+                                Id = reader.GetInt32(reader.GetOrdinal("CID_ID")),
                                 Nome = reader.GetString(reader.GetOrdinal("CID_NOME"))
                             };
 
                             Licitacao.Portal = new Portal {
+                                Id = reader.GetInt32(reader.GetOrdinal("PRT_ID")),
                                 Nome = reader.GetString(reader.GetOrdinal("PRT_NOME")),
                                 Link = reader.GetString(reader.GetOrdinal("PRT_LINK"))
                             };
 
                             Licitacao.Cidade.Estado = new Estado {
+                                Id = reader.GetInt32(reader.GetOrdinal("EST_ID")),
                                 UF = reader.GetString(reader.GetOrdinal("EST_UF"))
                             };
 
@@ -115,7 +120,42 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Update(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            string Update = "UPDATE LICITACOES SET " +
+                                "LCT_NUMERO = @Numero," +
+                                "LCT_OBJETO = @Objeto," +
+                                "LCT_DATA = @Data," +
+                                "LCT_ESTIMADO = @Estimado," +
+                                "LCT_CONFIRMACAO = @Confirmacao," +
+                                "LCT_CID_ID = @CidadeID," +
+                                "LCT_PRT_ID = @PortalID," +
+                                "LCT_TPL_ID = @TipoLicitacaoID," +
+                                "LCT_TDP_ID = @TipoDisputaID " +
+                            "WHERE LCT_ID = @Id;";
+            Licitacao Licitacao = (Licitacao)entidade;
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Update, conn)) {
+                        query.Parameters.AddWithValue("@Numero", Licitacao.Numero);
+                        query.Parameters.AddWithValue("@Objeto", Licitacao.Objeto);
+                        query.Parameters.AddWithValue("@Data", Licitacao.Data);
+                        query.Parameters.AddWithValue("@Estimado", Licitacao.ValorEstimado);
+                        query.Parameters.AddWithValue("@Confirmacao", Licitacao.Confirmado == true ? 1 : 0);
+                        query.Parameters.AddWithValue("@CidadeID", Licitacao.Cidade.Id);
+                        query.Parameters.AddWithValue("@PortalID", Licitacao.Portal.Id);
+                        query.Parameters.AddWithValue("@TipoLicitacaoID", Licitacao.TipoLicitacao.Id);
+                        query.Parameters.AddWithValue("@TipoDisputaID", Licitacao.TipoDisputa.Id);
+                        query.Parameters.AddWithValue("@Id", Licitacao.Id);
+                        query.ExecuteNonQuery();
+                    }
+                    database.FecharConexao(conn);
+                }
+                return true;
+            } catch (Exception) {
+                return false;
+            }
         }
     }
 }

@@ -49,5 +49,13 @@ namespace Assislicitacao.Controllers {
 
             return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
         }
+
+        [HttpPost]
+        public IActionResult Atualizar(Licitacao Licitacao) {
+            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+            facadeLicitacao.Atualizar(Licitacao);
+            return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+
+        }
     }
 }

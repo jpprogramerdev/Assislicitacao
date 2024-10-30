@@ -1,20 +1,12 @@
 ﻿@model Licitacao
 
 @{
-    if (TempData["SucessoCadastroLicitacao"] != null) {
-        <div class="alert alert-success" role="alert">
-            @TempData["SucessoCadastroLicitacao"]
-        </div>
-    } else if (TempData["FalhaCadastroLicitacao"] != null) {
-        <div class="alert alert-danger" role="alert">
-            @TempData["FalhaCadastroLicitacao"]
-        </div>
-    }
-
-    ViewData["Title"] = "Cadastrar Licitação ";
+    ViewData["Title"] = "Atualizar Licitação ";
 }
 
-<form asp-action="Salvar" asp-controller="Licitacao" method="post">
+<form asp-action="Atualizar" asp-controller="Licitacao" method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+
     <div class="form-group">
         <label for="tipo-licitacao">Tipo de licitação:</label>
         <select class="form-control" id="tipo-licitacao" asp-for="@Model.TipoLicitacao.Id">
@@ -22,6 +14,9 @@
                 IFacadeGeneric facadeTipoLicitacao = new FacadeTipoLicitacao();
 
                 foreach (TipoLicitacao TipoLicitacao in facadeTipoLicitacao.SelecionarTodos()) {
+                    if(TipoLicitacao.Id == Model.TipoLicitacao.Id) {
+                        <option value="@TipoLicitacao.Id" selected>@TipoLicitacao.Tipo</option>
+                    }
                     <option value="@TipoLicitacao.Id">@TipoLicitacao.Tipo</option>
                 }
             }
@@ -42,6 +37,9 @@
                 IFacadeGeneric facadeTipoDisputa = new FacadeTipoDisputa();
 
                 foreach (TipoDisputa TipoDisputa in facadeTipoDisputa.SelecionarTodos()) {
+                    if (TipoDisputa.Id == Model.TipoDisputa.Id) {
+                        <option value="@TipoDisputa.Id" selected>@TipoDisputa.Tipo</option>
+                    }
                     <option value="@TipoDisputa.Id">@TipoDisputa.Tipo</option>
                 }
             }
@@ -62,6 +60,9 @@
                 IFacadeGeneric facadeEstado = new FacadeEstado();
 
                 foreach (Estado estado in facadeEstado.SelecionarTodos()) {
+                    if(estado.Id == Model.Cidade.Estado.Id) {
+                        <option value="@estado.Id" selected>@estado.Nome - @estado.UF</option>
+                    }
                     <option value="@estado.Id">@estado.Nome - @estado.UF</option>
                 }
             }
@@ -80,6 +81,9 @@
                 IFacadeGeneric facadePortal = new FacadePortal();
 
                 foreach (Portal Portal in facadePortal.SelecionarTodos()) {
+                    if (Portal.Id == Model.Portal.Id) {
+                        <option value="@Portal.Id" selected>@Portal.Nome</option>
+                    }
                     <option value="@Portal.Id">@Portal.Nome</option>
                 }
             }
@@ -92,41 +96,55 @@
             <option value="false">Não</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <button type="submit" class="btn btn-primary">Atualizar</button>
 </form>
 
 <script src="~/js/ValidarData.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+        var estadoId = $('#estado-licitacao').val();
+        var cidadeSelecionadaId = '@Model.Cidade.Id';
+
+        if (estadoId) {
+            carregarCidades(estadoId, cidadeSelecionadaId);
+        }
+
         $('#estado-licitacao').change(function () {
-            var estadoId = $(this).val();
-
+            estadoId = $(this).val();
             if (estadoId) {
-                $.ajax({
-                    url: '@Url.Action("GetCidadePorEstado", "Cidade")',
-                    type: 'GET',
-                    data: { estadoId: estadoId },
-                    success: function (cidades) {
-                        console.log(cidades);
-                        var cidadeSelect = $('#cidade-licitacao');
-                        cidadeSelect.empty();
-
-                        if (cidades.length > 0) {
-                            $.each(cidades, function (index, cidade) {
-                                cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
-                            });
-                        } else {
-                            cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
-                        }
-                    },
-                    error: function () {
-                        alert('Erro ao carregar as cidades.');
-                    }
-                });
+                carregarCidades(estadoId);
             } else {
                 $('#cidade-licitacao').empty().append('<option>Selecione um estado primeiro</option>');
             }
         });
-    })
+
+        function carregarCidades(estadoId, cidadeSelecionadaId) {
+            $.ajax({
+                url: '@Url.Action("GetCidadePorEstado", "Cidade")',
+                type: 'GET',
+                data: { estadoId: estadoId },
+                success: function (cidades) { 
+                    var cidadeSelect = $('#cidade-licitacao');
+                    cidadeSelect.empty();
+
+                    if (cidades.length > 0) {
+                        $.each(cidades, function (index, cidade) {
+                            if (cidade.id == cidadeSelecionadaId) {
+                                cidadeSelect.append('<option value="' + cidade.id + '" selected>' + cidade.nome + '</option>');
+                            } else {
+                                cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
+                            }
+                        });
+                    } else {
+                        cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
+                    }
+                },
+                error: function () {
+                    alert('Erro ao carregar as cidades.');
+                }
+            });
+        }
+    });
+
 </script>

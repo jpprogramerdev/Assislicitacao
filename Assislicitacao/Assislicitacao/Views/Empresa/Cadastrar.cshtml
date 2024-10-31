@@ -1,0 +1,118 @@
+﻿@{
+
+    ViewData["Title"] = "Cadastrar Empresa ";
+}
+
+<form asp-action="Salvar" asp-controller="Licitacao" method="post">
+    <div class="form-group">
+        <label for="objeto-licitacao">CNPJ:</label>
+        <input type="text" class="form-control" id="CNPJ-empresa" placeholder="CNPJ">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Razão Social:</label>
+        <input type="text" class="form-control" id="Razao-social-empresa" placeholder="Razão Social">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Nome Fantasia:</label>
+        <input type="text" class="form-control" id="Nome-fantasia-empresa" placeholder="Nome fantasia">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Telefone para contato:</label>
+        <input type="text" class="form-control" id="Telefone-empresas" placeholder="Telefone para contato">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Email:</label>
+        <input type="text" class="form-control" id="Email-empresa" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <label for="Enquadramento-empresa">Enquadramento:</label>
+        <select class="form-control" id="Enquadramento-empresa">
+            <option>ME</option>
+            <option>EPP</option>
+            <option>MEI</option>
+        </select>
+    </div>
+
+    <fieldset class="div-form-field">
+        <div id="form-container-endereco">
+            <legend>Endereço</legend>
+            <div class="form-endereco">
+                <div class="form-group">
+                    <label for="endereco-cliente-bairro">CEP:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="CEP">
+                </div>
+                <div class="form-group">
+                    <label for="empresa-endereco-Logradouro ">Logradouro:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Logradouro">
+                </div>
+                <div class="form-group">
+                    <label for="endereco-cliente-numero">Número:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-numero" placeholder="Número">
+                </div>
+                <div class="form-group">
+                    <label for="endereco-cliente-bairro">Bairro:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Bairro">
+                </div>
+                <div class="form-group">
+                    <label for="endereco-cliente-cidade">Complemento:</label>
+                    <input type="text" class="form-control" id="endereco-cliente-complemento" placeholder="Complemento" />
+                </div>
+                <div class="form-group">
+                    <label for="estado-licitacao">Estado:</label>
+                    <select class="form-control" id="estado-licitacao">
+                        @{
+                            IFacadeGeneric facadeEstado = new FacadeEstado();
+
+                            foreach (Estado estado in facadeEstado.SelecionarTodos()) {
+                                <option value="@estado.Id">@estado.Nome - @estado.UF</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cidade-licitacao">Cidade:</label>
+                    <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro">
+                        <option value="">Selecione um estado primeiro</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#estado-licitacao').change(function () {
+            var estadoId = $(this).val();
+
+            if (estadoId) {
+                $.ajax({
+                    url: '@Url.Action("GetCidadePorEstado", "Cidade")',
+                    type: 'GET',
+                    data: { estadoId: estadoId },
+                    success: function (cidades) {
+                        console.log(cidades);
+                        var cidadeSelect = $('#cidade-licitacao');
+                        cidadeSelect.empty();
+
+                        if (cidades.length > 0) {
+                            $.each(cidades, function (index, cidade) {
+                                cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
+                            });
+                        } else {
+                            cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
+                        }
+                    },
+                    error: function () {
+                        alert('Erro ao carregar as cidades.');
+                    }
+                });
+            } else {
+                $('#cidade-licitacao').empty().append('<option>Selecione um estado primeiro</option>');
+            }
+        });
+    })
+</script>

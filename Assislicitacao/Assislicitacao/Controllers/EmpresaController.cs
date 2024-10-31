@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Assislicitacao.Controllers {
-    public class EmpresasController : Controller {
-        public IActionResult Index() {
+    public class EmpresaController : Controller {
+        public IActionResult Cadastrar() {
             return View();
         }
     }

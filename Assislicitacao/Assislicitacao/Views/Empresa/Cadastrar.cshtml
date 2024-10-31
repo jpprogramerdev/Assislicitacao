@@ -27,9 +27,13 @@
     <div class="form-group">
         <label for="Enquadramento-empresa">Enquadramento:</label>
         <select class="form-control" id="Enquadramento-empresa">
-            <option>ME</option>
-            <option>EPP</option>
-            <option>MEI</option>
+            @{
+                IFacadeGeneric facadeEnquadramento = new FacadeEnquadramento();
+
+                foreach (Enquadramento Enquadramento in facadeEnquadramento.SelecionarTodos()) {
+                    <option value="@Enquadramento.Id">@Enquadramento.Sigla - @Enquadramento.Tipo </option>
+                }
+            }
         </select>
     </div>
 

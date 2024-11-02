@@ -1,32 +1,40 @@
-﻿@{
+﻿@model Empresa
+
+@{
+    if (TempData["SucessoCadastroEmpresa"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoCadastroEmpresa"]
+        </div>
+    }
 
     ViewData["Title"] = "Cadastrar Empresa ";
+
 }
 
-<form asp-action="Salvar" asp-controller="Licitacao" method="post">
+<form asp-action="Salvar" asp-controller="Empresa" method="post">
     <div class="form-group">
         <label for="objeto-licitacao">CNPJ:</label>
-        <input type="text" class="form-control" id="CNPJ-empresa" placeholder="CNPJ">
+        <input type="text" class="form-control" id="CNPJ-empresa" placeholder="CNPJ" asp-for="@Model.CNPJ">
     </div>
     <div class="form-group">
         <label for="objeto-licitacao">Razão Social:</label>
-        <input type="text" class="form-control" id="Razao-social-empresa" placeholder="Razão Social">
+        <input type="text" class="form-control" id="Razao-social-empresa" placeholder="Razão Social" asp-for="@Model.RazaoSocial">
     </div>
     <div class="form-group">
         <label for="objeto-licitacao">Nome Fantasia:</label>
-        <input type="text" class="form-control" id="Nome-fantasia-empresa" placeholder="Nome fantasia">
+        <input type="text" class="form-control" id="Nome-fantasia-empresa" placeholder="Nome fantasia" asp-for="@Model.NomeFantasia">
     </div>
     <div class="form-group">
         <label for="objeto-licitacao">Telefone para contato:</label>
-        <input type="text" class="form-control" id="Telefone-empresas" placeholder="Telefone para contato">
+        <input type="text" class="form-control" id="Telefone-empresas" placeholder="Telefone para contato" asp-for="@Model.TelefoneContato">
     </div>
     <div class="form-group">
         <label for="objeto-licitacao">Email:</label>
-        <input type="text" class="form-control" id="Email-empresa" placeholder="Email">
+        <input type="text" class="form-control" id="Email-empresa" placeholder="Email" asp-for="@Model.EmailsContato">
     </div>
     <div class="form-group">
         <label for="Enquadramento-empresa">Enquadramento:</label>
-        <select class="form-control" id="Enquadramento-empresa">
+        <select class="form-control" id="Enquadramento-empresa" asp-for="@Model.Enquadramento.Id">
             @{
                 IFacadeGeneric facadeEnquadramento = new FacadeEnquadramento();
 
@@ -43,27 +51,27 @@
             <div class="form-endereco">
                 <div class="form-group">
                     <label for="endereco-cliente-bairro">CEP:</label>
-                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="CEP">
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="CEP" asp-for="@Model.Endereco.CEP">
                 </div>
                 <div class="form-group">
                     <label for="empresa-endereco-Logradouro ">Logradouro:</label>
-                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Logradouro">
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Logradouro" asp-for="@Model.Endereco.Logradouro">
                 </div>
                 <div class="form-group">
                     <label for="endereco-cliente-numero">Número:</label>
-                    <input type="text" class="form-control" id="empresa-endereco-numero" placeholder="Número">
+                    <input type="text" class="form-control" id="empresa-endereco-numero" placeholder="Número" asp-for="@Model.Endereco.Numero">
                 </div>
                 <div class="form-group">
                     <label for="endereco-cliente-bairro">Bairro:</label>
-                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Bairro">
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Bairro" asp-for="@Model.Endereco.Bairro">
                 </div>
                 <div class="form-group">
                     <label for="endereco-cliente-cidade">Complemento:</label>
-                    <input type="text" class="form-control" id="endereco-cliente-complemento" placeholder="Complemento" />
+                    <input type="text" class="form-control" id="endereco-cliente-complemento" placeholder="Complemento" asp-for="@Model.Endereco.Complemento" />
                 </div>
                 <div class="form-group">
                     <label for="estado-licitacao">Estado:</label>
-                    <select class="form-control" id="estado-licitacao">
+                    <select class="form-control" id="estado-licitacao" asp-for="@Model.Endereco.Cidade.Estado.Id">
                         @{
                             IFacadeGeneric facadeEstado = new FacadeEstado();
 
@@ -75,7 +83,7 @@
                 </div>
                 <div class="form-group">
                     <label for="cidade-licitacao">Cidade:</label>
-                    <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro">
+                    <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro" asp-for="@Model.Endereco.Cidade.Id">
                         <option value="">Selecione um estado primeiro</option>
                     </select>
                 </div>

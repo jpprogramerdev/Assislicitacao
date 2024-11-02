@@ -1,5 +1,12 @@
 ﻿namespace Assislicitacao.Models {
-    public class Empresa {
+    public class Empresa : EntidadeDominio{
+        public Empresa() {
+            Enquadramento = new();
+            Endereco = new();
+            Licitacoes = new();
+            Portais = new();
+        }
+
         public string CNPJ { get; set; }
         public string RazaoSocial { get; set; }
         public string NomeFantasia { get; set; }

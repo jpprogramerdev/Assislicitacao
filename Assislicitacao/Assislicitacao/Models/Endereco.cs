@@ -1,5 +1,5 @@
 ﻿namespace Assislicitacao.Models {
-    public class Endereco {
+    public class Endereco  : EntidadeDominio{
         public string Logradouro { get; set; }
         public string CEP { get; set; }
         public string Bairro { get; set; }

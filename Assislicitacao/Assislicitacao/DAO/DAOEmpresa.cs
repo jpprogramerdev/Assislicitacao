@@ -65,7 +65,55 @@ namespace Assislicitacao.DAO {
         }
 
         public List<EntidadeDominio> Select() {
-            throw new NotImplementedException();
+            string Select = "SELECT * FROM Vw_DadosEmpresa";
+
+            database = new FacadeSQLServer();
+
+            List<EntidadeDominio> ListEmpresas = new();
+
+            using (SqlConnection conn = database.AbrirConexao()) {
+                using (SqlCommand query = new(Select, conn)) {
+                    using (SqlDataReader reader = query.ExecuteReader()) {
+                        while (reader.Read()) {
+
+                            Empresa Empresa = new Empresa {
+                                Id = reader.GetInt32(reader.GetOrdinal("EMP_Id")),
+                                CNPJ = reader.GetString(reader.GetOrdinal("EMP_CNPJ")),
+                                RazaoSocial = reader.GetString(reader.GetOrdinal("EMP_RAZAO_SOCIAL")),
+                                NomeFantasia = reader.GetString(reader.GetOrdinal("EMP_NOME_FANTASIA")),
+                                TelefoneContato = reader.GetString(reader.GetOrdinal("TLF_NUMERO")),
+                                Enquadramento = new Enquadramento {
+                                    Id = reader.GetInt32(reader.GetOrdinal("EQD_ID")),
+                                    Tipo = reader.GetString(reader.GetOrdinal("EQD_TIPO")),
+                                    Sigla = reader.GetString(reader.GetOrdinal("EQD_SIGLA"))
+                                },
+                                Endereco = new Endereco {
+                                    Id = reader.GetInt32(reader.GetOrdinal("END_ID")),
+                                    Logradouro = reader.GetString(reader.GetOrdinal("END_LOGRADOURO")),
+                                    Numero = reader.GetString(reader.GetOrdinal("END_NUMERO")),
+                                    CEP = reader.GetString(reader.GetOrdinal("END_CEP")),
+                                    Complemento = reader.GetString(reader.GetOrdinal("END_COMPLEMENTO")),
+                                    Bairro = reader.GetString(reader.GetOrdinal("END_BAIRRO")),
+                                    Cidade = new Cidade {
+                                        Id = reader.GetInt32(reader.GetOrdinal("CID_ID")),
+                                        Nome = reader.GetString(reader.GetOrdinal("CID_NOME")),
+                                        Estado = new Estado {
+                                            Id = reader.GetInt32(reader.GetOrdinal("EST_ID")),
+                                            Nome = reader.GetString(reader.GetOrdinal("EST_NOME")),
+                                            UF = reader.GetString(reader.GetOrdinal("EST_UF"))
+                                        }
+                                    }
+                                }
+                            };
+
+                            ListEmpresas.Add(Empresa);
+                        }
+                    }
+                }
+                database.FecharConexao(conn);
+            }
+
+            return ListEmpresas;
         }
 
         public List<EntidadeDominio> SelectAllWhereId(int id) {

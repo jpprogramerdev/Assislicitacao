@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Empresa>
+
+@{
+    ViewData["Title"] = "Exibir todas empresas ";
+}
+
+<link rel="stylesheet" href="~/css/TableStyle.css" asp-append-version="true" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nome Fantasia</th>
+            <th scope="col">CNPJ</th>
+            <th scope="col">Enquadramento</th>
+            <th scope="col">Cidade - UF</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (Empresa Empresa in Model) {
+                <tr>
+                    <td>@Empresa.RazaoSocial</td>
+                    <td>@Empresa.CNPJ</td>
+                    <td>@Empresa.Enquadramento.Sigla - @Empresa.Enquadramento.Tipo</td>
+                    <td>@Empresa.Endereco.Cidade.Nome - @Empresa.Endereco.Cidade.Estado.UF</td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

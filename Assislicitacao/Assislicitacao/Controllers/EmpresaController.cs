@@ -9,6 +9,13 @@ namespace Assislicitacao.Controllers {
             return View();
         }
 
+        public IActionResult ExibirTodasEmpresas() {
+            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+            List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
+
+            return View(ListEmpresa);
+        }
+
         [HttpPost]
         public IActionResult Salvar(Empresa Empresa) {
             IFacadeGeneric facadeEndereco = new FacadeEndereco();

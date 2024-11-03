@@ -15,7 +15,7 @@
             <th scope="col">Telefone</th>
             <th scope="col">Enquadramento</th>
             <th scope="col">Cidade - UF</th>
-
+            <th scope="col">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +28,12 @@
                     <td>@Empresa.TelefoneContato</td>
                     <td>@Empresa.Enquadramento.Sigla - @Empresa.Enquadramento.Tipo</td>
                     <td>@Empresa.Endereco.Cidade.Nome - @Empresa.Endereco.Cidade.Estado.UF</td>
+                    <td>
+                        <div class="grp-btn-actions">
+                            <a class="btn btn-secondary btn-sm" asp-controller="Empresa" asp-action="EditarEmpresa" asp-route-id="@Empresa.Id">Editar</a>
+                            <a class="btn btn-danger btn-sm" asp-controller="Licitacao" asp-action="Apagar" asp-route-id="@Empresa.Id">Apagar</a>
+                        </div>
+                    </td>
                 </tr>
             }
         }

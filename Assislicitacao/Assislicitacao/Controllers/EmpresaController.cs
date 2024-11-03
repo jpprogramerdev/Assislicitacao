@@ -16,6 +16,15 @@ namespace Assislicitacao.Controllers {
             return View(ListEmpresa);
         }
 
+        [HttpGet]
+        public IActionResult EditarEmpresa(int id) {
+            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+            List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
+            Empresa Empresa = ListEmpresa.FirstOrDefault(e => e.Id == id);
+
+            return View(Empresa);
+        }
+
         [HttpPost]
         public IActionResult Salvar(Empresa Empresa) {
             IFacadeGeneric facadeEndereco = new FacadeEndereco();
@@ -34,5 +43,7 @@ namespace Assislicitacao.Controllers {
 
             return RedirectToAction("Cadastrar", "Empresa");
         }
+
+
     }
 }

@@ -1,0 +1,140 @@
+﻿@model Empresa
+
+@{
+    if (TempData["SucessoCadastroEmpresa"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoCadastroEmpresa"]
+        </div>
+    }
+
+    ViewData["Title"] = "Cadastrar Empresa ";
+
+}
+
+<form asp-action="Salvar" asp-controller="Empresa" method="post">
+    <div class="form-group">
+        <label for="objeto-licitacao">CNPJ:</label>
+        <input type="text" class="form-control" id="CNPJ-empresa" placeholder="CNPJ" asp-for="@Model.CNPJ">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Razão Social:</label>
+        <input type="text" class="form-control" id="Razao-social-empresa" placeholder="Razão Social" asp-for="@Model.RazaoSocial">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Nome Fantasia:</label>
+        <input type="text" class="form-control" id="Nome-fantasia-empresa" placeholder="Nome fantasia" asp-for="@Model.NomeFantasia">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Telefone para contato:</label>
+        <input type="text" class="form-control" id="Telefone-empresas" placeholder="Telefone para contato" asp-for="@Model.TelefoneContato">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Email:</label>
+        <input type="text" class="form-control" id="Email-empresa" placeholder="Email" asp-for="@Model.EmailsContato">
+    </div>
+    <div class="form-group">
+        <label for="Enquadramento-empresa">Enquadramento:</label>
+        <select class="form-control" id="Enquadramento-empresa" asp-for="@Model.Enquadramento.Id">
+            @{
+                IFacadeGeneric facadeEnquadramento = new FacadeEnquadramento();
+
+                foreach (Enquadramento Enquadramento in facadeEnquadramento.SelecionarTodos()) {
+                    if (Enquadramento.Id == Model.Enquadramento.Id) {
+                        <option value="@Enquadramento.Id" selected>@Enquadramento.Sigla - @Enquadramento.Tipo </option>
+                    }
+                    <option value="@Enquadramento.Id">@Enquadramento.Sigla - @Enquadramento.Tipo </option>
+                }
+            }
+        </select>
+    </div>
+
+    <fieldset class="div-form-field">
+        <div id="form-container-endereco">
+            <legend>Endereço</legend>
+            <div class="form-endereco">
+                <div class="form-group">
+                    <label for="endereco-cliente-bairro">CEP:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="CEP" asp-for="@Model.Endereco.CEP">
+                </div>
+                <div class="form-group">
+                    <label for="empresa-endereco-Logradouro ">Logradouro:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Logradouro" asp-for="@Model.Endereco.Logradouro">
+                </div>
+                <div class="form-group">
+                    <label for="endereco-cliente-numero">Número:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-numero" placeholder="Número" asp-for="@Model.Endereco.Numero">
+                </div>
+                <div class="form-group">
+                    <label for="endereco-cliente-bairro">Bairro:</label>
+                    <input type="text" class="form-control" id="empresa-endereco-Logradouro" placeholder="Bairro" asp-for="@Model.Endereco.Bairro">
+                </div>
+                <div class="form-group">
+                    <label for="endereco-cliente-cidade">Complemento:</label>
+                    <input type="text" class="form-control" id="endereco-cliente-complemento" placeholder="Complemento" asp-for="@Model.Endereco.Complemento" />
+                </div>
+                <div class="form-group">
+                    <label for="estado-licitacao">Estado:</label>
+                    <select class="form-control" id="estado-licitacao" asp-for="@Model.Endereco.Cidade.Estado.Id">
+                        @{
+                            IFacadeGeneric facadeEstado = new FacadeEstado();
+
+                            foreach (Estado estado in facadeEstado.SelecionarTodos()) {
+                                if (estado.Id == Model.Endereco.Cidade.Estado.Id) {
+                                    <option value="@estado.Id" selected>@estado.Nome - @estado.UF</option>
+                                }
+                                <option value="@estado.Id">@estado.Nome - @estado.UF</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cidade-licitacao">Cidade:</label>
+                    <select class="form-control" id="cidade-licitacao" data-placeholder="Selecione um estado primeiro" asp-for="@Model.Endereco.Cidade.Id">
+                        <option value="">Selecione um estado primeiro</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#estado-licitacao').change(function () {
+            var estadoId = $(this).val();
+
+            if (estadoId) {
+                $.ajax({
+                    url: '@Url.Action("GetCidadePorEstado", "Cidade")',
+                    type: 'GET',
+                    data: { estadoId: estadoId },
+                    success: function (cidades) {
+                        console.log(cidades);
+                        var cidadeSelect = $('#cidade-licitacao');
+                        cidadeSelect.empty();
+
+                        if (cidades.length > 0) {
+                            $.each(cidades, function (index, cidade) {
+                                if (cidade.id == cidadeSelecionadaId) {
+                                    cidadeSelect.append('<option value="' + cidade.id + '" selected>' + cidade.nome + '</option>');
+                                } else {
+                                    cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
+                                }
+                            });
+                        } else {
+                            cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
+                        }
+                    },
+                    error: function () {
+                        alert('Erro ao carregar as cidades.');
+                    }
+                });
+            } else {
+                $('#cidade-licitacao').empty().append('<option>Selecione um estado primeiro</option>');
+            }
+        });
+    })
+</script>

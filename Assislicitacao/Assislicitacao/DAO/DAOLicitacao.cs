@@ -30,8 +30,8 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            string Insert = "INSERT INTO LICITACOES(LCT_NUMERO,LCT_OBJETO,LCT_DATA,LCT_ESTIMADO,LCT_CONFIRMACAO,LCT_CID_ID,LCT_PRT_ID,LCT_TPL_ID,LCT_TDP_ID) " +
-                            "VALUES(@Numero, @Objeto, @Data, @Estimado, @Confirmacao, @CidadeID, @PortalID, @TipoLicitacaoID, @TipoDisputaID);";
+            string Insert = "INSERT INTO LICITACOES(LCT_NUMERO,LCT_OBJETO,LCT_DATA,LCT_ESTIMADO,LCT_CID_ID,LCT_PRT_ID,LCT_TPL_ID,LCT_TDP_ID) " +
+                            "VALUES(@Numero, @Objeto, @Data, @Estimado, @CidadeID, @PortalID, @TipoLicitacaoID, @TipoDisputaID);";
 
 
             Licitacao Licitacao = (Licitacao)entidade;
@@ -45,7 +45,6 @@ namespace Assislicitacao.DAO {
                         query.Parameters.AddWithValue("@Objeto", Licitacao.Objeto);
                         query.Parameters.AddWithValue("@Data", Licitacao.Data);
                         query.Parameters.AddWithValue("@Estimado", Licitacao.ValorEstimado);
-                        query.Parameters.AddWithValue("@Confirmacao", Licitacao.Confirmado == true? 1: 0);
                         query.Parameters.AddWithValue("@CidadeID", Licitacao.Cidade.Id);
                         query.Parameters.AddWithValue("@PortalID", Licitacao.Portal.Id);
                         query.Parameters.AddWithValue("@TipoLicitacaoID", Licitacao.TipoLicitacao.Id);
@@ -77,34 +76,29 @@ namespace Assislicitacao.DAO {
                                 Objeto = reader.GetString(reader.GetOrdinal("LCT_OBJETO")),
                                 Data = reader.GetDateTime(reader.GetOrdinal("LCT_DATA")),
                                 ValorEstimado = (double)reader.GetDecimal(reader.GetOrdinal("LCT_ESTIMADO")),
-                                Confirmado = reader.GetBoolean(reader.GetOrdinal("LCT_CONFIRMACAO"))
+                                TipoLicitacao = new TipoLicitacao {
+                                    Id = reader.GetInt32(reader.GetOrdinal("TPL_Id")),
+                                    Sigla = reader.GetString(reader.GetOrdinal("TPL_SIGLA"))
+                                },
+                                TipoDisputa = new TipoDisputa {
+                                    Id = reader.GetInt32(reader.GetOrdinal("TDP_ID")),
+                                    Tipo = reader.GetString(reader.GetOrdinal("TDP_TIPO"))
+                                },
+                                Cidade = new Cidade {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CID_ID")),
+                                    Nome = reader.GetString(reader.GetOrdinal("CID_NOME")),
+                                    Estado = new Estado {
+                                        Id = reader.GetInt32(reader.GetOrdinal("EST_ID")),
+                                        UF = reader.GetString(reader.GetOrdinal("EST_UF"))
+                                    }
+                                },
+                                Portal = new Portal {
+                                    Id = reader.GetInt32(reader.GetOrdinal("PRT_ID")),
+                                    Nome = reader.GetString(reader.GetOrdinal("PRT_NOME")),
+                                    Link = reader.GetString(reader.GetOrdinal("PRT_LINK"))
+                                }
                             };
 
-                            Licitacao.TipoLicitacao = new TipoLicitacao {
-                                Id = reader.GetInt32(reader.GetOrdinal("TPL_Id")),
-                                Sigla = reader.GetString(reader.GetOrdinal("TPL_SIGLA"))
-                            };
-
-                            Licitacao.TipoDisputa = new TipoDisputa {
-                                Id = reader.GetInt32(reader.GetOrdinal("TDP_ID")),
-                                Tipo = reader.GetString(reader.GetOrdinal("TDP_TIPO"))
-                            };
-
-                            Licitacao.Cidade = new Cidade {
-                                Id = reader.GetInt32(reader.GetOrdinal("CID_ID")),
-                                Nome = reader.GetString(reader.GetOrdinal("CID_NOME"))
-                            };
-
-                            Licitacao.Portal = new Portal {
-                                Id = reader.GetInt32(reader.GetOrdinal("PRT_ID")),
-                                Nome = reader.GetString(reader.GetOrdinal("PRT_NOME")),
-                                Link = reader.GetString(reader.GetOrdinal("PRT_LINK"))
-                            };
-
-                            Licitacao.Cidade.Estado = new Estado {
-                                Id = reader.GetInt32(reader.GetOrdinal("EST_ID")),
-                                UF = reader.GetString(reader.GetOrdinal("EST_UF"))
-                            };
 
                             ListLicitacoes.Add(Licitacao);
                         }
@@ -125,7 +119,6 @@ namespace Assislicitacao.DAO {
                                 "LCT_OBJETO = @Objeto," +
                                 "LCT_DATA = @Data," +
                                 "LCT_ESTIMADO = @Estimado," +
-                                "LCT_CONFIRMACAO = @Confirmacao," +
                                 "LCT_CID_ID = @CidadeID," +
                                 "LCT_PRT_ID = @PortalID," +
                                 "LCT_TPL_ID = @TipoLicitacaoID," +
@@ -142,7 +135,6 @@ namespace Assislicitacao.DAO {
                         query.Parameters.AddWithValue("@Objeto", Licitacao.Objeto);
                         query.Parameters.AddWithValue("@Data", Licitacao.Data);
                         query.Parameters.AddWithValue("@Estimado", Licitacao.ValorEstimado);
-                        query.Parameters.AddWithValue("@Confirmacao", Licitacao.Confirmado == true ? 1 : 0);
                         query.Parameters.AddWithValue("@CidadeID", Licitacao.Cidade.Id);
                         query.Parameters.AddWithValue("@PortalID", Licitacao.Portal.Id);
                         query.Parameters.AddWithValue("@TipoLicitacaoID", Licitacao.TipoLicitacao.Id);

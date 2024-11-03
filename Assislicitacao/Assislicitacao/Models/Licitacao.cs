@@ -11,7 +11,6 @@
         public string Objeto { get; set; } //objeto é o que será ofertado/contratado pela administração publica. EX: AQUISIÇÃO DE LUMINARIAS LED
         public DateTime Data { get; set; }
         public double ValorEstimado { get; set; }
-        public bool Confirmado { get; set; }
         public Cidade Cidade { get; set; }
         public Orgao Orgao { get; set; }
         public Portal Portal { get; set; }

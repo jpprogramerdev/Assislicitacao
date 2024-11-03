@@ -13,7 +13,9 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            string Insert = "INSERT INTO EMPRESAS(EMP_CNPJ, EMP_RAZAO_SOCIAL, EMP_NOME_FANTASIA, EMP_TLF_ID, EMP_EQD_ID, EMP_END_ID) VALUES " +
+            string Insert = "INSERT INTO EMPRESAS(EMP_CNPJ, EMP_RAZAO_SOCIAL, EMP_NOME_FANTASIA, EMP_TLF_ID, EMP_EQD_ID, EMP_END_ID) " +
+                            "OUTPUT INSERTED.EMP_ID " +
+                            "VALUES " +
                             "(@CNPJ, @RazaoSocial, @NomeFantasia, " +
                             "(SELECT TLF_ID FROM TELEFONES WHERE TLF_NUMERO = @Telefone), " +
                             "@EnquadramentoId, " +
@@ -54,7 +56,7 @@ namespace Assislicitacao.DAO {
                         }
 
 
-                        query.ExecuteNonQuery();
+                        empresa.Id = (int)query.ExecuteScalar();
                     }
                     database.FecharConexao(conn);
                 }
@@ -81,6 +83,7 @@ namespace Assislicitacao.DAO {
                                 CNPJ = reader.GetString(reader.GetOrdinal("EMP_CNPJ")),
                                 RazaoSocial = reader.GetString(reader.GetOrdinal("EMP_RAZAO_SOCIAL")),
                                 NomeFantasia = reader.GetString(reader.GetOrdinal("EMP_NOME_FANTASIA")),
+                                EmailsContato = reader.GetString(reader.GetOrdinal("EML_EMAIL")),
                                 TelefoneContato = reader.GetString(reader.GetOrdinal("TLF_NUMERO")),
                                 Enquadramento = new Enquadramento {
                                     Id = reader.GetInt32(reader.GetOrdinal("EQD_ID")),

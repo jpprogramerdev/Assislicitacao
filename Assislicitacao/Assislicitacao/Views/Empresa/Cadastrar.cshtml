@@ -5,6 +5,10 @@
         <div class="alert alert-success" role="alert">
             @TempData["SucessoCadastroEmpresa"]
         </div>
+    } else if (TempData["CNPJDuplicado"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["CNPJDuplicado"]
+        </div>
     }
 
     ViewData["Title"] = "Cadastrar Empresa ";

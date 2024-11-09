@@ -1,4 +1,5 @@
 ﻿using Assislicitacao.DAO.Intefaces;
+using Assislicitacao.Exceptions;
 using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
@@ -61,8 +62,8 @@ namespace Assislicitacao.DAO {
                     database.FecharConexao(conn);
                 }
                 return true;
-            } catch (Exception ex) {
-                return false;
+            } catch (SqlException ex) {
+                throw new DuplicateCNPJException("CNPJ já cadastrado no sistema");
             }
         }
 

@@ -103,38 +103,48 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+        var estadoId = $('#estado-licitacao').val();
+        var cidadeSelecionadaId = '@Model.Endereco.Cidade.Id';
+
+        if (estadoId) {
+            carregarCidades(estadoId, cidadeSelecionadaId);
+        }
+
         $('#estado-licitacao').change(function () {
-            var estadoId = $(this).val();
-
+            estadoId = $(this).val();
             if (estadoId) {
-                $.ajax({
-                    url: '@Url.Action("GetCidadePorEstado", "Cidade")',
-                    type: 'GET',
-                    data: { estadoId: estadoId },
-                    success: function (cidades) {
-                        console.log(cidades);
-                        var cidadeSelect = $('#cidade-licitacao');
-                        cidadeSelect.empty();
-
-                        if (cidades.length > 0) {
-                            $.each(cidades, function (index, cidade) {
-                                if (cidade.id == cidadeSelecionadaId) {
-                                    cidadeSelect.append('<option value="' + cidade.id + '" selected>' + cidade.nome + '</option>');
-                                } else {
-                                    cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
-                                }
-                            });
-                        } else {
-                            cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
-                        }
-                    },
-                    error: function () {
-                        alert('Erro ao carregar as cidades.');
-                    }
-                });
+                carregarCidades(estadoId);
             } else {
                 $('#cidade-licitacao').empty().append('<option>Selecione um estado primeiro</option>');
             }
         });
-    })
+
+        function carregarCidades(estadoId, cidadeSelecionadaId) {
+            $.ajax({
+                url: '@Url.Action("GetCidadePorEstado", "Cidade")',
+                type: 'GET',
+                data: { estadoId: estadoId },
+                success: function (cidades) {
+                    var cidadeSelect = $('#cidade-licitacao');
+                    cidadeSelect.empty();
+
+                    if (cidades.length > 0) {
+                        $.each(cidades, function (index, cidade) {
+                            if (cidade.id == cidadeSelecionadaId) {
+                                cidadeSelect.append('<option value="' + cidade.id + '" selected>' + cidade.nome + '</option>');
+                            } else {
+                                cidadeSelect.append('<option value="' + cidade.id + '">' + cidade.nome + '</option>');
+                            }
+                        });
+                    } else {
+                        cidadeSelect.append('<option>Nenhuma cidade encontrada</option>');
+                    }
+                },
+                error: function () {
+                    alert('Erro ao carregar as cidades.');
+                }
+            });
+        }
+    });
+
 </script>

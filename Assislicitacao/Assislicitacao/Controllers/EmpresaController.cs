@@ -2,6 +2,8 @@
 using Assislicitacao.Models;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Facade;
+using System.Data.SqlClient;
+using Assislicitacao.Exceptions;
 
 namespace Assislicitacao.Controllers {
     public class EmpresaController : Controller {
@@ -33,12 +35,16 @@ namespace Assislicitacao.Controllers {
             IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
             IFacadeGeneric facadeEmailEmpresa = new FacadeEmailEmpresa();
 
-            facadeEndereco.Salvar(Empresa.Endereco);
-            facadeTelefones.Salvar(Empresa);
-            facadeEmail.Salvar(Empresa);
+            try {
+                facadeEndereco.Salvar(Empresa.Endereco);
+                facadeTelefones.Salvar(Empresa);
+                facadeEmail.Salvar(Empresa);
 
-            if (facadeEmpresa.Salvar(Empresa) && facadeEmailEmpresa.Salvar(Empresa)) {
-                TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar a empresa";
+                if (facadeEmpresa.Salvar(Empresa) && facadeEmailEmpresa.Salvar(Empresa)) {
+                    TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar a empresa";
+                }
+            } catch (DuplicateCNPJException ex){
+                TempData["CNPJDuplicado"] = ex.Message;
             }
 
             return RedirectToAction("Cadastrar", "Empresa");

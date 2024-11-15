@@ -1,0 +1,29 @@
+﻿@model EmpresaLicitacao
+
+@{
+    ViewData["Title"] = "Vincular Licitação ";
+}
+
+
+<div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Vincular licitação</h4>
+    <p>Selecione a empresa que irá participar deste licitação</p>
+</div>
+
+<form asp-action="Vincular" asp-controller="Licitacao" method="post">
+    <input type="hidden" asp-for="@Model.Licitacao.Id">
+    <div class="form-group">
+        <label for="estado-licitacao">Empresa:</label>
+        <select class="form-control" id="estado-licitacao" asp-for="@Model.Empresa.Id">
+            @{
+                IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+
+                foreach (Empresa Empresa in facadeEmpresa.SelecionarTodos()) {
+                    <option value="@Empresa.Id">@Empresa.RazaoSocial</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

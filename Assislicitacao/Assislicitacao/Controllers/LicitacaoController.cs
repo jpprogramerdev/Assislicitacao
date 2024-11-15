@@ -1,7 +1,10 @@
 ﻿using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
+using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Assislicitacao.Controllers {
     public class LicitacaoController : Controller {
@@ -9,6 +12,13 @@ namespace Assislicitacao.Controllers {
         public IActionResult Cadastrar() {
             return View();
         }
+
+        public IActionResult VincularLicitacaoComEmpresa() {
+            EmpresaLicitacao EmpresaLicitacao = new();
+            EmpresaLicitacao.Licitacao =  JsonConvert.DeserializeObject<Licitacao>(TempData["Licitacao"].ToString());
+            return View(EmpresaLicitacao);
+        }
+
         public IActionResult ExibirTodasLicitacoes() {
             IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
 
@@ -30,11 +40,12 @@ namespace Assislicitacao.Controllers {
 
             if (!facadeLicitacao.Salvar(Licitacao)) {
                 TempData["FalhaCadastroLicitacao"] = "Falha ao cadastrar licitação";
-            } else {
-                TempData["SucessoCadastroLicitacao"] = "Licitação cadastrada com sucesso";
+                return RedirectToAction("Cadastrar", "Licitacao");
+
             }
 
-            return RedirectToAction("Cadastrar","Licitacao");
+            TempData["Licitacao"] = JsonConvert.SerializeObject(Licitacao);
+            return RedirectToAction("VincularLicitacaoComEmpresa", "Licitacao");
         }
 
         [HttpGet]
@@ -56,6 +67,20 @@ namespace Assislicitacao.Controllers {
             facadeLicitacao.Atualizar(Licitacao);
             return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
 
+        }
+
+        [HttpPost]
+        public IActionResult Vincular(EmpresaLicitacao EmpresaLicitacao) {
+            IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
+
+            if (!facadeEmpresaLicitacao.Salvar(EmpresaLicitacao)) {
+                TempData["FalhaVinculação"] = "Falha ao vincular empresa com licitação";
+                return RedirectToAction("VincularLicitacaoComEmpresa", "Licitacao");
+            } else {
+                TempData["SucessoVinculação"] = "Sucesso ao cadastrar participação na licitação";
+            }
+
+            return RedirectToAction("Cadastrar", "Licitacao");
         }
     }
 }

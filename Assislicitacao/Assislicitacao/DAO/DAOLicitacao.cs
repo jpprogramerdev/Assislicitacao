@@ -30,7 +30,7 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            string Insert = "INSERT INTO LICITACOES(LCT_NUMERO,LCT_OBJETO,LCT_DATA,LCT_ESTIMADO,LCT_CID_ID,LCT_PRT_ID,LCT_TPL_ID,LCT_TDP_ID) " +
+            string Insert = "INSERT INTO LICITACOES(LCT_NUMERO,LCT_OBJETO,LCT_DATA,LCT_ESTIMADO,LCT_CID_ID,LCT_PRT_ID,LCT_TPL_ID,LCT_TDP_ID) OUTPUT INSERTED.LCT_ID " +
                             "VALUES(@Numero, @Objeto, @Data, @Estimado, @CidadeID, @PortalID, @TipoLicitacaoID, @TipoDisputaID);";
 
 
@@ -49,7 +49,7 @@ namespace Assislicitacao.DAO {
                         query.Parameters.AddWithValue("@PortalID", Licitacao.Portal.Id);
                         query.Parameters.AddWithValue("@TipoLicitacaoID", Licitacao.TipoLicitacao.Id);
                         query.Parameters.AddWithValue("@TipoDisputaID", Licitacao.TipoDisputa.Id);
-                        query.ExecuteNonQuery();
+                        Licitacao.Id = (int)query.ExecuteScalar();
                     }
                     database.FecharConexao(conn);
                 }

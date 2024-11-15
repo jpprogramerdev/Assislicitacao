@@ -41,7 +41,7 @@ namespace Assislicitacao.Controllers {
                 facadeEmail.Salvar(Empresa);
 
                 if (facadeEmpresa.Salvar(Empresa) && facadeEmailEmpresa.Salvar(Empresa)) {
-                    TempData["SucessoCadastroEmpresa"] = "Sucesso ao atualizar empresa";
+                    TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar empresa";
                 }
             } catch (DuplicateCNPJException ex){
                 TempData["CNPJDuplicado"] = ex.Message;

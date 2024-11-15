@@ -1,9 +1,9 @@
 ﻿@model Licitacao
 
 @{
-    if (TempData["SucessoCadastroLicitacao"] != null) {
+    if (TempData["SucessoVinculação"] != null) {
         <div class="alert alert-success" role="alert">
-            @TempData["SucessoCadastroLicitacao"]
+            @TempData["SucessoVinculação"]
         </div>
     } else if (TempData["FalhaCadastroLicitacao"] != null) {
         <div class="alert alert-danger" role="alert">
@@ -85,6 +85,7 @@
             }
         </select>
     </div>
+    
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
 

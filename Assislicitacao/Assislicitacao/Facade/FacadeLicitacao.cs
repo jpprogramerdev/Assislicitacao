@@ -30,5 +30,9 @@ namespace Assislicitacao.Facade {
         public List<EntidadeDominio> SelecionarTodosPeloId(int Id) {
             throw new NotImplementedException();
         }
+
+        public EntidadeDominio SelecionaUnicoPeloId(int Id) {
+            throw new NotImplementedException();
+        }
     }
 }

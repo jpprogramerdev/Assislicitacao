@@ -7,5 +7,6 @@ namespace Assislicitacao.Facade.Interfaces {
         public bool Atualizar(EntidadeDominio entidadeDominio);
         public List<EntidadeDominio> SelecionarTodos();
         public List<EntidadeDominio> SelecionarTodosPeloId(int Id);
+        public EntidadeDominio SelecionaUnicoPeloId(int Id);
     }
 }

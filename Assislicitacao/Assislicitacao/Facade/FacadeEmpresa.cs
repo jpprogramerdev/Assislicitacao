@@ -12,7 +12,8 @@ namespace Assislicitacao.Facade {
         }
 
         public bool Atualizar(EntidadeDominio entidadeDominio) {
-            throw new NotImplementedException();
+            DAO = new DAOEmpresa();
+            return DAO.Update(entidadeDominio);
         }
 
         public bool Salvar(EntidadeDominio entidade) {
@@ -26,6 +27,10 @@ namespace Assislicitacao.Facade {
         }
 
         public List<EntidadeDominio> SelecionarTodosPeloId(int Id) {
+            throw new NotImplementedException();
+        }
+
+        public EntidadeDominio SelecionaUnicoPeloId(int Id) {
             throw new NotImplementedException();
         }
     }

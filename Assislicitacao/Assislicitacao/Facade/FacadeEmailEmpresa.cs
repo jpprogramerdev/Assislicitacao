@@ -13,7 +13,10 @@ namespace Assislicitacao.Facade {
 
         public bool Atualizar(EntidadeDominio entidadeDominio) {
             DAO = new DAOEmailEmpresa();
-            return DAO.Delete(entidadeDominio.Id);
+            if (DAO.Delete(entidadeDominio.Id) && DAO.Insert(entidadeDominio)) {
+                return true;
+            }
+            return false;
         }
 
         public bool Salvar(EntidadeDominio entidade) {

@@ -41,7 +41,7 @@ namespace Assislicitacao.Controllers {
                 facadeEmail.Salvar(Empresa);
 
                 if (facadeEmpresa.Salvar(Empresa) && facadeEmailEmpresa.Salvar(Empresa)) {
-                    TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar a empresa";
+                    TempData["SucessoCadastroEmpresa"] = "Sucesso ao atualizar empresa";
                 }
             } catch (DuplicateCNPJException ex){
                 TempData["CNPJDuplicado"] = ex.Message;
@@ -50,6 +50,28 @@ namespace Assislicitacao.Controllers {
             return RedirectToAction("Cadastrar", "Empresa");
         }
 
+        [HttpPost]
+        public IActionResult Atualizar(Empresa Empresa)     {
+            IFacadeGeneric facadeEndereco = new FacadeEndereco();
+            IFacadeGeneric facadeTelefones = new FacadeTelefone();
+            IFacadeGeneric facadeEmail = new FacadeEmail();
+            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+            IFacadeGeneric facadeEmailEmpresa = new FacadeEmailEmpresa();
 
+
+            try {
+                facadeEndereco.Salvar(Empresa.Endereco);
+                facadeTelefones.Salvar(Empresa);
+                facadeEmail.Salvar(Empresa);
+
+                if (facadeEmpresa.Atualizar(Empresa) && facadeEmailEmpresa.Atualizar(Empresa)) {
+                    TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar a empresa";
+                }
+            } catch (DuplicateCNPJException ex) {
+                TempData["CNPJDuplicado"] = ex.Message;
+            }
+
+            return RedirectToAction("ExibirTodasEmpresas", "Empresa");
+        }
     }
 }

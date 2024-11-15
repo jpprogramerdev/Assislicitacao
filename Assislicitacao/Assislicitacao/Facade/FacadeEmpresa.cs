@@ -31,7 +31,8 @@ namespace Assislicitacao.Facade {
         }
 
         public EntidadeDominio SelecionaUnicoPeloId(int Id) {
-            throw new NotImplementedException();
+            DAO = new DAOEmpresa();
+            return DAO.SelectOneWhereId(Id);
         }
     }
 }

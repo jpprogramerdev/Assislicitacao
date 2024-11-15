@@ -11,7 +11,8 @@
 
 }
 
-<form asp-action="Salvar" asp-controller="Empresa" method="post">
+<form asp-action="Atualizar" asp-controller="Empresa" method="post">
+    <input type="hidden" asp-for="@Model.Id"/>
     <div class="form-group">
         <label for="objeto-licitacao">CNPJ:</label>
         <input type="text" class="form-control" id="CNPJ-empresa" placeholder="CNPJ" asp-for="@Model.CNPJ">

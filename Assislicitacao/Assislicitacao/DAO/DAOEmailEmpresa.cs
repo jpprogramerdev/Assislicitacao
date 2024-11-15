@@ -9,7 +9,25 @@ namespace Assislicitacao.DAO {
         public IFacadeDatabase database { get; set; }
 
         public bool Delete(int id) {
-            IFacadeGeneric facade
+            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+            Empresa Empresa = (Empresa)facadeEmpresa.SelecionaUnicoPeloId(id);
+
+            string Delete = "DELETE EMAILS_EMPRESAS WHERE EEP_EMP_ID = @Id AND EEP_EML_ID = (SELECT EML_ID FROM EMAILS WHERE EML_EMAIL = @Email);";
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Delete, conn)) {
+                        query.Parameters.AddWithValue("@Id", id);
+                        query.Parameters.AddWithValue("@Email", Empresa.EmailsContato);
+                        query.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
         }
 
         public bool Insert(EntidadeDominio entidade) {

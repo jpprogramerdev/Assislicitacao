@@ -27,5 +27,9 @@ namespace Assislicitacao.Facade {
             DAO = new DAOCidade();
             return DAO.SelectAllWhereId(Id);
         }
+
+        public EntidadeDominio SelecionaUnicoPeloId(int Id) {
+            throw new NotImplementedException();
+        }
     }
 }

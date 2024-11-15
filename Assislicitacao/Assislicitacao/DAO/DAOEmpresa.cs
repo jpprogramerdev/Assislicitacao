@@ -10,7 +10,21 @@ namespace Assislicitacao.DAO {
         public IFacadeDatabase database { get; set; }
 
         public bool Delete(int id) {
-            throw new NotImplementedException();
+            string Delete = "DELETE EMRPESAS WHERE EMP_ID = @Id";
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Delete, conn)) {
+                        query.Parameters.AddWithValue("@Id", id);
+                        query.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            } catch (SqlException ex) {
+                return false;
+            }
         }
 
         public bool Insert(EntidadeDominio entidade) {

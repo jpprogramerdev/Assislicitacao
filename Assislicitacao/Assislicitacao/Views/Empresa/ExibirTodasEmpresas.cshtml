@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Exibir todas empresas ";
+
+    if (TempData["SucessoAcaoEmpresa"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoAcaoEmpresa"]
+        </div>
+    }
 }
 
 <link rel="stylesheet" href="~/css/TableStyle.css" asp-append-version="true" />
@@ -31,7 +37,7 @@
                     <td>
                         <div class="grp-btn-actions">
                             <a class="btn btn-secondary btn-sm" asp-controller="Empresa" asp-action="EditarEmpresa" asp-route-id="@Empresa.Id">Editar</a>
-                            <a class="btn btn-danger btn-sm" asp-controller="Licitacao" asp-action="Apagar" asp-route-id="@Empresa.Id">Apagar</a>
+                            <a class="btn btn-danger btn-sm" asp-controller="Empresa" asp-action="Apagar" asp-route-id="@Empresa.Id">Apagar</a>
                         </div>
                     </td>
                 </tr>

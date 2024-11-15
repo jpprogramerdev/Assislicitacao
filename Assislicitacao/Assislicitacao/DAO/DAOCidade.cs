@@ -46,6 +46,10 @@ namespace Assislicitacao.DAO {
             return ListCiaddes;
         }
 
+        public EntidadeDominio SelectOneWhereId(int Id) {
+            throw new NotImplementedException();
+        }
+
         public bool Update(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }

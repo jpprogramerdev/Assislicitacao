@@ -9,7 +9,7 @@ namespace Assislicitacao.DAO {
         public IFacadeDatabase database { get; set; }
 
         public bool Delete(int id) {
-            throw new NotImplementedException();
+            IFacadeGeneric facade
         }
 
         public bool Insert(EntidadeDominio entidade) {
@@ -39,6 +39,10 @@ namespace Assislicitacao.DAO {
         }
 
         public List<EntidadeDominio> SelectAllWhereId(int id) {
+            throw new NotImplementedException();
+        }
+
+        public EntidadeDominio SelectOneWhereId(int Id) {
             throw new NotImplementedException();
         }
 

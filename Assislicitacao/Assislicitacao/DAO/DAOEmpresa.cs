@@ -121,11 +121,67 @@ namespace Assislicitacao.DAO {
         }
 
         public List<EntidadeDominio> SelectAllWhereId(int id) {
+            
+        }
+
+        public EntidadeDominio SelectOneWhereId(int Id) {
             throw new NotImplementedException();
         }
 
         public bool Update(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            string Update = "UPDATE EMPRESAS " +
+                              "SET " +
+                              "EMP_CNPJ = @CNPJ, " +
+                              "EMP_RAZAO_SOCIAL = @RazaoSocial, " +
+                              "EMP_NOME_FANTASIA = @NomeFantasia, " +
+                              "EMP_TLF_ID = (SELECT TLF_ID FROM TELEFONES WHERE TLF_NUMERO = @Telefone), " +
+                              "EMP_EQD_ID = @EnquadramentoId, " +
+                              "EMP_END_ID = (SELECT END_ID FROM ENDERECOS WHERE " +
+                                  "END_LOGRADOURO = @Logradouro AND " +
+                                  "END_NUMERO = @NumeroEndereco AND " +
+                                  "END_CEP = @CEP AND " +
+                                  "END_COMPLEMENTO = @Complemento AND " +
+                                  "END_BAIRRO = @Bairro AND " +
+                                  "END_CID_ID = @CidadeId) " +
+                              "WHERE EMP_ID = @EmpresaId;";
+
+            Empresa empresa = (Empresa)entidade;
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Update, conn)) {
+                        //Parametros emrpesa
+                        query.Parameters.AddWithValue("@CNPJ", empresa.CNPJ);
+                        query.Parameters.AddWithValue("@RazaoSocial", empresa.RazaoSocial);
+                        query.Parameters.AddWithValue("@NomeFantasia", empresa.NomeFantasia);
+                        query.Parameters.AddWithValue("@Telefone", empresa.TelefoneContato);
+                        query.Parameters.AddWithValue("@EnquadramentoId", empresa.Enquadramento.Id);
+                        query.Parameters.AddWithValue("@EnderecoId", empresa.Endereco.Id);
+
+                        //Parametro endereço
+                        query.Parameters.AddWithValue("@Logradouro", empresa.Endereco.Logradouro);
+                        query.Parameters.AddWithValue("@NumeroEndereco", empresa.Endereco.Numero);
+                        query.Parameters.AddWithValue("@CEP", empresa.Endereco.CEP);
+                        query.Parameters.AddWithValue("@Bairro", empresa.Endereco.Bairro);
+                        query.Parameters.AddWithValue("@CidadeId", empresa.Endereco.Cidade.Id);
+
+                        if (string.IsNullOrEmpty(empresa.Endereco.Complemento)) {
+                            query.Parameters.AddWithValue("@Complemento", DBNull.Value);
+                        } else {
+                            query.Parameters.AddWithValue("@Complemento", empresa.Endereco.Complemento);
+                        }
+
+
+                        empresa.Id = (int)query.ExecuteScalar();
+                    }
+                    database.FecharConexao(conn);
+                }
+                return true;
+            } catch (SqlException ex) {
+                throw new DuplicateCNPJException("CNPJ já cadastrado no sistema");
+            }
         }
     }
 }

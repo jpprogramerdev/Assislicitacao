@@ -113,6 +113,10 @@ namespace Assislicitacao.DAO {
             throw new NotImplementedException();
         }
 
+        public EntidadeDominio SelectOneWhereId(int Id) {
+            throw new NotImplementedException();
+        }
+
         public bool Update(EntidadeDominio entidade) {
             string Update = "UPDATE LICITACOES SET " +
                                 "LCT_NUMERO = @Numero," +

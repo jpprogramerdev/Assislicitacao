@@ -7,5 +7,6 @@ namespace Assislicitacao.DAO.Intefaces {
         public bool Delete(int id);
         public bool Update(EntidadeDominio entidade);
         public List<EntidadeDominio> SelectAllWhereId(int id);
+        public EntidadeDominio SelectOneWhereId(int Id);
     }
 }

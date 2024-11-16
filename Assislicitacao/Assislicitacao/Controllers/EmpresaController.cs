@@ -78,8 +78,9 @@ namespace Assislicitacao.Controllers {
         public IActionResult Apagar(int Id) {
             IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
             IFacadeGeneric facadeEmailEmpresa = new FacadeEmailEmpresa();
+            IFacadeGeneric facadeLicitacoesEmpresa = new FacadeEmpresaLicitacao();
 
-            if (facadeEmailEmpresa.Apagar(Id) && facadeEmpresa.Apagar(Id)) {
+            if (facadeEmailEmpresa.Apagar(Id) && facadeLicitacoesEmpresa.Apagar(Id) && facadeEmpresa.Apagar(Id)) {
                 TempData["SucessoAcaoEmpresa"] = "Sucesso ao deletar a empresa";
             }
 

@@ -10,7 +10,7 @@ namespace Assislicitacao.DAO {
         public IFacadeDatabase database { get; set; }
 
         public bool Delete(int id) {
-            string Delete = "DELETE EMRPESAS WHERE EMP_ID = @Id";
+            string Delete = "DELETE EMPRESAS WHERE EMP_ID = @Id";
 
             database = new FacadeSQLServer();
 

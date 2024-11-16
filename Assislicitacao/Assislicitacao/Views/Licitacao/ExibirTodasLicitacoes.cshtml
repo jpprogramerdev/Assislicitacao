@@ -23,6 +23,15 @@
 }
 
 <link rel="stylesheet" href="~/css/TableStyle.css" asp-append-version="true" />
+<form asp-action="ExibirTodasLicitacoes" asp-controller="Licitacao" method="get" class="search-container">
+    <select class="form-select" name="filter">
+        <option value="Proximas">Próximas licitações</option>
+        <option value="Todas">Todas as licitações</option>
+        <option value="Semana">Licitações da semana</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>

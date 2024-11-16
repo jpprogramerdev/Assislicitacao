@@ -8,21 +8,48 @@ using System.Text.Json.Serialization;
 
 namespace Assislicitacao.Controllers {
     public class LicitacaoController : Controller {
-        
+
         public IActionResult Cadastrar() {
             return View();
         }
 
         public IActionResult VincularLicitacaoComEmpresa() {
             EmpresaLicitacao EmpresaLicitacao = new();
-            EmpresaLicitacao.Licitacao =  JsonConvert.DeserializeObject<Licitacao>(TempData["Licitacao"].ToString());
+            EmpresaLicitacao.Licitacao = JsonConvert.DeserializeObject<Licitacao>(TempData["Licitacao"].ToString());
             return View(EmpresaLicitacao);
         }
 
-        public IActionResult ExibirTodasLicitacoes() {
+        [HttpGet]
+        public IActionResult ExibirTodasLicitacoes(string filter) {
             IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
 
-            return View(facadeLicitacao.SelecionarTodos().Cast<Licitacao>());
+            List<Licitacao> Licitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+
+            if (filter == "Semana") {
+                DateTime dataAtual = DateTime.Now;
+
+                DateTime domingo;
+                int diff = dataAtual.DayOfWeek - DayOfWeek.Sunday;
+                if (diff < 0) {
+                    diff += 7;
+                }
+                domingo = dataAtual.AddDays(-diff).Date;
+
+                DateTime sabado = domingo.AddDays(6);
+
+                if (!string.IsNullOrEmpty(filter)) {
+                    Licitacoes = Licitacoes.Where(L => L.Data >= domingo && L.Data <= sabado).ToList();
+                }
+
+            }else if (filter == "Proxima") {
+                DateTime dataAtual = DateTime.Now;
+
+                Licitacoes = Licitacoes.Where(L => L.Data >= dataAtual).ToList();
+            }
+
+            Licitacoes = Licitacoes.OrderBy(L => L.Data).ToList();
+
+            return View(Licitacoes);
         }
 
         [HttpGet]

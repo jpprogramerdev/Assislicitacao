@@ -14,7 +14,7 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            string Insert = "INSERT INTO LICITACOES_EMPRESAS (LEM_LCT_ID, LEM_EMP_ID) VALUES (@LicitacaoId,  @EmpresaId);";
+            string Insert = "INSERT INTO LICITACOES_EMPRESAS (LEM_LCT_ID, LEM_EMP_ID, LEM_CONFIRMACAO) VALUES (@LicitacaoId,  @EmpresaId, 0);";
 
             database = new FacadeSQLServer();
 

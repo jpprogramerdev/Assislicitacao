@@ -26,6 +26,7 @@
             <th scope="col">Disputa por</th>
             <th scope="col">Estimado</th>
             <th scope="col">Portal</th>
+            <th scope="col">Empresa</th>
             <th scope="col">Ações</th>
         </tr>
     </thead>
@@ -40,7 +41,8 @@
                     <td>@licitacao.Data.ToString("dd/MM/yyyy")</td>
                     <td>@licitacao.TipoDisputa.Tipo</td>
                     <td>R$ @licitacao.ValorEstimado.ToString("N", new System.Globalization.CultureInfo("pt-Br"))</td>
-                    <td><a href="@licitacao.Portal.Link">@licitacao.Portal.Nome</a></td>
+                    <td><a href="@licitacao.Portal.Link">@licitacao.Portal.Nome</a></td>]
+                    <td>@licitacao.Empresa.NomeFantasia </td>
                     <td>
                         <div class="grp-btn-actions">
                             <a class="btn btn-secondary btn-sm" asp-controller="Licitacao" asp-action="AtualizarLicitacao" asp-route-id="@licitacao.Id">Atualizar</a>

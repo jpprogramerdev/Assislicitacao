@@ -1,0 +1,64 @@
+﻿.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.formLogin {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra leve */
+    width: 100%;
+    max-width: 500px;
+}
+
+    .formLogin p {
+        font-size: 32px; /* Destaca o título */
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        font-size: 16px;
+        color: #555;
+    }
+
+.form-control {
+    width: 100%;
+    padding: 15px; /* Aumenta o padding para tornar os inputs maiores */
+    font-size: 18px; /* Aumenta o tamanho da fonte */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+.form-group label {
+    font-size: 18px; /* Aumenta o tamanho da fonte */
+    color: #333; /* Cor mais escura para maior contraste */
+    font-weight: bold; /* Negrito para destacar */
+    display: block;
+    margin-bottom: 5px; /* Espaçamento entre o label e o input */
+}

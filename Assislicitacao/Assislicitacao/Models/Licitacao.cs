@@ -12,9 +12,9 @@
         public DateTime Data { get; set; }
         public double ValorEstimado { get; set; }
         public Cidade Cidade { get; set; }
-        public Orgao Orgao { get; set; }
         public Portal Portal { get; set; }
         public TipoLicitacao TipoLicitacao { get; set; }
         public TipoDisputa TipoDisputa { get; set; }
+        public Empresa Empresa { get; set; } 
     }
 }

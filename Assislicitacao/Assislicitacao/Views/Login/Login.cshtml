@@ -1,0 +1,34 @@
+﻿@model Usuario
+
+@{
+    ViewData["Title"] = "Login ";
+
+    Layout = "_LayoutLogin";
+}
+
+<link rel="stylesheet" href="~/css/Login.css" asp-append-version="true" />
+
+<div class="page">
+    <form asp-action="Entrar" asp-controller="Login" method="post" class="formLogin">
+        <p>Assislicitação - Login</p>
+
+        @{
+            if (TempData["FalhaLogin"] != null) {
+                <div class="alert alert-danger" role="alert">
+                    @TempData["FalhaLogin"]
+                </div>
+            }
+        }
+        <div class="form-group">
+            <label for="cpf-usuario">Email:</label>
+            <input type="text" class="form-control" id="cpf-usuario" placeholder="Email" asp-for="@Model.Email">
+        </div>
+
+        <div class="form-group">
+            <label for="senha-usuario">Senha:</label>
+            <input type="password" class="form-control" id="senha-usuario" placeholder="Senha" asp-for="@Model.Senha">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+</div>

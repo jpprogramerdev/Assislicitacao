@@ -24,7 +24,7 @@ namespace Assislicitacao.DAO {
                 }
 
                 return true;
-            }catch(Exception ex) {
+            } catch (Exception ex) {
                 return false;
             }
         }
@@ -70,7 +70,7 @@ namespace Assislicitacao.DAO {
                 using (SqlCommand query = new(Select, conn)) {
                     using (SqlDataReader reader = query.ExecuteReader()) {
                         while (reader.Read()) {
-                            Licitacao Licitacao = new Licitacao {
+                            ListLicitacoes.Add(new Licitacao {
                                 Id = reader.GetInt32(reader.GetOrdinal("LCT_ID")),
                                 Numero = reader.GetString(reader.GetOrdinal("LCT_NUMERO")),
                                 Objeto = reader.GetString(reader.GetOrdinal("LCT_OBJETO")),
@@ -96,11 +96,15 @@ namespace Assislicitacao.DAO {
                                     Id = reader.GetInt32(reader.GetOrdinal("PRT_ID")),
                                     Nome = reader.GetString(reader.GetOrdinal("PRT_NOME")),
                                     Link = reader.GetString(reader.GetOrdinal("PRT_LINK"))
+                                },
+                                Empresa = new Empresa {
+                                    Id = reader.GetInt32(reader.GetOrdinal("EMP_Id")),
+                                    CNPJ = reader.GetString(reader.GetOrdinal("EMP_CNPJ")),
+                                    RazaoSocial = reader.GetString(reader.GetOrdinal("EMP_RAZAO_SOCIAL")),
+                                    NomeFantasia = reader.GetString(reader.GetOrdinal("EMP_NOME_FANTASIA"))
                                 }
-                            };
+                            });
 
-
-                            ListLicitacoes.Add(Licitacao);
                         }
                     }
                 }

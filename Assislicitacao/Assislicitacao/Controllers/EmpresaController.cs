@@ -40,7 +40,8 @@ namespace Assislicitacao.Controllers {
                 facadeTelefones.Salvar(Empresa);
                 facadeEmail.Salvar(Empresa);
 
-                if (facadeEmpresa.Salvar(Empresa) && facadeEmailEmpresa.Salvar(Empresa)) {
+                if (facadeEmpresa.Salvar(Empresa)) {
+                    facadeEmailEmpresa.Salvar(Empresa);
                     TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar empresa";
                 }
             } catch (DuplicateCNPJException ex){

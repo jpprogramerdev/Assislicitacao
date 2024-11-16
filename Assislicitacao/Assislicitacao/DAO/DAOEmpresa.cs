@@ -38,7 +38,7 @@ namespace Assislicitacao.DAO {
                             "END_LOGRADOURO = @Logradouro AND " +
                             "END_NUMERO = @NumeroEndereco AND " +
                             "END_CEP = @CEP AND " +
-                            "END_COMPLEMENTO = @Complemento AND " +
+                            "(END_COMPLEMENTO = @Complemento OR (@Complemento IS NULL AND END_COMPLEMENTO IS NULL)) AND " +
                             "END_BAIRRO = @Bairro AND " +
                             "END_CID_ID = @CidadeId));";
 
@@ -55,7 +55,6 @@ namespace Assislicitacao.DAO {
                         query.Parameters.AddWithValue("@NomeFantasia",empresa.NomeFantasia);
                         query.Parameters.AddWithValue("@Telefone", empresa.TelefoneContato);
                         query.Parameters.AddWithValue("@EnquadramentoId", empresa.Enquadramento.Id);
-                        query.Parameters.AddWithValue("@EnderecoId",empresa.Endereco.Id);
 
                         //Parametro endereço
                         query.Parameters.AddWithValue("@Logradouro", empresa.Endereco.Logradouro);
@@ -110,7 +109,7 @@ namespace Assislicitacao.DAO {
                                     Logradouro = reader.GetString(reader.GetOrdinal("END_LOGRADOURO")),
                                     Numero = reader.GetString(reader.GetOrdinal("END_NUMERO")),
                                     CEP = reader.GetString(reader.GetOrdinal("END_CEP")),
-                                    Complemento = reader.GetString(reader.GetOrdinal("END_COMPLEMENTO")),
+                                    Complemento = reader.IsDBNull(reader.GetOrdinal("END_COMPLEMENTO")) ? null : reader.GetString(reader.GetOrdinal("END_COMPLEMENTO")),
                                     Bairro = reader.GetString(reader.GetOrdinal("END_BAIRRO")),
                                     Cidade = new Cidade {
                                         Id = reader.GetInt32(reader.GetOrdinal("CID_ID")),

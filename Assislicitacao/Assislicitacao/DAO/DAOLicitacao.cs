@@ -76,6 +76,7 @@ namespace Assislicitacao.DAO {
                                 Objeto = reader.GetString(reader.GetOrdinal("LCT_OBJETO")),
                                 Data = reader.GetDateTime(reader.GetOrdinal("LCT_DATA")),
                                 ValorEstimado = (double)reader.GetDecimal(reader.GetOrdinal("LCT_ESTIMADO")),
+                                Confirmacao =  reader.GetBoolean(reader.GetOrdinal("LEM_CONFIRMACAO")),
                                 TipoLicitacao = new TipoLicitacao {
                                     Id = reader.GetInt32(reader.GetOrdinal("TPL_Id")),
                                     Sigla = reader.GetString(reader.GetOrdinal("TPL_SIGLA"))

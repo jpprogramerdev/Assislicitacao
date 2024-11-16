@@ -27,6 +27,7 @@ namespace Assislicitacao.DAO {
                         query.Parameters.AddWithValue("@EmpresaId", EmpresaLicitacao.Empresa.Id);
                         query.ExecuteNonQuery();
                     }
+                    database.FecharConexao(conn);
                 }
                 return true;
             }catch (Exception ex) {
@@ -47,7 +48,29 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Update(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            Licitacao Licitacao = (Licitacao) entidade;
+
+            string Update = "UPDATE LICITACOES_EMPRESAS SET LEM_CONFIRMACAO = 0 WHERE LEM_LCT_ID = @LicitacaoId AND LEM_EMP_ID = @EmpresaId";
+
+            if (!Licitacao.Confirmacao) {
+                Update = "UPDATE LICITACOES_EMPRESAS SET LEM_CONFIRMACAO = 1 WHERE LEM_LCT_ID = @LicitacaoId AND LEM_EMP_ID = @EmpresaId;";
+            }
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Update, conn)) {
+                        query.Parameters.AddWithValue("@LicitacaoId", Licitacao.Id);
+                        query.Parameters.AddWithValue("@EmpresaId", Licitacao.Empresa.Id);
+                        query.ExecuteNonQuery();
+                    }
+                    database.FecharConexao(conn);
+                }
+                return true;
+            }catch(Exception ex) {
+                return false;
+            }
         }
     }
 }

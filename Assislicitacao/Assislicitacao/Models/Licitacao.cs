@@ -16,5 +16,6 @@
         public TipoLicitacao TipoLicitacao { get; set; }
         public TipoDisputa TipoDisputa { get; set; }
         public Empresa Empresa { get; set; } 
+        public bool Confirmacao { get; set; }
     }
 }

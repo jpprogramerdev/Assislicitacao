@@ -28,4 +28,4 @@ CREATE VIEW Vw_DadosUsuario AS
 	JOIN EMAILS ON EML_ID = USU_EML_ID
 	JOIN TIPOS_USUARIO ON TPU_ID = USU_TPU_ID
 
-	SELECT * FROM Vw_DadosEmpresa;
+	SELECT * FROM vw_LicitacoesDetalhadas;

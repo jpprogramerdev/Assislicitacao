@@ -82,5 +82,27 @@ namespace Assislicitacao.Controllers {
 
             return RedirectToAction("Cadastrar", "Licitacao");
         }
+
+        [HttpGet]
+        public IActionResult AtualizarConfirmacao(int licitacaoId, int empresaId) {
+            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+            IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
+
+            List<Licitacao> List = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+
+            Licitacao Licitacao = List.FirstOrDefault(L => L.Id == licitacaoId && L.Empresa.Id == empresaId);
+
+            if (Licitacao != null) {
+                if (facadeEmpresaLicitacao.Atualizar(Licitacao)) {
+                    TempData["SucessoAtualizacao"] = Licitacao.Confirmacao == true ? "Licitação desmarcada com sucesso" : "Licitação confirmada com sucesso";
+                    return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+                }
+                TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação.";
+                return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+            }
+
+            TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação. Licitação vazia";
+            return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+        }
     }
 }

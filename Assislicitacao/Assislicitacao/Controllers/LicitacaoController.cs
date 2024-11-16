@@ -1,10 +1,13 @@
 ﻿using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
+using Assislicitacao.Strategy;
+using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
+
 
 namespace Assislicitacao.Controllers {
     public class LicitacaoController : Controller {
@@ -22,34 +25,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public IActionResult ExibirTodasLicitacoes(string filter) {
             IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
-
-            List<Licitacao> Licitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
-
-            if (filter == "Semana") {
-                DateTime dataAtual = DateTime.Now;
-
-                DateTime domingo;
-                int diff = dataAtual.DayOfWeek - DayOfWeek.Sunday;
-                if (diff < 0) {
-                    diff += 7;
-                }
-                domingo = dataAtual.AddDays(-diff).Date;
-
-                DateTime sabado = domingo.AddDays(6);
-
-                if (!string.IsNullOrEmpty(filter)) {
-                    Licitacoes = Licitacoes.Where(L => L.Data >= domingo && L.Data <= sabado).ToList();
-                }
-
-            }else if (filter == "Proxima") {
-                DateTime dataAtual = DateTime.Now;
-
-                Licitacoes = Licitacoes.Where(L => L.Data >= dataAtual).ToList();
-            }
-
-            Licitacoes = Licitacoes.OrderBy(L => L.Data).ToList();
-
-            return View(Licitacoes);
+            return View(Filtrar(facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList(), filter));
         }
 
         [HttpGet]
@@ -130,6 +106,43 @@ namespace Assislicitacao.Controllers {
 
             TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação. Licitação vazia";
             return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+        }
+
+        public IActionResult GerarRelatorio() {
+            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+
+            IRelatorioStrategy GerarPdf = new GerarRelatorioLicitacoes();
+            GerarPdf.Executar(Filtrar(facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList(), "Proxima").Cast<EntidadeDominio>().ToList());
+
+            TempData["GerarPDF"] = "Relatório gerado com sucesso";
+            return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+
+        }
+
+        private List<Licitacao> Filtrar(List<Licitacao> Licitacoes, string filter) {
+
+            if (filter == "Semana") {
+                DateTime dataAtual = DateTime.Now;
+
+                DateTime domingo;
+                int diff = dataAtual.DayOfWeek - DayOfWeek.Sunday;
+                if (diff < 0) {
+                    diff += 7;
+                }
+                domingo = dataAtual.AddDays(-diff).Date;
+
+                DateTime sabado = domingo.AddDays(6);
+
+                if (!string.IsNullOrEmpty(filter)) {
+                    Licitacoes = Licitacoes.Where(L => L.Data >= domingo && L.Data <= sabado).ToList();
+                }
+
+            } else if (filter == "Proxima") {
+                DateTime dataAtual = DateTime.Now;
+
+                Licitacoes = Licitacoes.Where(L => L.Data >= dataAtual).ToList();
+            }
+            return Licitacoes.OrderBy(L => L.Data).ToList();
         }
     }
 }

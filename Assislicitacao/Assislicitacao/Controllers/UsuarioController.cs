@@ -8,23 +8,33 @@ using Microsoft.AspNetCore.Mvc;
 namespace Assislicitacao.Controllers {
     public class UsuarioController : Controller {
         public IActionResult MinhaAgenda() {
-            return View();
+            if (User.Identity.IsAuthenticated) {
+                return View();
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpGet]
         public IActionResult GerarAgendaUsuario() {
             try {
-                IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+                if (User.Identity.IsAuthenticated) {
+                    IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
 
-                List<Licitacao> licitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+                    List<Licitacao> licitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
 
-                int usuarioId = int.Parse(User.FindFirst("Id").Value);
+                    int usuarioId = int.Parse(User.FindFirst("Id").Value);
 
-                List<Licitacao> eventos = licitacoes
-                    .Where(l => l.Usuario.Id == usuarioId && l.Confirmacao)
-                    .ToList();
+                    List<Licitacao> eventos = licitacoes
+                        .Where(l => l.Usuario.Id == usuarioId && l.Confirmacao)
+                        .ToList();
 
-                return Json(eventos);
+
+                    return Json(eventos);
+                }
+                TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+                return RedirectToAction("Login", "Login");
             } catch (Exception ex) {
                 return StatusCode(500, ex.Message);
             }

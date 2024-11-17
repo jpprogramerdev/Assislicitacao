@@ -4,27 +4,45 @@ using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Facade;
 using System.Data.SqlClient;
 using Assislicitacao.Exceptions;
+using Assislicitacao.Strategy.Interface;
+using Assislicitacao.Strategy;
 
 namespace Assislicitacao.Controllers {
     public class EmpresaController : Controller {
         public IActionResult Cadastrar() {
-            return View();
+            if (User.Identity.IsAuthenticated) {
+                return View();
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         public IActionResult ExibirTodasEmpresas() {
             IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
-            List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
 
-            return View(ListEmpresa);
+            if (User.Identity.IsAuthenticated) {
+                List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
+
+                return View(ListEmpresa);
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpGet]
         public IActionResult EditarEmpresa(int id) {
-            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
-            List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
-            Empresa Empresa = ListEmpresa.FirstOrDefault(e => e.Id == id);
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+                List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
+                Empresa Empresa = ListEmpresa.FirstOrDefault(e => e.Id == id);
 
-            return View(Empresa);
+                return View(Empresa);
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpPost]
@@ -44,7 +62,7 @@ namespace Assislicitacao.Controllers {
                     facadeEmailEmpresa.Salvar(Empresa);
                     TempData["SucessoCadastroEmpresa"] = "Sucesso ao cadastrar empresa";
                 }
-            } catch (DuplicateCNPJException ex){
+            } catch (DuplicateCNPJException ex) {
                 TempData["CNPJDuplicado"] = ex.Message;
             }
 
@@ -52,7 +70,7 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Atualizar(Empresa Empresa){
+        public IActionResult Atualizar(Empresa Empresa) {
             IFacadeGeneric facadeEndereco = new FacadeEndereco();
             IFacadeGeneric facadeTelefones = new FacadeTelefone();
             IFacadeGeneric facadeEmail = new FacadeEmail();
@@ -77,15 +95,19 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public IActionResult Apagar(int Id) {
-            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
-            IFacadeGeneric facadeEmailEmpresa = new FacadeEmailEmpresa();
-            IFacadeGeneric facadeLicitacoesEmpresa = new FacadeEmpresaLicitacao();
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+                IFacadeGeneric facadeEmailEmpresa = new FacadeEmailEmpresa();
+                IFacadeGeneric facadeLicitacoesEmpresa = new FacadeEmpresaLicitacao();
 
-            if (facadeEmailEmpresa.Apagar(Id) && facadeLicitacoesEmpresa.Apagar(Id) && facadeEmpresa.Apagar(Id)) {
-                TempData["SucessoAcaoEmpresa"] = "Sucesso ao deletar a empresa";
+                if (facadeEmailEmpresa.Apagar(Id) && facadeLicitacoesEmpresa.Apagar(Id) && facadeEmpresa.Apagar(Id)) {
+                    TempData["SucessoAcaoEmpresa"] = "Sucesso ao deletar a empresa";
+                }
+
+                return RedirectToAction("ExibirTodasEmpresas", "Empresa");
             }
-
-            return RedirectToAction("ExibirTodasEmpresas", "Empresa");
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
 
         }
     }

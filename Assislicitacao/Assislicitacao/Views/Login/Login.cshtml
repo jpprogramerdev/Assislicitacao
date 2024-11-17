@@ -17,6 +17,10 @@
                 <div class="alert alert-danger" role="alert">
                     @TempData["FalhaLogin"]
                 </div>
+            } else if (TempData["AutenticacaoNecessaria"] != null) {
+                <div class="alert alert-info" role="alert">
+                    @TempData["AutenticacaoNecessaria"]
+                </div>
             }
         }
         <div class="form-group">

@@ -1,6 +1,8 @@
 ﻿using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
+using Assislicitacao.Strategy;
+using Assislicitacao.Strategy.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;

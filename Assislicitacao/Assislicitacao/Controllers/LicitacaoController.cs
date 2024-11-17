@@ -13,7 +13,12 @@ namespace Assislicitacao.Controllers {
     public class LicitacaoController : Controller {
 
         public IActionResult Cadastrar() {
-            return View();
+            if (User.Identity.IsAuthenticated) {
+                return View();
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         public IActionResult VincularLicitacaoComEmpresa() {
@@ -23,7 +28,12 @@ namespace Assislicitacao.Controllers {
         }
 
         public IActionResult Agenda() {
-            return View();
+            if (User.Identity.IsAuthenticated) {
+                return View();
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpGet]
@@ -46,17 +56,28 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public IActionResult ExibirTodasLicitacoes(string filter) {
-            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
-            return View(Filtrar(facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList(), filter));
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+                return View(Filtrar(facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList(), filter));
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpGet]
         public IActionResult AtualizarLicitacao(int id) {
-            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
-            List<Licitacao> ListLicitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+                List<Licitacao> ListLicitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
 
-            Licitacao Licitacao = ListLicitacoes.FirstOrDefault(l => l.Id == id);
-            return View(Licitacao);
+                Licitacao Licitacao = ListLicitacoes.FirstOrDefault(l => l.Id == id);
+
+                return View(Licitacao);
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpPost]
@@ -75,15 +96,19 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public IActionResult Apagar(int id) {
-            IFacadeGeneric facadelicitacao = new FacadeLicitacao();
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadelicitacao = new FacadeLicitacao();
 
-            if (facadelicitacao.Apagar(id)) {
-                TempData["LicitacaoApagadaSucesso"] = "Licitação apagada com sucesso";
-            } else {
-                TempData["LicitacaoApagadaFalha"] = "Falha ao apagar licitação";
+                if (facadelicitacao.Apagar(id)) {
+                    TempData["LicitacaoApagadaSucesso"] = "Licitação apagada com sucesso";
+                } else {
+                    TempData["LicitacaoApagadaFalha"] = "Falha ao apagar licitação";
+                }
+                return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
             }
 
-            return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpPost]
@@ -96,46 +121,56 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public IActionResult Vincular(EmpresaLicitacao EmpresaLicitacao) {
-            IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
 
-            Usuario Usuario = new Usuario();
-            Usuario.Nome = User.FindFirst("Nome").Value;
-            Usuario.Id = int.Parse(User.FindFirst("Id").Value);
+                Usuario Usuario = new Usuario();
+                Usuario.Nome = User.FindFirst("Nome").Value;
+                Usuario.Id = int.Parse(User.FindFirst("Id").Value);
 
 
-           EmpresaLicitacao.Licitacao.Usuario = Usuario;
+                EmpresaLicitacao.Licitacao.Usuario = Usuario;
 
-            if (!facadeEmpresaLicitacao.Salvar(EmpresaLicitacao)) {
-                TempData["FalhaVinculação"] = "Falha ao vincular empresa com licitação";
-                TempData["Licitacao"] = JsonConvert.SerializeObject(EmpresaLicitacao.Licitacao);
-                return RedirectToAction("VincularLicitacaoComEmpresa", "Licitacao");
-            } else {
-                TempData["SucessoVinculação"] = "Sucesso ao cadastrar participação na licitação";
+                if (!facadeEmpresaLicitacao.Salvar(EmpresaLicitacao)) {
+                    TempData["FalhaVinculação"] = "Falha ao vincular empresa com licitação";
+                    TempData["Licitacao"] = JsonConvert.SerializeObject(EmpresaLicitacao.Licitacao);
+                    return RedirectToAction("VincularLicitacaoComEmpresa", "Licitacao");
+                } else {
+                    TempData["SucessoVinculação"] = "Sucesso ao cadastrar participação na licitação";
+                }
+
+                return RedirectToAction("Cadastrar", "Licitacao");
             }
 
-            return RedirectToAction("Cadastrar", "Licitacao");
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpGet]
         public IActionResult AtualizarConfirmacao(int licitacaoId, int empresaId) {
-            IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
-            IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+                IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
 
-            List<Licitacao> List = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+                List<Licitacao> List = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
 
-            Licitacao Licitacao = List.FirstOrDefault(L => L.Id == licitacaoId && L.Empresa.Id == empresaId);
+                Licitacao Licitacao = List.FirstOrDefault(L => L.Id == licitacaoId && L.Empresa.Id == empresaId);
 
-            if (Licitacao != null) {
-                if (facadeEmpresaLicitacao.Atualizar(Licitacao)) {
-                    TempData["SucessoAtualizacao"] = Licitacao.Confirmacao == true ? "Licitação desmarcada com sucesso" : "Licitação confirmada com sucesso";
+                if (Licitacao != null) {
+                    if (facadeEmpresaLicitacao.Atualizar(Licitacao)) {
+                        TempData["SucessoAtualizacao"] = Licitacao.Confirmacao == true ? "Licitação desmarcada com sucesso" : "Licitação confirmada com sucesso";
+                        return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+                    }
+                    TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação.";
                     return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
                 }
-                TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação.";
+
+                TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação. Licitação vazia";
                 return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
             }
 
-            TempData["FalhaAtualizacao"] = "Falha ao atualizar confirmação. Licitação vazia";
-            return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
 
         public IActionResult GerarRelatorio() {

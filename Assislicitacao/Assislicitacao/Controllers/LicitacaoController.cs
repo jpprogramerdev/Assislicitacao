@@ -7,7 +7,7 @@ using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
-
+using System.Security.Claims;
 
 namespace Assislicitacao.Controllers {
     public class LicitacaoController : Controller {
@@ -76,8 +76,16 @@ namespace Assislicitacao.Controllers {
         public IActionResult Vincular(EmpresaLicitacao EmpresaLicitacao) {
             IFacadeGeneric facadeEmpresaLicitacao = new FacadeEmpresaLicitacao();
 
+            Usuario Usuario = new Usuario();
+            Usuario.Nome = User.FindFirst("Nome").Value;
+            Usuario.Id = int.Parse(User.FindFirst("Id").Value);
+
+
+           EmpresaLicitacao.Licitacao.Usuario = Usuario;
+
             if (!facadeEmpresaLicitacao.Salvar(EmpresaLicitacao)) {
                 TempData["FalhaVinculação"] = "Falha ao vincular empresa com licitação";
+                TempData["Licitacao"] = JsonConvert.SerializeObject(EmpresaLicitacao.Licitacao);
                 return RedirectToAction("VincularLicitacaoComEmpresa", "Licitacao");
             } else {
                 TempData["SucessoVinculação"] = "Sucesso ao cadastrar participação na licitação";

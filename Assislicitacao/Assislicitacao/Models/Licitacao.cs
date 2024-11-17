@@ -5,6 +5,7 @@
             Portal = new();
             TipoLicitacao = new();
             TipoDisputa = new();
+            Usuario = new();
         }
 
         public string Numero { get; set; } //cada licitacao é identificada pela adminitração publica por um numero. EX: PREGÃO ELETRÔNICO 90020/2024
@@ -17,5 +18,6 @@
         public TipoDisputa TipoDisputa { get; set; }
         public Empresa Empresa { get; set; } 
         public bool Confirmacao { get; set; }
+        public Usuario Usuario { get; set; } //Toda licitação tem um usuario responsavel por participar, acompanhar etc
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Assislicitacao.Controllers {
     public class LoginController : Controller {
@@ -18,6 +21,16 @@ namespace Assislicitacao.Controllers {
             Usuario UsuarioEncontrado = ListUsuario.FirstOrDefault(u => u.Email == UsuarioLogin.Email && u.Senha == UsuarioLogin.Senha); 
             
             if(UsuarioEncontrado != null) {
+                var Claims = new List<Claim> {
+                    new Claim("Nome", UsuarioEncontrado.Nome),
+                    new Claim("Id",UsuarioEncontrado.Id.ToString())
+                };
+
+                var identity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
                 return RedirectToAction("ExibirTodasLicitacoes", "Licitacao");
             }
 

@@ -28,7 +28,7 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            string Insert = "INSERT INTO LICITACOES_EMPRESAS (LEM_LCT_ID, LEM_EMP_ID, LEM_CONFIRMACAO) VALUES (@LicitacaoId,  @EmpresaId, 0);";
+            string Insert = "INSERT INTO LICITACOES_EMPRESAS (LEM_LCT_ID, LEM_EMP_ID, LEM_CONFIRMACAO,LEM_USU_ID) VALUES (@LicitacaoId,  @EmpresaId, 0, @UsuarioId);";
 
             database = new FacadeSQLServer();
 
@@ -39,7 +39,9 @@ namespace Assislicitacao.DAO {
                     using (SqlCommand query = new(Insert, conn)) {
                         query.Parameters.AddWithValue("@LicitacaoId", EmpresaLicitacao.Licitacao.Id);
                         query.Parameters.AddWithValue("@EmpresaId", EmpresaLicitacao.Empresa.Id);
+                        query.Parameters.AddWithValue("@UsuarioId", EmpresaLicitacao.Licitacao.Usuario.Id);
                         query.ExecuteNonQuery();
+
                     }
                     database.FecharConexao(conn);
                 }

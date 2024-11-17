@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Minha Agenda ";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<div id="calendar"></div>
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<div id="calendar"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'pt-br',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,listWeek'
+            },
+            buttonText: {
+                today: 'Hoje',
+                month: 'Mês',
+                week: 'Semana',
+                list: 'Lista'
+            },
+            events: function (fetchInfo, successCallback, failureCallback) {
+                fetch('/Usuario/SelecionarEventosUsuario')
+                    .then(response => response.json())
+                    .then(data => {
+                        const eventos = data.map(l => ({
+                            title: `${l.tipoLicitacao.sigla} ${l.objeto} - ${l.cidade.nome}`,
+                            start: l.data,
+                            extendedProps: {
+                                licitacao: l.tipoLicitacao.tipo,
+                                disputa: l.tipoDisputa.tipo,
+                                cidade: l.cidade.nome,
+                                portal: l.portal.nome
+                            }
+                        }));
+                        successCallback(eventos);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar eventos:', error);
+                        failureCallback(error);
+                    });
+            },
+            displayEventTime: false,
+            eventClick: function (info) {
+                const event = info.event;
+                const disputa = event.extendedProps.disputa;
+                const cidade = event.extendedProps.cidade;
+                const portal = event.extendedProps.portal;
+
+                alert(
+                    `Tipo Licitação: ${event.extendedProps.licitacao}\n` +
+                    `Objeto: ${event.title}\n` +
+                    `Tipo de Disputa: ${disputa}\n` +
+                    `Cidade: ${cidade}\n` +
+                    `Portal: ${portal}\n` +
+                    `Data: ${event.start.toLocaleDateString()}`
+                );
+            }
+        });
+
+        calendar.render();
+
+        const todayButton = document.querySelector('.fc-today-button');
+        if (todayButton) {
+            const gerarPdfButton = document.createElement('a');
+            gerarPdfButton.href = '/Usuario/GerarRelatorioMinhaAgenda';
+            gerarPdfButton.classList.add('btn', 'btn-success', 'btn');
+            gerarPdfButton.innerText = 'Gerar PDF';
+            todayButton.parentNode.insertBefore(gerarPdfButton, todayButton.nextSibling);
+        }
+    });
+</script>
+

@@ -103,6 +103,10 @@ namespace Assislicitacao.DAO {
                                     CNPJ = reader.GetString(reader.GetOrdinal("EMP_CNPJ")),
                                     RazaoSocial = reader.GetString(reader.GetOrdinal("EMP_RAZAO_SOCIAL")),
                                     NomeFantasia = reader.GetString(reader.GetOrdinal("EMP_NOME_FANTASIA"))
+                                },
+                                Usuario = new Usuario {
+                                    Id = reader.GetInt32(reader.GetOrdinal("USU_Id")),
+                                    Nome = reader.GetString(reader.GetOrdinal("USU_Nome"))
                                 }
                             });
 

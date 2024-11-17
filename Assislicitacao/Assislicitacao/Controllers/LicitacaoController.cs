@@ -22,6 +22,28 @@ namespace Assislicitacao.Controllers {
             return View(EmpresaLicitacao);
         }
 
+        public IActionResult Agenda() {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult GerarAgendaTodasLicitacoes() {
+            try {
+                IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
+
+                List<Licitacao> licitacoes = facadeLicitacao.SelecionarTodos().Cast<Licitacao>().ToList();
+
+
+                List<Licitacao> eventos = licitacoes
+                    .Where(l => l.Confirmacao)
+                    .ToList();
+
+                return Json(eventos);
+            } catch (Exception ex) {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult ExibirTodasLicitacoes(string filter) {
             IFacadeGeneric facadeLicitacao = new FacadeLicitacao();

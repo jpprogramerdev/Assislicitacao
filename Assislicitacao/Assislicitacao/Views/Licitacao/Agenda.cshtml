@@ -31,7 +31,7 @@
                 list: 'Lista'
             },
             events: function (fetchInfo, successCallback, failureCallback) {
-                fetch('/Usuario/GerarAgendaUsuario')
+                fetch('/Licitacao/GerarAgendaTodasLicitacoes')
                     .then(response => response.json())
                     .then(data => {
                         const eventos = data.map(l => ({
@@ -70,15 +70,6 @@
         });
 
         calendar.render();
-
-        const todayButton = document.querySelector('.fc-today-button');
-        if (todayButton) {
-            const gerarPdfButton = document.createElement('a');
-            gerarPdfButton.href = '/Usuario/GerarRelatorioMinhaAgenda';
-            gerarPdfButton.classList.add('btn', 'btn-success', 'btn');
-            gerarPdfButton.innerText = 'Gerar PDF';
-            todayButton.parentNode.insertBefore(gerarPdfButton, todayButton.nextSibling);
-        }
     });
 </script>
 

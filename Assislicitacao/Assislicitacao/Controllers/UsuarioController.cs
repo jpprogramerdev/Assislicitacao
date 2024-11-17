@@ -12,7 +12,7 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpGet]
-        public IActionResult SelecionarEventosUsuario() {
+        public IActionResult GerarAgendaUsuario() {
             try {
                 IFacadeGeneric facadeLicitacao = new FacadeLicitacao();
 

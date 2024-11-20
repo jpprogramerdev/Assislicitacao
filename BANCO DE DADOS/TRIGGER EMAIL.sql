@@ -10,7 +10,7 @@ BEGIN
 		E.EML_EMAIL = E.EML_EMAIL
 	)
 	BEGIN
-		THROW 50001, 'Telefone já cadastrado', 1; 
+		THROW 50001, 'Email já cadastrado', 1; 
 	END
 	ELSE
 	BEGIN

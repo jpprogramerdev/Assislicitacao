@@ -13,7 +13,28 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            string Insert = "INSERT INTO USUARIOS(USU_NOME,USU_SENHA,USU_EML_ID,USU_TPU_ID) VALUES (@Nome, @Senha, (SELECT EML_ID FROM EMAILS WHERE EML_EMAIL = @Email),@TipoUsuarioId);";
+
+            Usuario Usuario = (Usuario)entidade;
+
+            database = new FacadeSQLServer();
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Insert, conn)) {
+                        query.Parameters.AddWithValue("@Nome", Usuario.Nome);
+                        query.Parameters.AddWithValue("@Senha", Usuario.Senha);
+                        query.Parameters.AddWithValue("@Email", Usuario.Email.EnderecoEmail);
+                        query.Parameters.AddWithValue("@TipoUsuarioId", Usuario.Tipo.Id);
+                        query.ExecuteNonQuery();
+                    }
+                    database.FecharConexao(conn);
+                }
+                return true;
+            }catch (Exception ex) {
+                return false;
+            }
+
         }
 
         public List<EntidadeDominio> Select() {
@@ -31,7 +52,9 @@ namespace Assislicitacao.DAO {
                                 Id = reader.GetInt32(reader.GetOrdinal("USU_ID")),
                                 Nome = reader.GetString(reader.GetOrdinal("USU_NOME")),
                                 Senha = reader.GetString(reader.GetOrdinal("USU_SENHA")),
-                                Email = reader.GetString(reader.GetOrdinal("EML_EMAIL")),
+                                Email = new Email {
+                                    EnderecoEmail = reader.GetString(reader.GetOrdinal("EML_EMAIL"))
+                                },
                                 Tipo = new TipoUsuario {
                                     Id = reader.GetInt32(reader.GetOrdinal("TPU_ID")),
                                     Tipo = reader.GetString(reader.GetOrdinal("TPU_TIPO"))

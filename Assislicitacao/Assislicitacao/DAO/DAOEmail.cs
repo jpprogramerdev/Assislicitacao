@@ -17,11 +17,11 @@ namespace Assislicitacao.DAO {
 
             database = new FacadeSQLServer();
 
-            Empresa Empresa = (Empresa)entidade;
+            Email Email = (Email)entidade;
             try {
                 using (SqlConnection conn = database.AbrirConexao()) {
                     using (SqlCommand query = new(Insert, conn)) {
-                        query.Parameters.AddWithValue("@Email", Empresa.EmailsContato);
+                        query.Parameters.AddWithValue("@Email", Email.EnderecoEmail);
                         query.ExecuteNonQuery();
                     }
                     database.FecharConexao(conn);

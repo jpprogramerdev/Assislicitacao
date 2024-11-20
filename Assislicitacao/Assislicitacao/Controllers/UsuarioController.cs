@@ -16,6 +16,48 @@ namespace Assislicitacao.Controllers {
             return RedirectToAction("Login", "Login");
         }
 
+        public IActionResult Cadastrar() {
+            if (User.Identity.IsAuthenticated) {
+                Usuario Usuario = new Usuario();
+                Usuario.Id = int.Parse(User.FindFirst("Id").Value);
+                Usuario.Nome = User.FindFirst("Nome").Value;
+
+                Usuario.Tipo = new TipoUsuario();
+                Usuario.Tipo.Id = int.Parse(User.FindFirst("TipoId").Value);
+                Usuario.Tipo.Tipo = User.FindFirst("Tipo").Value;
+
+                if(Usuario.Tipo.Id > 3) {
+                    return View("MinhaAgenda");
+                }
+
+                return View();
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
+        [HttpPost]
+        public IActionResult Salvar(Usuario Usuario) {
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeEmail = new FacadeEmail();
+                IFacadeGeneric facadeUsuario = new FacadeUsuario();
+
+                facadeEmail.Salvar(Usuario.Email);
+
+                if (facadeUsuario.Salvar(Usuario)) {
+                    TempData["SucessoCadastrarUsuario"] = "Usuario cadastrado com sucesso";
+                } else {
+                    TempData["FalhaCadastrarUsuario"] = "Falha ao cadastrar usuario";
+                }
+
+                return View("Cadastrar");
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
         [HttpGet]
         public IActionResult GerarAgendaUsuario() {
             try {
@@ -33,6 +75,7 @@ namespace Assislicitacao.Controllers {
 
                     return Json(eventos);
                 }
+
                 TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
                 return RedirectToAction("Login", "Login");
             } catch (Exception ex) {

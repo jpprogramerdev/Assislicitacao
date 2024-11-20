@@ -97,7 +97,9 @@ namespace Assislicitacao.DAO {
                                 CNPJ = reader.GetString(reader.GetOrdinal("EMP_CNPJ")),
                                 RazaoSocial = reader.GetString(reader.GetOrdinal("EMP_RAZAO_SOCIAL")),
                                 NomeFantasia = reader.GetString(reader.GetOrdinal("EMP_NOME_FANTASIA")),
-                                EmailsContato = reader.GetString(reader.GetOrdinal("EML_EMAIL")),
+                                EmailContato = new Email{
+                                    EnderecoEmail = reader.GetString(reader.GetOrdinal("EML_EMAIL"))
+                                },
                                 TelefoneContato = reader.GetString(reader.GetOrdinal("TLF_NUMERO")),
                                 Enquadramento = new Enquadramento {
                                     Id = reader.GetInt32(reader.GetOrdinal("EQD_ID")),
@@ -154,7 +156,9 @@ namespace Assislicitacao.DAO {
                                 CNPJ = reader.GetString(reader.GetOrdinal("EMP_CNPJ")),
                                 RazaoSocial = reader.GetString(reader.GetOrdinal("EMP_RAZAO_SOCIAL")),
                                 NomeFantasia = reader.GetString(reader.GetOrdinal("EMP_NOME_FANTASIA")),
-                                EmailsContato = reader.GetString(reader.GetOrdinal("EML_EMAIL")),
+                                EmailContato = new Email {
+                                    EnderecoEmail = reader.GetString(reader.GetOrdinal("EML_EMAIL"))
+                                },
                                 TelefoneContato = reader.GetString(reader.GetOrdinal("TLF_NUMERO")),
                                 Enquadramento = new Enquadramento {
                                     Id = reader.GetInt32(reader.GetOrdinal("EQD_ID")),

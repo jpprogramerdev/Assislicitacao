@@ -20,12 +20,15 @@ namespace Assislicitacao.Controllers {
 
             List<Usuario> ListUsuario = facadeUsuario.SelecionarTodos().Cast<Usuario>().ToList();
 
-            Usuario UsuarioEncontrado = ListUsuario.FirstOrDefault(u => u.Email == UsuarioLogin.Email && u.Senha == UsuarioLogin.Senha); 
+            Usuario UsuarioEncontrado = ListUsuario.FirstOrDefault(u => u.Email.EnderecoEmail == UsuarioLogin.Email.EnderecoEmail && u.Senha == UsuarioLogin.Senha); 
             
             if(UsuarioEncontrado != null) {
                 var Claims = new List<Claim> {
                     new Claim("Nome", UsuarioEncontrado.Nome),
-                    new Claim("Id",UsuarioEncontrado.Id.ToString())
+                    new Claim("Id",UsuarioEncontrado.Id.ToString()),
+
+                    new Claim("TipoId", UsuarioEncontrado.Tipo.Id.ToString()),
+                    new Claim("Tipo", UsuarioEncontrado.Tipo.Tipo)
                 };
 
                 var identity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);

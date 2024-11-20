@@ -4,7 +4,7 @@ using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
 
 namespace Assislicitacao.Facade {
-    public class FacadeUsuario : IFacadeGeneric {
+    public class FacadeTipoUsuario : IFacadeGeneric {
         public IDAOGeneric DAO { get; set; }
 
         public bool Apagar(int Id) {
@@ -16,12 +16,11 @@ namespace Assislicitacao.Facade {
         }
 
         public bool Salvar(EntidadeDominio entidade) {
-            DAO = new DAOUsuario();
-            return DAO.Insert(entidade);
+            throw new NotImplementedException();
         }
 
         public List<EntidadeDominio> SelecionarTodos() {
-            DAO = new DAOUsuario();
+            DAO = new DAOTipoUsuario();
             return DAO.Select();
         }
 

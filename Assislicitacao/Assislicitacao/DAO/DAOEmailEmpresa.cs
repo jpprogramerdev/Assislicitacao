@@ -20,7 +20,7 @@ namespace Assislicitacao.DAO {
                 using (SqlConnection conn = database.AbrirConexao()) {
                     using (SqlCommand query = new(Delete, conn)) {
                         query.Parameters.AddWithValue("@Id", id);
-                        query.Parameters.AddWithValue("@Email", Empresa.EmailsContato);
+                        query.Parameters.AddWithValue("@Email", Empresa.EmailContato.EnderecoEmail);
                         query.ExecuteNonQuery();
                     }
                 }
@@ -40,7 +40,7 @@ namespace Assislicitacao.DAO {
             try {
                 using (SqlConnection conn = database.AbrirConexao()) {
                     using (SqlCommand query = new(Insert, conn)) {
-                        query.Parameters.AddWithValue("@Email", Empresa.EmailsContato);
+                        query.Parameters.AddWithValue("@Email", Empresa.EmailContato.EnderecoEmail);
                         query.Parameters.AddWithValue("@EmpresaId", Empresa.Id);
                         query.ExecuteNonQuery();
                     }

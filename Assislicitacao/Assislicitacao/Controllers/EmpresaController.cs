@@ -56,7 +56,7 @@ namespace Assislicitacao.Controllers {
             try {
                 facadeEndereco.Salvar(Empresa.Endereco);
                 facadeTelefones.Salvar(Empresa);
-                facadeEmail.Salvar(Empresa);
+                facadeEmail.Salvar(Empresa.EmailContato);
 
                 if (facadeEmpresa.Salvar(Empresa)) {
                     facadeEmailEmpresa.Salvar(Empresa);

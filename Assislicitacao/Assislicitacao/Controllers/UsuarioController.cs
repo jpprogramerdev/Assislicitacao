@@ -37,6 +37,20 @@ namespace Assislicitacao.Controllers {
             return RedirectToAction("Login", "Login");
         }
 
+        public IActionResult ExibirTodosUsuarios() {
+            if (User.Identity.IsAuthenticated) {
+                Usuario Usuario = new Usuario();
+                IFacadeGeneric facadeUsuario = new FacadeUsuario();
+
+                List<Usuario> ListUsuarios = facadeUsuario.SelecionarTodos().Cast<Usuario>().ToList();
+
+                return View(ListUsuarios);
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
         [HttpPost]
         public IActionResult Salvar(Usuario Usuario) {
             if (User.Identity.IsAuthenticated) {

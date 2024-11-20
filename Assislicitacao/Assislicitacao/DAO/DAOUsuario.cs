@@ -1,4 +1,5 @@
 ﻿using Assislicitacao.DAO.Intefaces;
+using Assislicitacao.Exceptions;
 using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
@@ -31,7 +32,10 @@ namespace Assislicitacao.DAO {
                     database.FecharConexao(conn);
                 }
                 return true;
-            }catch (Exception ex) {
+            }catch (SqlException ex) {
+                if(ex.Number == 50001) {
+                    throw new DuplicateUsuarioException(ex.Message);
+                }
                 return false;
             }
 

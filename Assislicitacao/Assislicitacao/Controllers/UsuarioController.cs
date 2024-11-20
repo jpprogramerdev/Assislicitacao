@@ -1,4 +1,5 @@
-﻿using Assislicitacao.Facade;
+﻿using Assislicitacao.Exceptions;
+using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
 using Assislicitacao.Strategy;
@@ -59,10 +60,15 @@ namespace Assislicitacao.Controllers {
 
                 facadeEmail.Salvar(Usuario.Email);
 
-                if (facadeUsuario.Salvar(Usuario)) {
-                    TempData["SucessoCadastrarUsuario"] = "Usuario cadastrado com sucesso";
-                } else {
-                    TempData["FalhaCadastrarUsuario"] = "Falha ao cadastrar usuario";
+                try {
+                    if (facadeUsuario.Salvar(Usuario)) {
+                        TempData["SucessoCadastrarUsuario"] = "Usuario cadastrado com sucesso";
+                    } else {
+                        TempData["FalhaCadastrarUsuario"] = "Falha ao cadastrar usuario";
+                    }
+                }catch(DuplicateUsuarioException UsuarioEx) {
+                    TempData["FalhaCadastrarUsuario"] = $"Falha ao cadastrar usuario: {UsuarioEx.Message}";
+
                 }
 
                 return View("Cadastrar");

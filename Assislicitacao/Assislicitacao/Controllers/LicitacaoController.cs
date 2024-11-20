@@ -202,7 +202,7 @@ namespace Assislicitacao.Controllers {
                     Licitacoes = Licitacoes.Where(L => L.Data >= domingo && L.Data <= sabado).ToList();
                 }
 
-            } else if (filter == "Proxima") {
+            } else if (filter == "Proximas") {
                 DateTime dataAtual = DateTime.Now;
 
                 Licitacoes = Licitacoes.Where(L => L.Data >= dataAtual).ToList();

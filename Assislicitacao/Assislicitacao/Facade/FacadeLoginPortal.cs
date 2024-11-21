@@ -16,7 +16,8 @@ namespace Assislicitacao.Facade {
         }
 
         public bool Salvar(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            DAO = new DAOLoginPortal();
+            return DAO.Insert(entidade);
         }
 
         public List<EntidadeDominio> SelecionarTodos() {

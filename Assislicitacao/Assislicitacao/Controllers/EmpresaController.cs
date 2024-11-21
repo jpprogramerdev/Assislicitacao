@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using Assislicitacao.Exceptions;
 using Assislicitacao.Strategy.Interface;
 using Assislicitacao.Strategy;
+using Assislicitacao.ViewModel;
 
 namespace Assislicitacao.Controllers {
     public class EmpresaController : Controller {
@@ -41,6 +42,22 @@ namespace Assislicitacao.Controllers {
                 return View(Empresa);
             }
 
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
+        public IActionResult CadastrarNovoLogin(int id) {
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+
+                LoginEmpresa LoginEmpresa = new();
+
+                List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
+
+                LoginEmpresa.Empresa = ListEmpresa.FirstOrDefault(e => e.Id == id); ;
+
+                return View(LoginEmpresa);
+            }
             TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
             return RedirectToAction("Login", "Login");
         }
@@ -82,6 +99,20 @@ namespace Assislicitacao.Controllers {
             }
 
             return RedirectToAction("Cadastrar", "Empresa");
+        }
+
+        [HttpPost]
+        public IActionResult SalvarNovoLogin(LoginEmpresa LoginEmpresa) {
+            IFacadeGeneric facadeLoginPortal = new FacadeLoginPortal();
+
+            if (facadeLoginPortal.Salvar(LoginEmpresa)) {
+                TempData["SucessoLoginPortal"] = "Sucesso ao salvar login";
+            }
+
+            TempData["FalhaLoginPortal"] = "Falha ao tentar salvar login";
+
+
+            return RedirectToAction("CadastrarNovoLogin", new { id = LoginEmpresa.Empresa.Id});
         }
 
         [HttpPost]

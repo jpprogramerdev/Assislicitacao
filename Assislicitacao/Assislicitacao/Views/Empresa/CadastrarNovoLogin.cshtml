@@ -1,0 +1,45 @@
+﻿@model LoginEmpresa
+
+@{
+    ViewData["Title"] = "Cadastrar Novo Login Empresa ";
+
+    if (TempData["SucessoLoginPortal"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoLoginPortal"]
+        </div>
+    } else if (TempData["FalhaLoginPortal"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaLoginPortal"]
+        </div>
+    }
+}
+
+<form asp-action="SalvarNovoLogin" asp-controller="Empresa" method="post">
+    <input type="hidden" asp-for="@Model.Empresa.Id"/> 
+
+    <div class="form-group">
+        <label for="login-portal">Login:</label>
+        <input type="text" class="form-control" id="login-portal" placeholder="Login" asp-for="@Model.LoginPortal.Login">
+    </div> 
+
+    <div class="fo rm-group">
+        <label for="senha-portal">Senha:</label>
+        <input type="text" class="form-control" id="senha-portal" placeholder="Senha" asp-for="@Model.LoginPortal.Senha">
+    </div>
+
+    <div class="form-group">
+        <label for="portal-login">Portal:</label>
+        <select class="form-control" id="portal-login" asp-for="@Model.LoginPortal.Portal.Id">
+            @{
+                IFacadeGeneric facadePortal = new FacadePortal();
+
+                foreach (Portal Portal in facadePortal.SelecionarTodos()) {
+                    <option value="@Portal.Id">@Portal.Nome</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+</form>

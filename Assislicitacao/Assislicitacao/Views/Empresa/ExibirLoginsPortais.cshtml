@@ -12,6 +12,8 @@
 @if (TempData["EmpresaSemCadastro"] != null) {
     <p>@TempData["EmpresaSemCadastro"]</p>
 } else {
+    <a class="btn btn-primary btn-sm" asp-controller="Empresa" asp-action="CadastrarNovoLogin" asp-route-id="@Model.Id">Novo Login</a>
+
     <table class="table">
         <thead>
             <tr>

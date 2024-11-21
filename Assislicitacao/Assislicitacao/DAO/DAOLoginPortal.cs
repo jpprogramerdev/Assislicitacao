@@ -2,6 +2,7 @@
 using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interfaces;
 using Assislicitacao.Models;
+using Assislicitacao.ViewModel;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.SqlClient;
 
@@ -14,7 +15,26 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Insert(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            string Insert = "INSERT INTO LOGINS_PORTAIS(LNP_LOGIN, LNP_SENHA, LNP_PRT_ID, LNP_EMP_ID) VALUES (@Login, @Senha, @PortalId,@EmpresaId);";
+
+            database = new FacadeSQLServer();
+
+            LoginEmpresa Login = (LoginEmpresa)entidade;
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Insert, conn)) {
+                        query.Parameters.AddWithValue("@Login", Login.LoginPortal.Login);
+                        query.Parameters.AddWithValue("@Senha", Login.LoginPortal.Senha);
+                        query.Parameters.AddWithValue("@PortalId", Login.LoginPortal.Portal.Id);
+                        query.Parameters.AddWithValue("@EmpresaId", Login.Empresa.Id);
+                        query.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
         }
 
         public List<EntidadeDominio> Select() {

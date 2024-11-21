@@ -4,7 +4,7 @@
             Enquadramento = new();
             Endereco = new();
             Licitacoes = new();
-            Portais = new();
+            Logins = new();
         }
 
         public string CNPJ { get; set; }
@@ -15,7 +15,7 @@
         public Enquadramento Enquadramento { get; set; }
         public Endereco Endereco  { get; set; }
         public List<Licitacao> Licitacoes { get; set; }
-        public List<Portal> Portais { get; set; }
+        public List<LoginPortal> Logins{ get; set; }
 
     }
 }

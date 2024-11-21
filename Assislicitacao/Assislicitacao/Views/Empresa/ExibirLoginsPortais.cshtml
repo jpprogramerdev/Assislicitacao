@@ -1,0 +1,37 @@
+﻿@model Empresa
+
+@{
+    ViewData["Title"] = "Logins portais ";
+}
+
+<link rel="stylesheet" href="~/css/TableStyle.css" asp-append-version="true" />
+
+<h3 style="text-align: center;">Logins - @Model.RazaoSocial</h3>
+
+
+@if (TempData["EmpresaSemCadastro"] != null) {
+    <p>@TempData["EmpresaSemCadastro"]</p>
+} else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome portal</th>
+                <th scope="col">Login</th>
+                <th scope="col">Senha</th>
+                <th scope="col">Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (LoginPortal Login in Model.Logins) {
+                    <tr>
+                        <td>@Login.Portal.Nome</td>
+                        <td>@Login.Login</td>
+                        <td>@Login.Senha</td>
+                        <td><a href="@Login.Portal.Link">Clique aqui</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

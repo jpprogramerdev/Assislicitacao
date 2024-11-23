@@ -39,6 +39,12 @@
                             <a class="btn btn-secondary btn-sm" asp-controller="Empresa" asp-action="EditarEmpresa" asp-route-id="@Empresa.Id">Editar</a>
                             <a class="btn btn-danger btn-sm" asp-controller="Empresa" asp-action="Apagar" asp-route-id="@Empresa.Id">Apagar</a>
                             <a class="btn btn-primary btn-sm" asp-controller="Empresa" asp-action="ExibirLoginsPortais" asp-route-id="@Empresa.Id">Logins</a>
+                            @if (!Empresa.Ativo){
+                                <a class="btn btn-success btn-sm" asp-controller="Empresa" asp-action="AtualizarStatus" asp-route-id="@Empresa.Id">Ativar</a>
+                            }else{
+                                <a class="btn btn-warning btn-sm" asp-controller="Empresa" asp-action="AtualizarStatus" asp-route-id="@Empresa.Id">Inativar</a>
+
+                            }
 
                         </div>
                     </td>

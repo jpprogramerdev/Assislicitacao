@@ -46,6 +46,23 @@ namespace Assislicitacao.Controllers {
             return RedirectToAction("Login", "Login");
         }
 
+        [HttpGet]
+        public IActionResult AtualizarStatus(int Id) {
+            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+
+            if (User.Identity.IsAuthenticated) {
+                Empresa Empresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList().FirstOrDefault(e => e.Id == Id);
+
+                facadeEmpresa.Atualizar(Empresa);
+
+
+                return RedirectToAction("ExibirTodasEmpresas", "Empresa");
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login"); 
+        }
+
         public IActionResult CadastrarNovoLogin(int id) {
             if (User.Identity.IsAuthenticated) {
                 IFacadeGeneric facadeEmpresa = new FacadeEmpresa();

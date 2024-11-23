@@ -14,6 +14,7 @@
         public Email EmailContato { get; set; }
         public Enquadramento Enquadramento { get; set; }
         public Endereco Endereco  { get; set; }
+        public bool Ativo { get; set; }
         public List<Licitacao> Licitacoes { get; set; }
         public List<LoginPortal> Logins{ get; set; }
 

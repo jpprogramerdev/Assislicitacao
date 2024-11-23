@@ -19,13 +19,11 @@ namespace Assislicitacao.Controllers {
             return RedirectToAction("Login", "Login");
         }
 
-        public IActionResult ExibirTodasEmpresas() {
+        public IActionResult ExibirTodasEmpresas(string filter) {
             IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
 
             if (User.Identity.IsAuthenticated) {
-                List<Empresa> ListEmpresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList();
-
-                return View(ListEmpresa);
+                return View(Filtrar(facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList(), filter));
             }
 
             TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
@@ -56,7 +54,7 @@ namespace Assislicitacao.Controllers {
                 facadeEmpresa.Atualizar(Empresa);
 
 
-                return RedirectToAction("ExibirTodasEmpresas", "Empresa");
+                return RedirectToAction("ExibirTodasEmpresas", "Empresa", new { filter = "Ativas"});
             }
 
             TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
@@ -172,6 +170,18 @@ namespace Assislicitacao.Controllers {
             TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
             return RedirectToAction("Login", "Login");
 
+        }
+
+        private List<Empresa> Filtrar(List<Empresa>List, string filter) {
+            if(filter == "Ativas") {
+                List = List.Where(l => l.Ativo).ToList();
+            }else if(filter == "Inativas") {
+                List = List.Where(l => !l.Ativo).ToList();
+            } else {
+                List = List.OrderByDescending(l => l.Ativo).ToList();
+            }
+
+            return List;
         }
     }
 }

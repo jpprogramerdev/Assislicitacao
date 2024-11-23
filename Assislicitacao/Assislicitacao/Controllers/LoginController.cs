@@ -42,5 +42,10 @@ namespace Assislicitacao.Controllers {
             TempData["FalhaLogin"] = "Email e/ou senha invalidos. Tente novamente";
             return View("Login");
         }
+
+        public IActionResult Desconectar() {
+            HttpContext.SignOutAsync();
+            return View("Login");
+        }
     }
 }

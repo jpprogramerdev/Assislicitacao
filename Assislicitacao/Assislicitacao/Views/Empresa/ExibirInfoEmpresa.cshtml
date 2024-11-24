@@ -7,15 +7,35 @@
 <h3 class="card-title">Dados da empresa</h3>
 
 <div class="card" >
-    <div class="card-body">
+    <div class="card-body" style="border:2px solid black">
         <h5 class="card-title">Razão Social:</h5>
         <p class="card-text">@Model.RazaoSocial</p>
-        <hr></hr>
 
         <h5 class="card-title">Nome fantasia:</h5>
         <p class="card-text">@Model.NomeFantasia</p>
-        <hr></hr>
+        
         <h5 class="card-title">CNPJ:</h5>
         <p class="card-text">@Model.CNPJ</p>
+
+        <h5 class="card-title">Enquadramento:</h5>
+        <p class="card-text">@Model.Enquadramento.Sigla</p>
+
+        <div class="card bg-info">
+            <div class="card-body" style="border:1.2px solid black">
+                <h4 class="card-title">Endereço:</h4>
+
+                <h5 class="card-title">Lograodouro:</h5>
+                <p class="card-text">@Model.Endereco.Logradouro, @Model.Endereco.Numero</p>
+
+                <h5 class="card-title">Bairro:</h5>
+                <p class="card-text">@Model.Endereco.Bairro</p>
+
+                <h5 class="card-title">Cidade - UF:</h5>
+                <p class="card-text">@Model.Endereco.Cidade.Nome - @Model.Endereco.Cidade.Estado.UF</p>
+
+                <h5 class="card-title">CEP:</h5>
+                <p class="card-text">@Model.Endereco.CEP</p>
+            </div>
+        </div>
     </div>
 </div>

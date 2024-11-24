@@ -57,7 +57,7 @@
                         }
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" id="usuarioDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                @Usuario.Nome
+                                @Usuario.Nome.ToUpper();
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Desconectar">Desconectar</a></li>

@@ -44,23 +44,6 @@ namespace Assislicitacao.Controllers {
             return RedirectToAction("Login", "Login");
         }
 
-        [HttpGet]
-        public IActionResult AtualizarStatus(int Id) {
-            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
-
-            if (User.Identity.IsAuthenticated) {
-                Empresa Empresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList().FirstOrDefault(e => e.Id == Id);
-
-                facadeEmpresa.Atualizar(Empresa);
-
-
-                return RedirectToAction("ExibirTodasEmpresas", "Empresa", new { filter = "Ativas"});
-            }
-
-            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
-            return RedirectToAction("Login", "Login"); 
-        }
-
         public IActionResult CadastrarNovoLogin(int id) {
             if (User.Identity.IsAuthenticated) {
                 IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
@@ -86,6 +69,35 @@ namespace Assislicitacao.Controllers {
                 Empresa Empresa = ListEmpresa.FirstOrDefault(e => e.Id == id);
 
                 return View(Empresa);
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
+        [HttpGet]
+        public IActionResult ExibirInfoEmpresa(int id) {
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+
+                return View(facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList().FirstOrDefault(e => e.Id == id));
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
+        [HttpGet]
+        public IActionResult AtualizarStatus(int Id) {
+            IFacadeGeneric facadeEmpresa = new FacadeEmpresa();
+
+            if (User.Identity.IsAuthenticated) {
+                Empresa Empresa = facadeEmpresa.SelecionarTodos().Cast<Empresa>().ToList().FirstOrDefault(e => e.Id == Id);
+
+                facadeEmpresa.Atualizar(Empresa);
+
+
+                return RedirectToAction("ExibirTodasEmpresas", "Empresa", new { filter = "Ativas" });
             }
 
             TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";

@@ -1,0 +1,21 @@
+﻿@model Empresa
+
+@{
+    ViewData["Title"] = "Dados empresa ";
+}
+
+<h3 class="card-title">Dados da empresa</h3>
+
+<div class="card" >
+    <div class="card-body">
+        <h5 class="card-title">Razão Social:</h5>
+        <p class="card-text">@Model.RazaoSocial</p>
+        <hr></hr>
+
+        <h5 class="card-title">Nome fantasia:</h5>
+        <p class="card-text">@Model.NomeFantasia</p>
+        <hr></hr>
+        <h5 class="card-title">CNPJ:</h5>
+        <p class="card-text">@Model.CNPJ</p>
+    </div>
+</div>

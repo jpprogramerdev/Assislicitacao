@@ -1,8 +1,9 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace Assislicitacao.Facade.Interfaces {
     public interface IFacadeDatabase {
-        public SqlConnection AbrirConexao();
-        public void FecharConexao(SqlConnection conn);
+        public DbConnection AbrirConexao();
+        public void FecharConexao(DbConnection conn);
     }
 }

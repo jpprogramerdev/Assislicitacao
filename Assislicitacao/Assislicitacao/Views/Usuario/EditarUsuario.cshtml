@@ -1,0 +1,54 @@
+﻿@model Usuario
+
+@{
+    Layout = "_Layout";
+
+    ViewData["Title"] = "Cadastrar Usuario ";
+
+    if (TempData["SucessoAtualizar"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoAtualizar"]
+        </div>
+    } else if (TempData["FalhaAtualizar"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaAtualizar"]
+        </div>
+    }
+}
+
+
+<form asp-action="AtualizarUsuario" asp-controller="Usuario" method="post">
+    <input type="hidden" asp-for="@Model.Id"/>
+
+    <div class="form-group">
+        <label for="objeto-licitacao">Nome:</label>
+        <input type="text" class="form-control" id="objeto-licitacao" placeholder="Nome" asp-for="@Model.Nome">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Email:</label>
+        <input type="email" class="form-control" id="objeto-licitacao" placeholder="Email" asp-for="@Model.Email.EnderecoEmail">
+    </div>
+    <div class="form-group">
+        <label for="objeto-licitacao">Senha:</label>
+        <input type="password" class="form-control" id="objeto-licitacao" placeholder="Senha" asp-for="@Model.Senha">
+    </div>
+    <div class="form-group">
+        <label for="tipo-licitacao">Tipo de usuario:</label>
+        <select class="form-control" id="tipo-licitacao" asp-for="@Model.Tipo.Id">
+            @{
+                IFacadeGeneric facadeTipoUsuario = new FacadeTipoUsuario();
+
+                foreach (TipoUsuario Tipo in facadeTipoUsuario.SelecionarTodos()) {
+                    if (Tipo.Id == Model.Tipo.Id){
+                        <option value="@Tipo.Id" selected>@Tipo.Tipo</option>
+                    }
+
+                    <option value="@Tipo.Id">@Tipo.Tipo</option>
+
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>

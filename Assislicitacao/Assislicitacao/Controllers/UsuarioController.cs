@@ -79,6 +79,18 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpGet]
+        public IActionResult EditarUsuario(int id) {
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeUsuario = new FacadeUsuario();
+
+                return View(facadeUsuario.SelecionarTodos().FirstOrDefault(u => u.Id  == id));
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
+        }
+
+        [HttpGet]
         public IActionResult GerarAgendaUsuario() {
             try {
                 if (User.Identity.IsAuthenticated) {
@@ -120,6 +132,27 @@ namespace Assislicitacao.Controllers {
            GerarPDF.Executar(eventos.Cast<EntidadeDominio>().ToList());
 
             return View("MinhaAgenda");
+        }
+
+        [HttpPost]
+        public IActionResult AtualizarUsuario(Usuario Usuario) {
+            if (User.Identity.IsAuthenticated) {
+                IFacadeGeneric facadeUsuario = new FacadeUsuario();
+                IFacadeGeneric facadeEmail = new FacadeEmail();
+
+                facadeEmail.Salvar(Usuario.Email);
+
+                if (facadeUsuario.Atualizar(Usuario)) {
+                    TempData["SucessoAtualizar"] = "Sucesso ao atualizar usuario";
+                } else {
+                    TempData["FalhaAtualizar"] = "Falha ao atualizar usuario";
+                }
+
+                return RedirectToAction("EditarUsuario", "Usuario", new { id = Usuario.Id});
+            }
+
+            TempData["AutenticacaoNecessaria"] = "Você deve está autenticado para acessar o sistema";
+            return RedirectToAction("Login", "Login");
         }
     }
 }

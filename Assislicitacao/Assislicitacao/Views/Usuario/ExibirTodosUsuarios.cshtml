@@ -12,6 +12,7 @@
             <th scope="col">Nome</th>
             <th scope="col">Email</th>
             <th scope="col">Tipo</th>
+            <th scope="col">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,11 @@
                     <td>@Usuario.Nome</td>
                     <td>@Usuario.Email.EnderecoEmail</td>
                     <td>@Usuario.Tipo.Tipo</td>
+                    <td>
+                        <div class="grp-btn-actions">
+                            <a class="btn btn-secondary btn-sm" asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@Usuario.Id">Editar</a>
+                        </div>
+                    </td>
                 </tr>
             }
         }

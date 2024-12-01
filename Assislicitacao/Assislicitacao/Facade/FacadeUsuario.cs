@@ -12,7 +12,8 @@ namespace Assislicitacao.Facade {
         }
 
         public bool Atualizar(EntidadeDominio entidadeDominio) {
-            throw new NotImplementedException();
+            DAO = new DAOUsuario();
+            return DAO.Update(entidadeDominio);
         }
 
         public bool Salvar(EntidadeDominio entidade) {

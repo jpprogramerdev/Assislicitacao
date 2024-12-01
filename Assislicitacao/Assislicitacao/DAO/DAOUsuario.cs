@@ -80,7 +80,34 @@ namespace Assislicitacao.DAO {
         }
 
         public bool Update(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            string Update = "UPDATE USUARIOS SET " +
+                            "USU_NOME = @Nome," +
+                            "USU_SENHA = @Senha, " +
+                            "USU_EML_ID = (SELECT EML_ID FROM EMAILS WHERE EML_EMAIL = @Email), " +
+                            "USU_TPU_ID = @TipoId " +
+                            "WHERE USU_ID = @UsuarioId";
+
+            database = new FacadeSQLServer();
+
+            Usuario Usuario = (Usuario)entidade;
+
+            try {
+                using (SqlConnection conn = database.AbrirConexao()) {
+                    using (SqlCommand query = new(Update, conn)) {
+                        query.Parameters.AddWithValue("@Nome", Usuario.Nome);
+                        query.Parameters.AddWithValue("@Senha", Usuario.Senha);
+                        query.Parameters.AddWithValue("@Email", Usuario.Email.EnderecoEmail);
+                        query.Parameters.AddWithValue("@TipoId", Usuario.Tipo.Id);
+                        query.Parameters.AddWithValue("@UsuarioId", Usuario.Id);
+
+                        query.ExecuteNonQuery();
+                    }
+                    database.FecharConexao(conn);
+                }
+                return true;
+            }catch(Exception ex) {
+                return false;
+            }
         }
     }
 }

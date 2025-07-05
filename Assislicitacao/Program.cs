@@ -1,4 +1,8 @@
 using Assislicitacao.Context;
+using Assislicitacao.DAO;
+using Assislicitacao.DAO.Interface;
+using Assislicitacao.Facade;
+using Assislicitacao.Facade.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddTransient<IDAOTipoUsuario, DAOTiposUsuario>();
+builder.Services.AddTransient<IDAOUsuario, DAOUsuario>();
+builder.Services.AddTransient<IFacadeTipoUsuario, FacadeTipoUsuario>();
+builder.Services.AddTransient<IFacadeUsuario, FacadeUsuario>();
 
 var app = builder.Build();
 
@@ -27,5 +35,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Usuario}/{action=RegistrarUsuario}/{id?}");
 
 app.Run();

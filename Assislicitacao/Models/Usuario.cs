@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Assislicitacao.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Assislicitacao.Model {
+namespace Assislicitacao.Models {
     [Table("USUARIOS")]
-    public class Usuario {
+    public class Usuario : EntidadeDominio {
         [Key]
         [Column("USU_ID")]
         public int Id { get; set; }
@@ -16,5 +17,10 @@ namespace Assislicitacao.Model {
         [Required]
         [Column("USU_EMAIL")]
         public string Email { get; set; }
+
+        //Relacionamentos - Relation
+        [Column("USU_TPU_ID")]
+        public int TipoId { get; set; }
+        public TipoUsuario TipoUsuario { get; set; }
     }
 }

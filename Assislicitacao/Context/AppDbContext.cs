@@ -1,4 +1,4 @@
-﻿using Assislicitacao.Model;
+﻿using Assislicitacao.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Assislicitacao.Context {

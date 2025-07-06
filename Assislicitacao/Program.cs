@@ -3,6 +3,7 @@ using Assislicitacao.DAO;
 using Assislicitacao.DAO.Interface;
 using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interface;
+using Assislicitacao.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IDAOTipoUsuario, DAOTiposUsuario>();
 builder.Services.AddTransient<IDAOUsuario, DAOUsuario>();
-builder.Services.AddTransient<IFacadeTipoUsuario, FacadeTipoUsuario>();
-builder.Services.AddTransient<IFacadeUsuario, FacadeUsuario>();
+builder.Services.AddScoped<IFacadeTipoUsuario, FacadeTipoUsuario>();
+builder.Services.AddScoped<IFacadeUsuario, FacadeUsuario>();
+builder.Services.AddScoped<IFacadeEmpresa, FacadeEmpresa>();
+builder.Services.AddHttpClient<ReceitaWsService>();
+
 
 var app = builder.Build();
 

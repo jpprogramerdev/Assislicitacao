@@ -1,0 +1,58 @@
+﻿@model EmpresaReceitaWsResponse
+
+@{
+    ViewData["Title"] = "Exibir informações da empresa";
+}
+
+<h5>Confrime se os dados consultados estão corretos</h5>
+
+<form asp-controller="Usuario" asp-action="ExcluirUsuario" method="post">
+
+    <div class="form-group">
+        <label for="nome-usuario">Razão Social:</label>
+        <input type="text" class="form-control" id="nome-usuario" asp-for="@Model.nome" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">CNPJ:</label>
+        <input type="email" class="form-control" id="email-usuario" asp-for="@Model.cnpj" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">PORTE:</label>
+        <input type="email" class="form-control" id="email-usuario" asp-for="@Model.porte" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Logradouro:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.logradouro" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Numero:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.numero" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Bairro:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.bairro" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">CEP:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.cep" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Cidade:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.municipio" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">UF:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.municipio" readonly>
+    </div>
+
+    <button type="submit" class="btn btn-success">Confirmar</button>
+    <a class="btn btn-danger">Cancelar</a>
+</form>

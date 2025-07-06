@@ -1,0 +1,14 @@
+﻿@model Empresa
+
+@{
+    ViewData["Title"] = "Informar CNPJ";
+}
+
+<form asp-controller="Empresa" asp-action="ExibirCNPJ" method="post">
+    <div class="form-group">
+        <label for="nome-usuario">Consultar empresa (CNPJ):</label>
+        <input type="text" class="form-control" id="nome-usuario" placeholder="CNPJ" asp-for="@Model.CNPJ" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

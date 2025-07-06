@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Usuario>
+
+@{
+    ViewData["Title"] = "Exibir Usuarios";
+
+    if (TempData["FalhaAtualziar"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaAtualziar"]
+        </div>
+    } else if (TempData["SucessoExclusao"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoExclusao"]
+        </div>
+    } else if (TempData["SucessoAtualizar"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoAtualizar"]
+        </div>
+    } else if (TempData["FalhaExclusao"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaExclusao"]
+        </div>
+    }
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">NOME</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">TIPO USUARIO</th>
+            <th scope="col">AÇÕES</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Usuario Usuario in Model) {
+            <tr>
+                <td>@Usuario.Nome</td>
+                <td>@Usuario.Email</td>
+                <td>@Usuario.TipoUsuario.Tipo</td>
+                <td>
+                    <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@Usuario.Id">Editar</a>
+                    <span>|</span>
+                    <a asp-controller="Usuario" asp-action="ConfirmarExclusaoUsuario" asp-route-id="@Usuario.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

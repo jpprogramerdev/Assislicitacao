@@ -11,17 +11,17 @@ namespace Assislicitacao.DAO {
             _context = context;
         }
 
-        public void Delete(EntidadeDominio entidade) {
+        public Task Delete(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
 
-        public void Insert(EntidadeDominio entidade) {
+        public Task Insert(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
 
         public IEnumerable<EntidadeDominio> SelectAll() => _context.TipoUsuarios;
 
-        public void Update(EntidadeDominio entidade) {
+        public  Task Update(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
     }

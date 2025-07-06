@@ -21,6 +21,7 @@ namespace Assislicitacao.Models {
         //Relacionamentos - Relation
         [Column("USU_TPU_ID")]
         public int TipoId { get; set; }
+        [ForeignKey("TipoId")]
         public TipoUsuario TipoUsuario { get; set; }
     }
 }

@@ -25,6 +25,5 @@ namespace Assislicitacao.Facade {
         public void Apagar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
-
     }
 }

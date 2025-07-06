@@ -1,0 +1,29 @@
+﻿@model Usuario
+
+@{
+    ViewData["Title"] = "Excluir usuario";
+}
+
+<p>Deseja realmente excluir este usuário?</p>
+
+<form asp-controller="Usuario" asp-action="ExcluirUsuario" method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+
+    <div class="form-group">
+        <label for="nome-usuario">Nome:</label>
+        <input type="text" class="form-control" id="nome-usuario" asp-for="@Model.Nome" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">Email:</label>
+        <input type="email" class="form-control" id="email-usuario" asp-for="@Model.Email" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Tipo de usuario:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.TipoUsuario.Tipo" readonly>
+    </div>
+
+    <button type="submit" class="btn btn-success">Confirmar</button>
+    <a asp-controller="Usuario" asp-action="ExibirUsuarios" class="btn btn-danger">Cancelar</a>
+</form>

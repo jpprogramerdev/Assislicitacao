@@ -9,19 +9,17 @@ namespace Assislicitacao.Facade {
         public FacadeUsuario(IDAOUsuario dao) {
             _dao = dao;
         }
-
-        public IEnumerable<EntidadeDominio> Selecionar() {
-            return _dao.SelectAll();
-        }
+        
+        public IEnumerable<EntidadeDominio> Selecionar() => _dao.SelectAll();
 
         public void Inserir(EntidadeDominio entidade) =>  _dao.Insert(entidade);
 
         public void Atualizar(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            _dao.Update(entidade);
         }
 
         public void Apagar(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+            _dao.Delete(entidade);
         }
     }
 }

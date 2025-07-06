@@ -1,0 +1,27 @@
+﻿@model UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Editar usuario";
+}
+
+<form asp-controller="Usuario" asp-action="AtualizarUsuario" method="post">
+    <input type="hidden" asp-for="@Model.Usuario.Id" />
+
+    <div class="form-group">
+        <label for="nome-usuario">Nome:</label>
+        <input type="text" class="form-control" id="nome-usuario" placeholder="Nome" asp-for="@Model.Usuario.Nome" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">Email:</label>
+        <input type="email" class="form-control" id="email-usuario" placeholder="Nome" asp-for="@Model.Usuario.Email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Tipo de usuario:</label>
+        <select asp-for="@Model.Usuario.TipoId" class="form-control" id="tipo-usuario" asp-items="@(new SelectList(Model.TipoUsuario, "Id","Tipo"))">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>

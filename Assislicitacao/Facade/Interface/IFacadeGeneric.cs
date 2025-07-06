@@ -7,6 +7,5 @@ namespace Assislicitacao.Facade.Interface {
         public void Atualizar(EntidadeDominio entidade);
         public void Apagar(EntidadeDominio entidade);
 
-
     }
 }

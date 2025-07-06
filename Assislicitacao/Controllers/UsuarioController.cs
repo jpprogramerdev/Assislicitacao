@@ -22,15 +22,62 @@ namespace Assislicitacao.Controllers {
             return View(usuarioViewModel);
         }
 
+        public IActionResult ExibirUsuarios() {
+            var usuarios = _facadeUsuario.Selecionar().Cast<Usuario>();
+
+            return View(usuarios);
+        }
+
+        [HttpGet]
+        public IActionResult EditarUsuario(int id) {
+            var usuarioViewModel = new UsuarioViewModel {
+                Usuario = _facadeUsuario.Selecionar().Cast<Usuario>().FirstOrDefault(u => u.Id == id),
+                TipoUsuario = _facadeTipoUsuario.Selecionar().Cast<TipoUsuario>()
+            };
+
+            return View(usuarioViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmarExclusaoUsuario(int id) {
+            var Usuario = _facadeUsuario.Selecionar().Cast<Usuario>().FirstOrDefault(u => u.Id == id);
+
+            return View(Usuario);
+        }
+
         [HttpPost]
         public IActionResult SalvarUsuario(Usuario Usuario) {
             try {
                 _facadeUsuario.Inserir(Usuario);
                 TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuario";
-            } catch (Exception ex) {  
+            } catch (Exception ex) {
                 TempData["FalhaCadastro"] = "Falha ao cadastrar o usuario";
             }
             return RedirectToAction("RegistrarUsuario", "Usuario");
+        }
+
+        [HttpPost]
+        public IActionResult AtualizarUsuario(Usuario Usuario) {
+            try {
+                _facadeUsuario.Atualizar(Usuario);
+                TempData["SucessoAtualizar"] = "Sucesso ao atualizar o usuario";
+            } catch (Exception ex) {
+                TempData["FalhaAtualziar"] = "Falha ao atualizar o usuario";
+            }
+
+            return RedirectToAction("ExibirUsuarios", "Usuario");
+        }
+
+        [HttpPost]
+        public IActionResult ExcluirUsuario(Usuario Usuario) {
+            try {
+                _facadeUsuario.Apagar(Usuario);
+                TempData["SucessoExclusao"] = "Sucesso ao excluir o usuario";
+            } catch (Exception ex) {
+                TempData["FalhaExclusao"] = "Falha ao excluir o usuario";
+            }
+
+            return RedirectToAction("ExibirUsuarios", "Usuario");
         }
     }
 }

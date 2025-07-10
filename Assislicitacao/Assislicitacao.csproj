@@ -23,4 +23,12 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Arquivos\Projetos\Assislicitacao\Assislicitacao\DTO\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Arquivos\Projetos\Assislicitacao\Assislicitacao\DTO\.editorconfig" />
+  </ItemGroup>
+
 </Project>

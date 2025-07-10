@@ -1,5 +1,6 @@
 ﻿using Assislicitacao.DTO.APIResponse;
 using Assislicitacao.Facade.Interface;
+using Assislicitacao.Mapper;
 using Assislicitacao.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -54,28 +55,8 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> SalvarEmpresa(EmpresaReceitaWsResponse EmpresaReceitaWsResponse) {
-            Empresa Empresa = new Empresa {
-                CNPJ = EmpresaReceitaWsResponse.cnpj,
-                RazaoSocial = EmpresaReceitaWsResponse.nome,
-                Endereco = new Endereco {
-                    Logradouro = EmpresaReceitaWsResponse.logradouro,
-                    Numero = EmpresaReceitaWsResponse.numero,
-                    Bairro = EmpresaReceitaWsResponse.bairro,
-                    CEP = EmpresaReceitaWsResponse.cep,
-                    Municipio = new Municipio {
-                        Nome = EmpresaReceitaWsResponse.municipio,
-                        Estado = new Estado {
-                            Uf = EmpresaReceitaWsResponse.uf
-                        }
-                    }
-                },
-                PorteEmpresa = new PorteEmpresa {
-                    Porte = EmpresaReceitaWsResponse.porte
-                }
-            };
             try {
-               
-                await _facadeEmpresa.Inserir(Empresa);
+                await _facadeEmpresa.Inserir(EmpresaMapper.ConverteEmpresaResponseToEmpresa(EmpresaReceitaWsResponse));
                 TempData["EmpresaSalva"] = "Empresa cadastrada com sucesso";
             } catch (Exception ex) {
                 TempData["FalhaSalvarEmpresa"] = "Falha ao salvar empresa: " + ex.Message;

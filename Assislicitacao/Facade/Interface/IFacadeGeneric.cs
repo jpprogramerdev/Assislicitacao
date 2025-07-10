@@ -2,10 +2,10 @@
 
 namespace Assislicitacao.Facade.Interface {
     public interface IFacadeGeneric {
-        public IEnumerable<EntidadeDominio> Selecionar();
-        public void Inserir (EntidadeDominio entidade);
-        public void Atualizar(EntidadeDominio entidade);
-        public void Apagar(EntidadeDominio entidade);
+        public Task<IEnumerable<EntidadeDominio>> Selecionar();
+        public Task Inserir (EntidadeDominio entidade);
+        public Task Atualizar(EntidadeDominio entidade);
+        public Task Apagar(EntidadeDominio entidade);
 
     }
 }

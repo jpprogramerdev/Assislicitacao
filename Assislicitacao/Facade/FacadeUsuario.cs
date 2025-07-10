@@ -10,16 +10,16 @@ namespace Assislicitacao.Facade {
             _dao = dao;
         }
         
-        public IEnumerable<EntidadeDominio> Selecionar() => _dao.SelectAll();
+        public async Task<IEnumerable<EntidadeDominio>> Selecionar() => await _dao.SelectAll();
 
-        public void Inserir(EntidadeDominio entidade) =>  _dao.Insert(entidade);
+        public async Task Inserir(EntidadeDominio entidade) =>  await _dao.Insert(entidade);
 
-        public void Atualizar(EntidadeDominio entidade) {
-            _dao.Update(entidade);
+        public async Task Atualizar(EntidadeDominio entidade) {
+           await _dao.Update(entidade);
         }
 
-        public void Apagar(EntidadeDominio entidade) {
-            _dao.Delete(entidade);
+        public async Task Apagar(EntidadeDominio entidade) {
+            await _dao.Delete((Usuario)entidade);
         }
     }
 }

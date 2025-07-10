@@ -1,0 +1,71 @@
+﻿@model Empresa
+
+@{
+    ViewData["Title"] = "Confirmar Exclusão Empresa";
+
+    if (TempData["SucessoAtualizarEmpresa"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoAtualizarEmpresa"]
+        </div>
+    }
+}
+
+<p>Deseja realmente excluir esta empresa?</p>
+<form asp-action="ExcluirEmpresa" asp-controller="Empresa" method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+    <input type="hidden" asp-for="@Model.PorteEmrpesaId" />
+    <input type="hidden" asp-for="@Model.EnderecoId" />
+
+    <div class="form-group">
+        <label for="nome-usuario">Razão Social:</label>
+        <input type="text" class="form-control" id="nome-usuario" asp-for="@Model.RazaoSocial" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">CNPJ:</label>
+        <input type="email" class="form-control" id="email-usuario" asp-for="@Model.CNPJ" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">PORTE:</label>
+        <input type="email" class="form-control" id="email-usuario" asp-for="@Model.PorteEmpresa.Porte" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Logradouro:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Logradouro" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Numero:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Numero" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Bairro:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Bairro" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Complemento:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Complemento" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">CEP:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.CEP" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">Cidade:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Municipio.Nome" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-usuario">UF:</label>
+        <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Municipio.Estado.Uf" readonly>
+    </div>
+
+    <button type="submit" class="btn btn-success">Confirmar</button>
+    <a asp-controller="Empresa" asp-action="ExibirTodasEmpresas" class="btn btn-danger">Cancelar</a>
+</form>

@@ -2,13 +2,27 @@
 
 @{
     ViewData["Title"] = "Informar CNPJ";
+
+    if (TempData["FalhaSalvarEmpresa"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaSalvarEmpresa"]
+        </div>
+    } else if (TempData["EmpresaSalva"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["EmpresaSalva"]
+        </div>
+    } else if (TempData["CNPJJacCadastrado"] != null){
+        <div class="alert alert-danger" role="alert">
+            @TempData["CNPJJacCadastrado"]
+        </div>
+    }
 }
 
 <form asp-controller="Empresa" asp-action="ExibirCNPJ" method="post">
     <div class="form-group">
-        <label for="nome-usuario">Consultar empresa (CNPJ):</label>
+        <label for="nome-usuario">Informar CNPJ:</label>
         <input type="text" class="form-control" id="nome-usuario" placeholder="CNPJ" asp-for="@Model.CNPJ" required>
     </div>
 
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <button type="submit" class="btn btn-primary">Consultar</button>
 </form>

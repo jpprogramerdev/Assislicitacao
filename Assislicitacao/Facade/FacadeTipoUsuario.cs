@@ -2,6 +2,7 @@
 using Assislicitacao.DAO.Interface;
 using Assislicitacao.Facade.Interface;
 using Assislicitacao.Models;
+using System.Threading.Tasks;
 
 namespace Assislicitacao.Facade {
     public class FacadeTipoUsuario : IFacadeTipoUsuario{
@@ -11,18 +12,18 @@ namespace Assislicitacao.Facade {
             _dao = dao;
         }
 
-        public IEnumerable<EntidadeDominio> Selecionar() => _dao.SelectAll();
+        public async Task<IEnumerable<EntidadeDominio>> Selecionar() => await _dao.SelectAll();
 
 
-        public void Inserir(EntidadeDominio entidade) {
+        public Task Inserir(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
 
-        public void Atualizar(EntidadeDominio entidade) {
+        public Task Atualizar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
 
-        public void Apagar(EntidadeDominio entidade) {
+        public Task Apagar(EntidadeDominio entidade) {
             throw new NotImplementedException();
         }
     }

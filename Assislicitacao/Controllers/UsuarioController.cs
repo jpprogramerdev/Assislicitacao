@@ -2,6 +2,7 @@
 using Assislicitacao.Models;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Assislicitacao.Controllers {
     public class UsuarioController : Controller {
@@ -13,34 +14,34 @@ namespace Assislicitacao.Controllers {
             _facadeUsuario = facadeUsuario;
         }
 
-        public IActionResult RegistrarUsuario() {
+        public async Task<IActionResult> RegistrarUsuario() {
             var usuarioViewModel = new UsuarioViewModel {
                 Usuario = new(),
-                TipoUsuario = _facadeTipoUsuario.Selecionar().Cast<TipoUsuario>()
+                TipoUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>()
             };
 
             return View(usuarioViewModel);
         }
 
-        public IActionResult ExibirUsuarios() {
-            var usuarios = _facadeUsuario.Selecionar().Cast<Usuario>();
+        public async Task<IActionResult> ExibirUsuarios() {
+            var usuarios = (await _facadeUsuario.Selecionar()).Cast<Usuario>();
 
             return View(usuarios);
         }
 
         [HttpGet]
-        public IActionResult EditarUsuario(int id) {
+        public async Task<IActionResult> EditarUsuario(int id) {
             var usuarioViewModel = new UsuarioViewModel {
-                Usuario = _facadeUsuario.Selecionar().Cast<Usuario>().FirstOrDefault(u => u.Id == id),
-                TipoUsuario = _facadeTipoUsuario.Selecionar().Cast<TipoUsuario>()
+                Usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == id),
+                TipoUsuario =(await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>()
             };
 
             return View(usuarioViewModel);
         }
 
         [HttpGet]
-        public IActionResult ConfirmarExclusaoUsuario(int id) {
-            var Usuario = _facadeUsuario.Selecionar().Cast<Usuario>().FirstOrDefault(u => u.Id == id);
+        public async Task<IActionResult> ConfirmarExclusaoUsuario(int id) {
+            var Usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == id);
 
             return View(Usuario);
         }
@@ -69,9 +70,9 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpPost]
-        public IActionResult ExcluirUsuario(Usuario Usuario) {
+        public async Task<IActionResult> ExcluirUsuario(Usuario Usuario) {
             try {
-                _facadeUsuario.Apagar(Usuario);
+                await _facadeUsuario.Apagar(Usuario);
                 TempData["SucessoExclusao"] = "Sucesso ao excluir o usuario";
             } catch (Exception ex) {
                 TempData["FalhaExclusao"] = "Falha ao excluir o usuario";

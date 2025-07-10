@@ -7,5 +7,10 @@ namespace Assislicitacao.Context {
 
         public DbSet<TipoUsuario> TipoUsuarios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Estado> Estados { get; set; }
+        public DbSet<Municipio> Municipios { get; set; }
+        public DbSet<Endereco> Enderecos { get; set; }
+        public DbSet<PorteEmpresa> PortesEmpresa { get; set; }
+        public DbSet<Empresa> Empresas { get; set; }
     }
 }

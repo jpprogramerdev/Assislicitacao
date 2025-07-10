@@ -19,7 +19,7 @@ namespace Assislicitacao.DAO {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<EntidadeDominio> SelectAll() => _context.TipoUsuarios;
+        public async Task<IEnumerable<EntidadeDominio>> SelectAll() => await _context.TipoUsuarios.ToListAsync();
 
         public  Task Update(EntidadeDominio entidade) {
             throw new NotImplementedException();

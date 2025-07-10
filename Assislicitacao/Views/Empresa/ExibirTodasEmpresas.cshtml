@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Empresa>
+
+@{
+    ViewData["Title"] = "Exibir Empresas";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">RAZÃO SOCIAL</th>
+            <th scope="col">CNPJ</th>
+            <th scope="col">PORTE</th>
+            <th scope="col">AÇÕES</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Empresa Empresa in Model) {
+            <tr>
+                <td>@Empresa.RazaoSocial</td>
+                <td>@Empresa.CNPJ</td>
+                <td>@Empresa.PorteEmpresa.Porte</td>
+                <td>
+                    <a asp-controller="Empresa" asp-action="ExibirEmpresa" asp-route-id="@Empresa.Id">Exibir</a>
+                    <span>|</span>
+                    <a asp-controller="Empresa" asp-action="ConfirmarExclusaoEmpresa" asp-route-id="@Empresa.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

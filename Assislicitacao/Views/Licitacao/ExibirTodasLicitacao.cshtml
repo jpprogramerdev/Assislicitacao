@@ -10,6 +10,7 @@
             <th scope="col">OBJETO</th>
             <th scope="col">DATA</th>
             <th scope="col">EMPRESAS</th>
+            <th scope="col">STATUS</th>
             <th scope="col">PORTAL</th>
         </tr>
     </thead>
@@ -20,10 +21,11 @@
                 <td class="table-licitacoes">@Licitacao.Objeto</td>
                 <td class="table-licitacoes">@Licitacao.Data.ToString("dd/MM/yyyy")</td>
                 <td class="table-licitacoes">
-                   @foreach(Empresa Empresa in Licitacao.Empresas){
-                       <span>@Empresa.RazaoSocial.Split(' ')[0]</span><br />
+                   @foreach(LicitacaoEmpresa LicitacaoEmpresa in Licitacao.Empresas){
+                       <span>@LicitacaoEmpresa.Empresa.RazaoSocial.Split(' ')[0]</span><br />
                    }
                 </td class="table-licitacoes">
+                <td class="table-licitacoes">@Licitacao.StatusLicitacao.Status</td>
                 <td><a href="@Licitacao.PortalLicitacao.link">@Licitacao.PortalLicitacao.Nome</a></td>
             </tr>
         }

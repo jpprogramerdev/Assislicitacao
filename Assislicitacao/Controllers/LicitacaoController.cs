@@ -45,13 +45,13 @@ namespace Assislicitacao.Controllers {
             try {
                 VerificarData.Executar(Licitacao);
 
-                Licitacao.Empresas = new List<Empresa>();
+                Licitacao.Empresas = new List<LicitacaoEmpresa>();
 
                 foreach (var empresaId in LicitacaoViewModel.EmpresasSelecionadasIds) {
                     var EmpresaSelcionada = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == empresaId);
 
                     if (EmpresaSelcionada != null) {
-                        Licitacao.Empresas.Add(EmpresaSelcionada);
+                        Licitacao.Empresas.Add(new LicitacaoEmpresa { Empresa = EmpresaSelcionada});
                     }
                 }
 

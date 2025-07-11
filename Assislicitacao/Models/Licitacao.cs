@@ -15,8 +15,6 @@ namespace Assislicitacao.Models {
         public DateTime Data { get; set; }
         [Column("LCT_VALOR_ESTIMADO")]
         public decimal? ValorEstimado { get; set; }
-        [Column("LCT_CONFIRMACAO_PARTICIPACAO")]
-        public bool? ConfirmacaoParticipacao { get; set; }
 
         //Relacionamentos - Relation
         [Required]
@@ -36,7 +34,7 @@ namespace Assislicitacao.Models {
         public int PortalLicitacaoId { get; set; }
         [ForeignKey("PortalLicitacaoId")]
         public PortalLicitacao PortalLicitacao { get; set; }
-        public List<Empresa> Empresas { get; set; }
+        public List<LicitacaoEmpresa> Empresas { get; set; }
 
         [Required]
         [Column("LCT_STL_ID")]

@@ -19,7 +19,14 @@ namespace Assislicitacao.DAO {
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<EntidadeDominio>> SelectAll() => await _context.Licitacoes.Include(l => l.Empresas).Include(l => l.TipoLicitacao).Include(l => l.PortalLicitacao).ToListAsync();
+        public async Task<IEnumerable<EntidadeDominio>> SelectAll() =>
+     await _context.Licitacoes
+         .Include(l => l.Empresas)  //Empresas que poderão particiapr                         
+             .ThenInclude(le => le.Empresa) //Dados de cada empresa
+         .Include(l => l.TipoLicitacao)
+         .Include(l => l.PortalLicitacao)
+         .Include(l => l.StatusLicitacao)
+         .ToListAsync();
 
         public Task Update(EntidadeDominio entidade) {
             throw new NotImplementedException();

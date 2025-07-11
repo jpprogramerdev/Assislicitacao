@@ -12,5 +12,9 @@ namespace Assislicitacao.Context {
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<PorteEmpresa> PortesEmpresa { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
+        public DbSet<Licitacao> Licitacoes { get; set; }
+        public DbSet<PortalLicitacao> PortaisLicitacoes{ get; set; }
+        public DbSet<StatusLicitacao> StatusLicitacaos { get; set; }
+        public DbSet<TipoLicitacao> TiposLicitacao { get; set; }
     }
 }

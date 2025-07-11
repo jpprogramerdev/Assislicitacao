@@ -21,11 +21,17 @@ builder.Services.AddTransient<IDAOMunicipio, DAOMunicipio>();
 builder.Services.AddTransient<IDAOPorteEmpresa, DAOPorteEmpresa>();
 builder.Services.AddTransient<IDAOEndereco, DAOEndereco>();
 builder.Services.AddTransient<IDAOEmpresa, DAOEmpresa>();
+builder.Services.AddTransient<IDAOTipoLicitacao, DAOTipoLicitacao>();
+builder.Services.AddTransient<IDAOPortalLicitacao, DAOPortalLicitacao>();
+builder.Services.AddTransient<IDAOLicitacao, DAOLicitacao>();
 
 
 builder.Services.AddScoped<IFacadeTipoUsuario, FacadeTipoUsuario>();
 builder.Services.AddScoped<IFacadeUsuario, FacadeUsuario>();
 builder.Services.AddScoped<IFacadeEmpresa, FacadeEmpresa>();
+builder.Services.AddScoped<IFacadeTipoLicitacao, FacadeTipoLicitacao>();
+builder.Services.AddScoped<IFacadePortalLicitacao, FacadePortalLicitacao>();
+builder.Services.AddScoped<IFacadeLicitacao, FacadeLicitacao>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
 

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Licitacao>
+
+@{
+    ViewData["Title"] = "Exibir Licitações";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">TIPO</th>
+            <th scope="col">OBJETO</th>
+            <th scope="col">DATA</th>
+            <th scope="col">EMPRESAS</th>
+            <th scope="col">PORTAL</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Licitacao Licitacao in Model) {
+            <tr>
+                <td class="table-licitacoes">@Licitacao.TipoLicitacao.Sigla</td>
+                <td class="table-licitacoes">@Licitacao.Objeto</td>
+                <td class="table-licitacoes">@Licitacao.Data.ToString("dd/MM/yyyy")</td>
+                <td class="table-licitacoes">
+                   @foreach(Empresa Empresa in Licitacao.Empresas){
+                       <span>@Empresa.RazaoSocial.Split(' ')[0]</span><br />
+                   }
+                </td class="table-licitacoes">
+                <td><a href="@Licitacao.PortalLicitacao.link">@Licitacao.PortalLicitacao.Nome</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

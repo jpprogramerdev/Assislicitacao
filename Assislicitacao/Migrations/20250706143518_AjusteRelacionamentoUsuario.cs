@@ -29,6 +29,7 @@ namespace Assislicitacao.Migrations
                 principalTable: "TIPOS_USUARIO",
                 principalColumn: "TPU_ID",
                 onDelete: ReferentialAction.Cascade);
+
         }
 
         /// <inheritdoc />

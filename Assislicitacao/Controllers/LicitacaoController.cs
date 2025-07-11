@@ -1,5 +1,8 @@
-﻿using Assislicitacao.Facade.Interface;
+﻿using Assislicitacao.Exceptions;
+using Assislicitacao.Facade.Interface;
 using Assislicitacao.Models;
+using Assislicitacao.Strategy;
+using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +40,11 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> SalvarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
             var Licitacao = LicitacaoViewModel.Licitacao;
 
+            IStrategy VerificarData = new VerificarData(); 
+
             try {
+                VerificarData.Executar(Licitacao);
+
                 Licitacao.Empresas = new List<Empresa>();
 
                 foreach (var empresaId in LicitacaoViewModel.EmpresasSelecionadasIds) {
@@ -53,6 +60,8 @@ namespace Assislicitacao.Controllers {
 
                 await _facadeLicitacao.Inserir(Licitacao);
                 TempData["SucessoSalvarLicitacao"] = "Sucesso ao salavar Licitação";
+            }catch (DataAnteriorADataAtualException dataEx){
+                TempData["FalhaSalvarLicitacao"] = dataEx.Message;
             } catch(Exception ex) {
                 TempData["FalhaSalvarLicitacao"] = $"Falha ao salavar Licitação: {ex}";
             }

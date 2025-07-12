@@ -43,3 +43,15 @@ td.table-licitacoes {
     font-weight: bold;
     color: #808080
 }
+
+.cont-empresa {
+    font-weight: 500; /* Peso médio, entre normal (400) e bold (700) */
+    font-style: italic; /* Deixa o texto em itálico */
+    font-size: 1.2rem; /* Tamanho de título leve */
+    color: #333; /* Cor escura mas não preta (opcional) */
+    margin-bottom: 0.5rem; /* Espaço abaixo do título (opcional) */
+}
+
+.confirmacao-participacao{
+    color: #00ff0d
+}

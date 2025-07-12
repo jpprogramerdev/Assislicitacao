@@ -16,9 +16,7 @@ namespace Assislicitacao.Facade {
             throw new NotImplementedException();
         }
 
-        public Task Atualizar(EntidadeDominio entidade) {
-            throw new NotImplementedException();
-        }
+        public async Task Atualizar(EntidadeDominio entidade) => await _daoLicitacao.Update(entidade);
 
         public async Task Inserir(EntidadeDominio entidade) {
             Licitacao Licitacao = (Licitacao)entidade;

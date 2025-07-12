@@ -36,6 +36,23 @@ namespace Assislicitacao.Controllers {
             return View(LicitacaoViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmarLicitacao (int id) {
+            var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id);
+            return View(Licitacao);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtaualizarConfirmacaoLicitacao (Licitacao Licitacao) {
+            try {
+                await _facadeLicitacao.Atualizar(Licitacao);
+                TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
+            } catch(Exception ex) {
+                TempData["ErrorAtualizarLicitcao"] = ex.Message;
+            }
+            return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
+        }
+
         [HttpPost]
         public async Task<IActionResult> SalvarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
             var Licitacao = LicitacaoViewModel.Licitacao;

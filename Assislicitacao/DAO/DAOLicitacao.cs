@@ -28,8 +28,26 @@ namespace Assislicitacao.DAO {
          .Include(l => l.StatusLicitacao)
          .ToListAsync();
 
-        public Task Update(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+        public async Task Update(EntidadeDominio entidade) {
+            var LicitacaoAtualizada = (Licitacao)entidade;
+
+            var LicitacaoDB = (await SelectAll()).Cast<Licitacao>().FirstOrDefault(l => l.Id == LicitacaoAtualizada.Id);
+
+            if(LicitacaoDB == null) {
+                throw new Exception("Licitação não encontrada");
+            }
+
+            LicitacaoDB.Empresas.Clear();
+
+            foreach(var LicitacaoEmpresa in LicitacaoAtualizada.Empresas) {
+                LicitacaoDB.Empresas.Add(new LicitacaoEmpresa {
+                    EmpresaId = LicitacaoEmpresa.EmpresaId,
+                    LicitacaoId = LicitacaoEmpresa.LicitacaoId,
+                    ConfirmacaoParticipacao = LicitacaoEmpresa.ConfirmacaoParticipacao
+                });
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

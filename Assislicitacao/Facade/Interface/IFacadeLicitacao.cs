@@ -1,4 +1,7 @@
-﻿namespace Assislicitacao.Facade.Interface {
+﻿using Assislicitacao.Models;
+
+namespace Assislicitacao.Facade.Interface {
     public interface IFacadeLicitacao : IFacadeGeneric{
+        public Task AtualizarConfirmacao(EntidadeDominio entidade);
     }
 }

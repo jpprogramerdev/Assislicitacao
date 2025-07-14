@@ -1,0 +1,54 @@
+﻿@model LicitacaoViewModel
+
+@{
+    ViewData["Title"] = "Editar Licitacao";
+}
+
+
+<form asp-controller="Licitacao" asp-action="AtualizarLicitacao" method="post">
+    <input type="hidden" asp-for="@Model.Licitacao.Id" />
+    <input type="hidden" asp-for="@Model.Licitacao.MunicipioId" />
+    <input type="hidden" asp-for="@Model.Licitacao.StatusLicitacaoId" />
+
+    <div class="form-group">
+        <label for="tipo-licitacao">Tipo Licitacao:</label>
+        <select asp-for="@Model.Licitacao.TipoLicitacaoId" class="form-control" id="tipo-licitacao" asp-items="@(new SelectList(Model.TiposLicitacao, "Id", "Tipo"))"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="objeto-licitacao">Objeto:</label>
+        <input type="text" class="form-control" id="objeto-licitacao" placeholder="Objeto" asp-for="@Model.Licitacao.Objeto" required>
+    </div>
+
+    <div class="form-group">
+        <label for="data-licitacao">Data:</label>
+        <input type="date" class="form-control" id="data-licitacao" asp-for="@Model.Licitacao.Data" required>
+    </div>
+
+    <div class="form-group">
+        <label for="valor-estimado-licitacao">Valor Estimado:</label>
+        <input type="number" class="form-control" id="valor-estimado-licitacao" placeholder="R$ 0,00" asp-for="@Model.Licitacao.ValorEstimado" step="0.01">
+    </div>
+
+    <div class="form-group">
+        <label for="municipio-licitacao">Municipio:</label>
+        <input type="text" class="form-control" id="email-usuario" placeholder="Nome" asp-for="@Model.Licitacao.Municipio.Nome" required>
+    </div>
+
+    <div class="form-group">
+        <label for="portal-licitacao">Portal Licitacao:</label>
+        <select asp-for="@Model.Licitacao.PortalLicitacaoId" class="form-control" id="portal-licitacao" asp-items="@(new SelectList(Model.PortaisLicitacoes, "Id", "Nome"))"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="empresa-licitacao">Empresas Participantes:</label>
+        <select asp-for="@Model.EmpresasSelecionadasIds"
+                class="form-control"
+                id="empresa-licitacao"
+                asp-items="@(new MultiSelectList(Model.Empresas, "Id", "RazaoSocial"))"
+                multiple>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>

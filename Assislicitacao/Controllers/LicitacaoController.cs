@@ -37,6 +37,18 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpGet]
+        public async Task<IActionResult> EditarLicitacao(int id) {
+            var LicitacaoViewModel = new LicitacaoViewModel {
+                Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id),
+                Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList(),
+                TiposLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().ToList(),
+                PortaisLicitacoes = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().ToList()
+            };
+
+            return View(LicitacaoViewModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ConfirmarLicitacao (int id) {
             var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id);
             return View(Licitacao);
@@ -45,7 +57,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> AtaualizarConfirmacaoLicitacao (Licitacao Licitacao) {
             try {
-                await _facadeLicitacao.Atualizar(Licitacao);
+                await _facadeLicitacao.AtualizarConfirmacao(Licitacao);
                 TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
             } catch(Exception ex) {
                 TempData["ErrorAtualizarLicitcao"] = ex.Message;
@@ -84,7 +96,37 @@ namespace Assislicitacao.Controllers {
             }
 
             return RedirectToAction("CadastrarLicitacao", "Licitacao");
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> AtualizarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
+            var Licitacao = LicitacaoViewModel.Licitacao;
+            
+            IStrategy VerificarData = new VerificarData();
+
+            Licitacao.Empresas = new List<LicitacaoEmpresa>();
+
+            try {
+                VerificarData.Executar(Licitacao);
+
+                foreach (var empresaId in LicitacaoViewModel.EmpresasSelecionadasIds) {
+                    var EmpresaSelcionada = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == empresaId);
+
+                    if (EmpresaSelcionada != null) {
+                        Licitacao.Empresas.Add(new LicitacaoEmpresa { Empresa = EmpresaSelcionada });
+                    }
+                }
+
+                Licitacao.Municipio.Nome = Licitacao.Municipio.Nome.ToUpper().Trim();
+                
+                await _facadeLicitacao.Atualizar(Licitacao);
+                TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
+            } catch (DataAnteriorADataAtualException dataEx) {
+                TempData["ErrorAtualizarLicitcao"] = dataEx.Message;
+            } catch (Exception ex) {
+                TempData["ErrorAtualizarLicitcao"] = $"Falha ao salavar Licitação: {ex}";
+            }
+            return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
         }
     }
 }

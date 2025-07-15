@@ -1,5 +1,7 @@
 ﻿using Assislicitacao.Facade.Interface;
 using Assislicitacao.Models;
+using Assislicitacao.Strategy;
+using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -73,7 +75,10 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            IStrategy CriptografarSenha = new CriptografarSenha();
+
             try {
+                CriptografarSenha.Executar(Usuario);
                 _facadeUsuario.Inserir(Usuario);
                 TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuario";
             } catch (Exception ex) {

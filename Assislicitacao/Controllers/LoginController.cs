@@ -1,5 +1,7 @@
 ﻿using Assislicitacao.Facade.Interface;
 using Assislicitacao.Models;
+using Assislicitacao.Strategy;
+using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,12 +25,18 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> VerificarLogin(LoginViewModel Login) {
-            var usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Email == Login.Email && u.Senha == Login.Senha);
+            IStrategy CriptografarSenha = new CriptografarSenha();
 
-            if(usuario != null) {
-                HttpContext.Session.SetInt32("usuarioId", usuario.Id);
-                HttpContext.Session.SetString("usuarioNome", usuario.Nome);
-                HttpContext.Session.SetString("usuarioEmail", usuario.Email);
+            var usuarioLogin = new Usuario { Senha = Login.Senha, Email = Login.Email };
+
+            CriptografarSenha.Executar(usuarioLogin);
+
+            var usuarioDB = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Email == usuarioLogin.Email && u.Senha == usuarioLogin.Senha);
+
+            if(usuarioDB != null) {
+                HttpContext.Session.SetInt32("usuarioId", usuarioDB.Id);
+                HttpContext.Session.SetString("usuarioNome", usuarioDB.Nome);
+                HttpContext.Session.SetString("usuarioEmail", usuarioDB.Email);
 
                 return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
             }

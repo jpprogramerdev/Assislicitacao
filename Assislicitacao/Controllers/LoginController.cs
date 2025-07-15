@@ -26,6 +26,7 @@ namespace Assislicitacao.Controllers {
             var usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Email == Login.Email && u.Senha == Login.Senha);
 
             if(usuario != null) {
+                HttpContext.Session.SetInt32("usuarioId", usuario.Id);
                 HttpContext.Session.SetString("usuarioNome", usuario.Nome);
                 HttpContext.Session.SetString("usuarioEmail", usuario.Email);
 

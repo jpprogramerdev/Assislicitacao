@@ -15,6 +15,11 @@ namespace Assislicitacao.Controllers {
         }
 
         public async Task<IActionResult> RegistrarUsuario() {
+            if(HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var usuarioViewModel = new UsuarioViewModel {
                 Usuario = new(),
                 TipoUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>()

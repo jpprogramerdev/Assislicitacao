@@ -15,7 +15,7 @@ namespace Assislicitacao.Controllers {
         }
 
         public async Task<IActionResult> RegistrarUsuario() {
-            if(HttpContext.Session.GetInt32("usuarioId") == null) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É nécessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
@@ -29,6 +29,11 @@ namespace Assislicitacao.Controllers {
         }
 
         public async Task<IActionResult> ExibirUsuarios() {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var usuarios = (await _facadeUsuario.Selecionar()).Cast<Usuario>();
 
             return View(usuarios);
@@ -36,6 +41,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> EditarUsuario(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var usuarioViewModel = new UsuarioViewModel {
                 Usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == id),
                 TipoUsuario =(await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>()
@@ -46,6 +56,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> ConfirmarExclusaoUsuario(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var Usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == id);
 
             return View(Usuario);
@@ -53,6 +68,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public IActionResult SalvarUsuario(Usuario Usuario) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             try {
                 _facadeUsuario.Inserir(Usuario);
                 TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuario";
@@ -64,6 +84,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public IActionResult AtualizarUsuario(Usuario Usuario) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             try {
                 _facadeUsuario.Atualizar(Usuario);
                 TempData["SucessoAtualizar"] = "Sucesso ao atualizar o usuario";
@@ -76,6 +101,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> ExcluirUsuario(Usuario Usuario) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             try {
                 await _facadeUsuario.Apagar(Usuario);
                 TempData["SucessoExclusao"] = "Sucesso ao excluir o usuario";

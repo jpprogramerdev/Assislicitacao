@@ -14,10 +14,20 @@ namespace Assislicitacao.Controllers {
         }
 
         public IActionResult ConsultarCNPJ() {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             return View();
         }
 
         public async Task<IActionResult> ExibirTodasEmpresas() {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             List<Empresa> ListEmpresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList();
 
             foreach(Empresa Empresa in ListEmpresa) {
@@ -29,6 +39,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> ExibirEmpresa(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
             return View(Empresa);
@@ -36,6 +51,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> EditarEmpresa(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
             return View(Empresa);
@@ -43,6 +63,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> ExibirCNPJ(Empresa Empresa) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             if ((await _facadeEmpresa.Selecionar()).Cast<Empresa>().Any(emp => emp.CNPJ == Empresa.CNPJ)) {
                 TempData["CNPJJacCadastrado"] = "CNPJ já cadastrado no sistema";
                 return RedirectToAction("ConsultarCNPJ", "Empresa");
@@ -55,6 +80,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> SalvarEmpresa(EmpresaReceitaWsResponse EmpresaReceitaWsResponse) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             try {
                 await _facadeEmpresa.Inserir(EmpresaMapper.ConverteEmpresaResponseToEmpresa(EmpresaReceitaWsResponse));
                 TempData["EmpresaSalva"] = "Empresa cadastrada com sucesso";
@@ -67,6 +97,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> ConfirmarExclusaoEmpresa(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
             return View(Empresa);
@@ -74,6 +109,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> ExcluirEmpresa (Empresa Empresa) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             await _facadeEmpresa.Apagar(Empresa);
             return RedirectToAction("ExibirTodasEmpresas", "Empresa");
         }

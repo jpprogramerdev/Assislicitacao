@@ -22,11 +22,21 @@ namespace Assislicitacao.Controllers {
         }
 
         public async Task<IActionResult> ExibirTodasLicitacao() {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var licitacoes = await _facadeLicitacao.Selecionar();
             return View(licitacoes);
         }
 
         public async Task<IActionResult> CadastrarLicitacao() {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var LicitacaoViewModel = new LicitacaoViewModel {
                 Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList(),
                 TiposLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().ToList(),
@@ -38,6 +48,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> EditarLicitacao(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var LicitacaoViewModel = new LicitacaoViewModel {
                 Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id),
                 Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList(),
@@ -50,12 +65,22 @@ namespace Assislicitacao.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> ConfirmarLicitacao (int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id);
             return View(Licitacao);
         }
 
         [HttpPost]
         public async Task<IActionResult> AtaualizarConfirmacaoLicitacao (Licitacao Licitacao) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             try {
                 await _facadeLicitacao.AtualizarConfirmacao(Licitacao);
                 TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
@@ -67,6 +92,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> SalvarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var Licitacao = LicitacaoViewModel.Licitacao;
 
             IStrategy VerificarData = new VerificarData(); 
@@ -100,6 +130,11 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> AtualizarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
             var Licitacao = LicitacaoViewModel.Licitacao;
             
             IStrategy VerificarData = new VerificarData();

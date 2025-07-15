@@ -37,6 +37,7 @@ namespace Assislicitacao.Controllers {
                 HttpContext.Session.SetInt32("usuarioId", usuarioDB.Id);
                 HttpContext.Session.SetString("usuarioNome", usuarioDB.Nome);
                 HttpContext.Session.SetString("usuarioEmail", usuarioDB.Email);
+                HttpContext.Session.SetString("usuarioTipoUsuario", usuarioDB.TipoUsuario.Tipo);
 
                 return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
             }

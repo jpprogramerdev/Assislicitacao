@@ -23,7 +23,7 @@ namespace Assislicitacao.Controllers {
 
         public async Task<IActionResult> ExibirTodasLicitacao() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -33,7 +33,7 @@ namespace Assislicitacao.Controllers {
 
         public async Task<IActionResult> CadastrarLicitacao() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -49,7 +49,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public async Task<IActionResult> EditarLicitacao(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -66,7 +66,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public async Task<IActionResult> ConfirmarLicitacao (int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -77,7 +77,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> AtaualizarConfirmacaoLicitacao (Licitacao Licitacao) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -93,7 +93,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> SalvarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -131,7 +131,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> AtualizarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 

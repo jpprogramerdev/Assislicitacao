@@ -18,7 +18,7 @@ namespace Assislicitacao.Controllers {
 
         public IActionResult ConsultarCNPJ() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -27,7 +27,7 @@ namespace Assislicitacao.Controllers {
 
         public async Task<IActionResult> ExibirTodasEmpresas() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -43,7 +43,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public async Task<IActionResult> ExibirEmpresa(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -55,7 +55,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public async Task<IActionResult> EditarEmpresa(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessárioe estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -67,7 +67,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> ExibirCNPJ(Empresa Empresa) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -83,7 +83,7 @@ namespace Assislicitacao.Controllers {
 
         public async Task<IActionResult> VincularUsuarios(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
             var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == id);
@@ -125,7 +125,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> SalvarEmpresa(EmpresaReceitaWsResponse EmpresaReceitaWsResponse) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -142,7 +142,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public async Task<IActionResult> ConfirmarExclusaoEmpresa(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -154,7 +154,7 @@ namespace Assislicitacao.Controllers {
         [HttpPost]
         public async Task<IActionResult> ExcluirEmpresa (Empresa Empresa) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 

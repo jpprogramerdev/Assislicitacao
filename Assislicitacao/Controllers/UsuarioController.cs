@@ -18,7 +18,7 @@ namespace Assislicitacao.Controllers {
 
         public async Task<IActionResult> RegistrarUsuario() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -32,7 +32,7 @@ namespace Assislicitacao.Controllers {
 
         public async Task<IActionResult> ExibirUsuarios() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 
@@ -44,7 +44,7 @@ namespace Assislicitacao.Controllers {
         [HttpGet]
         public async Task<IActionResult> EditarUsuario(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
+                TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
 

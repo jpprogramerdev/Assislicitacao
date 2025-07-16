@@ -31,7 +31,10 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
-            List<Empresa> ListEmpresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList();
+            var Usuario = new Usuario();
+            Usuario.Id = (int)HttpContext.Session.GetInt32("usuarioId");
+
+            List<Empresa> ListEmpresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().Where(user => user.UsusariosVinculados.Any(u => u.Id == Usuario.Id)).ToList();
 
             foreach(Empresa Empresa in ListEmpresa) {
                 Empresa.CNPJ = Convert.ToUInt64(Empresa.CNPJ).ToString(@"00\.000\.000\/0000\-00");

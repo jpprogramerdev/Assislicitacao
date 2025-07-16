@@ -37,8 +37,11 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            var Usuario = new Usuario();
+            Usuario.Id = (int)HttpContext.Session.GetInt32("usuarioId");
+
             var LicitacaoViewModel = new LicitacaoViewModel {
-                Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList(),
+                Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().Where(user => user.UsusariosVinculados.Any(u => u.Id == Usuario.Id)).ToList(),
                 TiposLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().ToList(),
                 PortaisLicitacoes = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().ToList()
             };
@@ -53,9 +56,12 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            var Usuario = new Usuario();
+            Usuario.Id = (int)HttpContext.Session.GetInt32("usuarioId");
+
             var LicitacaoViewModel = new LicitacaoViewModel {
                 Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id),
-                Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().ToList(),
+                Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().Where(user => user.UsusariosVinculados.Any(u => u.Id == Usuario.Id)).ToList(),
                 TiposLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().ToList(),
                 PortaisLicitacoes = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().ToList()
             };

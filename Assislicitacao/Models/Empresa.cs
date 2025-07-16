@@ -29,5 +29,6 @@ namespace Assislicitacao.Models {
         [ForeignKey("PorteEmrpesaId")]
         public PorteEmpresa PorteEmpresa { get; set; }
         public List<Licitacao> Licitacoes { get; set; }
+        public List<Usuario> UsusariosVinculados { get; set; }
     }
 }

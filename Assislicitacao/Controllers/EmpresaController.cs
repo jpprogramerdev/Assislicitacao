@@ -2,15 +2,18 @@
 using Assislicitacao.Facade.Interface;
 using Assislicitacao.Mapper;
 using Assislicitacao.Models;
+using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Assislicitacao.Controllers {
     public class EmpresaController : Controller {
         private readonly IFacadeEmpresa _facadeEmpresa;
+        private readonly IFacadeUsuario _facadeUsuarios;
 
-        public EmpresaController(IFacadeEmpresa facadeEmpresa) {
+        public EmpresaController(IFacadeEmpresa facadeEmpresa, IFacadeUsuario facadeUsuarios) {
             _facadeEmpresa = facadeEmpresa;
+            _facadeUsuarios = facadeUsuarios;
         }
 
         public IActionResult ConsultarCNPJ() {
@@ -76,6 +79,47 @@ namespace Assislicitacao.Controllers {
             var empresa = await _facadeEmpresa.ObterEmpresaCNPJ(Empresa.CNPJ);
 
             return View(empresa);
+        }
+
+        public async Task<IActionResult> VincularUsuarios(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+            var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == id);
+
+            var UsuarioVinculadoEmpresa = new UsuarioVinculadoEmpresaViewModel() {
+                Empresa = empresa,
+                Usuarios = (await _facadeUsuarios.Selecionar()).Cast<Usuario>().Where(u => u.TipoUsuario.Tipo != "USUARIO").ToList(),
+                UsuariosSelecionadosIds = empresa.UsusariosVinculados?.Select(u => u.Id).ToList() ?? new List<int>()
+            };
+
+            return View(UsuarioVinculadoEmpresa);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SalvarVinculacao(UsuarioVinculadoEmpresaViewModel UsuarioVinculadoEmpresa) {
+            try {
+                var Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == UsuarioVinculadoEmpresa.Empresa.Id);
+
+                if(Empresa == null) {
+                    TempData["FalhaVincular"] = "Empresa não localizada";
+                    return RedirectToAction("ExibirTodasEmpresas", "Empresa");
+                }
+                Empresa.UsusariosVinculados = new List<Usuario>();
+
+                foreach (int id in UsuarioVinculadoEmpresa.UsuariosSelecionadosIds) {
+                    Empresa.UsusariosVinculados.Add((await _facadeUsuarios.Selecionar()).Cast<Usuario>().FirstOrDefault(usu => usu.Id == id));
+                }
+
+                await _facadeEmpresa.Atualizar(Empresa);
+
+                TempData["SucessoVincular"] = "Sucesso ao vincular os usuários";
+            }catch(Exception ex) {
+                TempData["FalhaVincular"] = "Falha ao vincular os usuários";
+            }
+
+            return RedirectToAction("ExibirTodasEmpresas", "Empresa");
         }
 
         [HttpPost]

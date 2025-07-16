@@ -27,8 +27,8 @@ namespace Assislicitacao.Facade {
             await _daoEmpresa.Delete(entidade);
         }
 
-        public Task Atualizar(EntidadeDominio entidade) {
-            throw new NotImplementedException();
+        public async Task Atualizar(EntidadeDominio entidade) {
+            await _daoEmpresa.Update(entidade);
         }
 
         public async Task Inserir(EntidadeDominio entidade) {

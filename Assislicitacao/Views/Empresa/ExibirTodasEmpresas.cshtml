@@ -2,6 +2,16 @@
 
 @{
     ViewData["Title"] = "Exibir Empresas";
+
+    if (TempData["FalhaVincular"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["FalhaVincular"]
+        </div>
+    } else if (TempData["SucessoVincular"] != null) {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucessoVincular"]
+        </div>
+    }
 }
 <table class="table">
     <thead>
@@ -9,6 +19,7 @@
             <th scope="col">RAZÃO SOCIAL</th>
             <th scope="col">CNPJ</th>
             <th scope="col">PORTE</th>
+            <th scope="col">USUARIOS VINCULADOS</th>
             <th scope="col">AÇÕES</th>
         </tr>
     </thead>
@@ -18,10 +29,13 @@
                 <td>@Empresa.RazaoSocial</td>
                 <td>@Empresa.CNPJ</td>
                 <td>@Empresa.PorteEmpresa.Porte</td>
+                <td>@Empresa.UsusariosVinculados.Count</td>
                 <td>
                     <a asp-controller="Empresa" asp-action="ExibirEmpresa" asp-route-id="@Empresa.Id">Exibir</a>
                     <span>|</span>
                     <a asp-controller="Empresa" asp-action="ConfirmarExclusaoEmpresa" asp-route-id="@Empresa.Id">Excluir</a>
+                    <span>|</span>
+                    <a asp-controller="Empresa" asp-action="VincularUsuarios" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
                 </td>
             </tr>
         }

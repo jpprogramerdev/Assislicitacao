@@ -23,5 +23,6 @@ namespace Assislicitacao.Models {
         public int TipoId { get; set; }
         [ForeignKey("TipoId")]
         public TipoUsuario TipoUsuario { get; set; }
+        public List<Empresa> EmpresasVinculadas { get; set; }
     }
 }

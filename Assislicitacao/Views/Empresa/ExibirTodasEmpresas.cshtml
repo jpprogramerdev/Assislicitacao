@@ -34,8 +34,15 @@
                     <a asp-controller="Empresa" asp-action="ExibirEmpresa" asp-route-id="@Empresa.Id">Exibir</a>
                     <span>|</span>
                     <a asp-controller="Empresa" asp-action="ConfirmarExclusaoEmpresa" asp-route-id="@Empresa.Id">Excluir</a>
-                    <span>|</span>
-                    <a asp-controller="Empresa" asp-action="VincularUsuarios" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
+                    @{
+                        var tipoUsuario = Context.Session.GetString("usuarioTipoUsuario");
+
+                        if(tipoUsuario == "SÓCIO-ADMINISTRADOR" || tipoUsuario == "REPRESENTANTE LEGAL"){
+                            <span>|</span>
+                            <a asp-controller="Empresa" asp-action="VincularUsuarios" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
+                        }
+                    }
+                   
                 </td>
             </tr>
         }

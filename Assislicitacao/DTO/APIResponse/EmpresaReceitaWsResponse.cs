@@ -1,4 +1,6 @@
-﻿namespace Assislicitacao.DTO.APIResponse {
+﻿using Assislicitacao.Models;
+
+namespace Assislicitacao.DTO.APIResponse {
     public class EmpresaReceitaWsResponse {
         public string nome { get; set; }
         public string porte { get; set; }
@@ -10,5 +12,7 @@
         public string uf { get; set; }
         public string cep { get; set; }
         public string cnpj { get; set; }
+        public Usuario Usuario { get; set; }
+        public List<TipoUsuario> TiposUsuario { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Assislicitacao.Models {
         [Column("END_CEP")]
         public string CEP { get; set; }
         [Column("END_COMPLEMENTO")]
-        public string Complemento { get; set; }
+        public string? Complemento { get; set; }
 
         //Relatcionamentos - Relation
         [Column("END_MUC_ID")]

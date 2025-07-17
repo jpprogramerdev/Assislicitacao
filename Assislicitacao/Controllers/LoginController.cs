@@ -25,23 +25,26 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> VerificarLogin(LoginViewModel Login) {
-            IStrategy CriptografarSenha = new CriptografarSenha();
+            try {
+                IStrategy CriptografarSenha = new CriptografarSenha();
 
-            var usuarioLogin = new Usuario { Senha = Login.Senha, Email = Login.Email };
+                var usuarioLogin = new Usuario { Senha = Login.Senha, Email = Login.Email };
 
-            CriptografarSenha.Executar(usuarioLogin);
+                CriptografarSenha.Executar(usuarioLogin);
 
-            var usuarioDB = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Email == usuarioLogin.Email && u.Senha == usuarioLogin.Senha);
+                var usuarioDB = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Email == usuarioLogin.Email && u.Senha == usuarioLogin.Senha);
 
-            if(usuarioDB != null) {
-                HttpContext.Session.SetInt32("usuarioId", usuarioDB.Id);
-                HttpContext.Session.SetString("usuarioNome", usuarioDB.Nome);
-                HttpContext.Session.SetString("usuarioEmail", usuarioDB.Email);
-                HttpContext.Session.SetString("usuarioTipoUsuario", usuarioDB.TipoUsuario.Tipo);
+                if (usuarioDB != null) {
+                    HttpContext.Session.SetInt32("usuarioId", usuarioDB.Id);
+                    HttpContext.Session.SetString("usuarioNome", usuarioDB.Nome);
+                    HttpContext.Session.SetString("usuarioEmail", usuarioDB.Email);
+                    HttpContext.Session.SetString("usuarioTipoUsuario", usuarioDB.TipoUsuario.Tipo);
 
-                return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
+                    return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
+                }
+            }catch(Exception ex) {
+                TempData["ErroLogin"] = "Email e/ou senha inválidos";
             }
-
             TempData["ErroLogin"] = "Email e/ou senha inválidos";
 
             return View("Login");

@@ -55,3 +55,17 @@ td.table-licitacoes {
 .confirmacao-participacao{
     color: #00ff0d
 }
+
+fieldset.form-group {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.fieldset-legend {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0 8px;
+    color: #555;
+}

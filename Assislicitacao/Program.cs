@@ -26,7 +26,7 @@ builder.Services.AddTransient<IDAOTipoLicitacao, DAOTipoLicitacao>();
 builder.Services.AddTransient<IDAOPortalLicitacao, DAOPortalLicitacao>();
 builder.Services.AddTransient<IDAOLicitacao, DAOLicitacao>();
 
-
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IFacadeTipoUsuario, FacadeTipoUsuario>();
 builder.Services.AddScoped<IFacadeUsuario, FacadeUsuario>();
 builder.Services.AddScoped<IFacadeEmpresa, FacadeEmpresa>();

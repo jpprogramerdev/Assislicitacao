@@ -1,6 +1,7 @@
 ﻿using Assislicitacao.Exceptions;
 using Assislicitacao.Facade.Interface;
 using Assislicitacao.Models;
+using Assislicitacao.Service;
 using Assislicitacao.Strategy;
 using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
@@ -12,13 +13,15 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeTipoLicitacao _facadeTipoLicitacao;
         private readonly IFacadePortalLicitacao _facadePortalLicitacao;
         private readonly IFacadeLicitacao  _facadeLicitacao;
+        private readonly EmailService _emailService;
 
 
-        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao) {
+        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, EmailService emailService) {
             _facadeEmpresa = facadeEmpresa;
             _facadeTipoLicitacao = facadeTipoLicitacao;
             _facadePortalLicitacao = facadePortalLicitacao;
             _facadeLicitacao = facadeLicitacao;
+            _emailService = emailService;
         }
 
         public async Task<IActionResult> ExibirTodasLicitacao() {
@@ -26,6 +29,12 @@ namespace Assislicitacao.Controllers {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
+
+            string assunto = "TESTE EMAIL";
+            string mensagem = "Olá, email enviado com sucesso";
+            string email = "joaogerotto.desenvolvedor@gmail.com";
+
+            await _emailService.EnviarEmail(email, assunto, mensagem);
 
             var licitacoes = await _facadeLicitacao.Selecionar();
             return View(licitacoes);

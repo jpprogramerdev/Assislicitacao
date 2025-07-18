@@ -137,7 +137,7 @@ namespace Assislicitacao.Controllers {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
-
+            
             var usuario = EmpresaReceitaWsResponse.Usuario;
 
             IStrategy CriptografarSenha = new CriptografarSenha();

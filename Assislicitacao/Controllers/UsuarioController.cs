@@ -79,6 +79,9 @@ namespace Assislicitacao.Controllers {
 
             try {
                 CriptografarSenha.Executar(Usuario);
+
+                Usuario.EmpresasVinculadas = new List<Empresa>();
+
                 _facadeUsuario.Inserir(Usuario);
                 TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuario";
             } catch (Exception ex) {

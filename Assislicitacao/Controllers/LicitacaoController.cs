@@ -13,15 +13,15 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeTipoLicitacao _facadeTipoLicitacao;
         private readonly IFacadePortalLicitacao _facadePortalLicitacao;
         private readonly IFacadeLicitacao  _facadeLicitacao;
-        private readonly EmailService _emailService;
+        private readonly IFacadeEmail _facadeEmail;
 
 
-        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, EmailService emailService) {
+        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail) {
             _facadeEmpresa = facadeEmpresa;
             _facadeTipoLicitacao = facadeTipoLicitacao;
             _facadePortalLicitacao = facadePortalLicitacao;
             _facadeLicitacao = facadeLicitacao;
-            _emailService = emailService;
+            _facadeEmail = facadeEmail;
         }
 
         public async Task<IActionResult> ExibirTodasLicitacao() {
@@ -29,12 +29,6 @@ namespace Assislicitacao.Controllers {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
-
-            string assunto = "TESTE EMAIL";
-            string mensagem = "Olá, email enviado com sucesso";
-            string email = "joaogerotto.desenvolvedor@gmail.com";
-
-            await _emailService.EnviarEmail(email, assunto, mensagem);
 
             var licitacoes = await _facadeLicitacao.Selecionar();
             return View(licitacoes);
@@ -133,8 +127,15 @@ namespace Assislicitacao.Controllers {
                 Licitacao.StatusLicitacaoId = 1;
 
                 await _facadeLicitacao.Inserir(Licitacao);
+                
+
+                Licitacao.TipoLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().FirstOrDefault(tpl => tpl.Id == Licitacao.TipoLicitacaoId);
+                Licitacao.PortalLicitacao = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().FirstOrDefault(ptl => ptl.Id == Licitacao.PortalLicitacaoId);
+
+                await _facadeEmail.EnviarNotificacaoNovaLicitacao(Licitacao);
+
                 TempData["SucessoSalvarLicitacao"] = "Sucesso ao salavar Licitação";
-            }catch (DataAnteriorADataAtualException dataEx){
+            } catch (DataAnteriorADataAtualException dataEx){
                 TempData["FalhaSalvarLicitacao"] = dataEx.Message;
             } catch(Exception ex) {
                 TempData["FalhaSalvarLicitacao"] = $"Falha ao salavar Licitação: {ex}";

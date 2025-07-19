@@ -35,9 +35,15 @@ namespace Assislicitacao.Controllers {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
+            
+            if(HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
 
             var usuarios = (await _facadeUsuario.Selecionar()).Cast<Usuario>();
-
+            
             return View(usuarios);
         }
 
@@ -45,6 +51,12 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> EditarUsuario(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 
@@ -63,6 +75,12 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             var Usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == id);
 
             return View(Usuario);
@@ -72,6 +90,12 @@ namespace Assislicitacao.Controllers {
         public IActionResult SalvarUsuario(Usuario Usuario) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 
@@ -97,6 +121,12 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             try {
                 _facadeUsuario.Atualizar(Usuario);
                 TempData["SucessoAtualizar"] = "Sucesso ao atualizar o usuario";
@@ -111,6 +141,12 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> ExcluirUsuario(Usuario Usuario) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É nécessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 

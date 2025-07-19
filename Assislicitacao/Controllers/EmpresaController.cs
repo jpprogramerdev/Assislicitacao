@@ -26,12 +26,24 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             return View();
         }
 
         public async Task<IActionResult> ExibirTodasEmpresas() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 
@@ -54,6 +66,12 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
             return View(Empresa);
@@ -66,6 +84,12 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
             return View(Empresa);
@@ -75,6 +99,12 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> ExibirInfomarcoeEmpresaPosConsulta(Empresa Empresa) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 
@@ -95,6 +125,13 @@ namespace Assislicitacao.Controllers {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
             }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == id);
 
             var UsuarioVinculadoEmpresa = new UsuarioVinculadoEmpresaViewModel() {
@@ -174,6 +211,12 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
             return View(Empresa);
@@ -183,6 +226,12 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> ExcluirEmpresa (Empresa Empresa) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 

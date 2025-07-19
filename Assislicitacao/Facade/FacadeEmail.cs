@@ -19,7 +19,7 @@ namespace Assislicitacao.Facade {
                     $"<br>Foi adicionado uma nova licitação para sua empresa, confira no sistema:<br>" +
                     $"<br>Tipo Licitação: {Licitacao.TipoLicitacao.Tipo}" +
                     $"<br>Objeto : {Licitacao.Objeto}" +
-                    $"<br>Municipio / UF : {Licitacao.Municipio}" +
+                    $"<br>Municipio / UF : {Licitacao.Municipio.Nome}" +
                     $"<br>Data: {Licitacao.Data.ToString("dd/MM/yyyy")}" +
                     $"<br>Portal: <a href='{Licitacao.PortalLicitacao.link}'>{Licitacao.PortalLicitacao.Nome}</a>";
                 foreach (var usuario in empresa.Empresa.UsusariosVinculados) {

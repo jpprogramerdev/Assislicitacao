@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Login";
-
     Layout = "_LayoutLogin";
 }
 
@@ -14,12 +13,16 @@
             <div class="alert alert-danger" role="alert">
                 @TempData["ErroLogin"]
             </div>
+        } else if (TempData["SucessoCadastroLogin"] != null) {
+            <div class="alert alert-success" role="alert">
+                @TempData["SucessoCadastroLogin"]
+            </div>
         }
 
         <form asp-controller="Login" asp-action="VerificarLogin" method="post" novalidate>
             <div class="mb-3">
                 <label asp-for="Email" class="form-label">Email:</label>
-                <input type="email" asp-for=" Email" class="form-control" placeholder="Digite seu email" />
+                <input type="email" asp-for="Email" class="form-control" placeholder="Digite seu email" />
             </div>
 
             <div class="mb-3">
@@ -27,8 +30,14 @@
                 <input type="password" asp-for="Senha" class="form-control" placeholder="Digite sua senha" />
             </div>
 
-            <div class="d-grid">
+            <div class="d-grid mb-3">
                 <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <a asp-controller="Usuario" asp-action="RegistrarUsuario">Cadastrar como Operador</a><br />
+                <a asp-controller="Cadastro" asp-action="RegistrarEmpresa">Cadastrar como Empresa (CNPJ)</a><br />
+                <a asp-controller="Login" asp-action="RecuperarSenha">Esqueci minha senha</a>
             </div>
         </form>
     </div>

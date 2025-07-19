@@ -17,14 +17,15 @@ namespace Assislicitacao.Controllers {
         }
 
         public async Task<IActionResult> RegistrarUsuario() {
+            var TiposUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>();
+
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
+                TiposUsuario = TiposUsuario.Where(tpu => tpu.Tipo == "OPERADOR DE LICITAÇÕES");
             }
 
             var usuarioViewModel = new UsuarioViewModel {
                 Usuario = new(),
-                TipoUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>()
+                TipoUsuario = TiposUsuario
             };
 
             return View(usuarioViewModel);
@@ -87,17 +88,15 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpPost]
-        public IActionResult SalvarUsuario(Usuario Usuario) {
-            if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É nécessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
+        public IActionResult SalvarUsuario(UsuarioViewModel UsuarioViewModel) {
+            if (HttpContext.Session.GetInt32("usuarioId") != null && HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
 
-            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
                 TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
+
+            var Usuario = UsuarioViewModel.Usuario;
 
             IStrategy CriptografarSenha = new CriptografarSenha();
 
@@ -107,10 +106,17 @@ namespace Assislicitacao.Controllers {
                 Usuario.EmpresasVinculadas = new List<Empresa>();
 
                 _facadeUsuario.Inserir(Usuario);
-                TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuario";
+                TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuário";
+
+                if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                    TempData["SucessoCadastroLogin"] = "Sucesso ao se cadastrar. Por favor, efetue o Login";
+                    return RedirectToAction("Login", "Login");
+                }
+
             } catch (Exception ex) {
-                TempData["FalhaCadastro"] = "Falha ao cadastrar o usuario";
+                TempData["FalhaCadastro"] = "Falha ao cadastrar o usuário";
             }
+
             return RedirectToAction("RegistrarUsuario", "Usuario");
         }
 

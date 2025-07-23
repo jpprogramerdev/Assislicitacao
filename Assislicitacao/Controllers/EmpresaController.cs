@@ -21,12 +21,7 @@ namespace Assislicitacao.Controllers {
         }
 
         public IActionResult ConsultarCNPJ() {
-            if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
-
-            if (HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
+            if (HttpContext.Session.GetInt32("usuarioId") != null && HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
                 TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
@@ -97,12 +92,7 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> ExibirInfomarcoeEmpresaPosConsulta(Empresa Empresa) {
-            if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
-
-            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+            if (HttpContext.Session.GetInt32("usuarioId") != null && HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
                 TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
@@ -170,11 +160,6 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> SalvarEmpresa(EmpresaReceitaWsResponse EmpresaReceitaWsResponse) {
-            if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
-            
             var usuario = EmpresaReceitaWsResponse.Usuario;
 
             IStrategy CriptografarSenha = new CriptografarSenha();
@@ -191,16 +176,19 @@ namespace Assislicitacao.Controllers {
 
                 var empresa = EmpresaMapper.ConverteEmpresaResponseToEmpresa(EmpresaReceitaWsResponse);
 
-                empresa.UsusariosVinculados = new List<Usuario>();
-
-                empresa.UsusariosVinculados.Add(usuario);
+                empresa.UsusariosVinculados = [usuario];
 
                 await _facadeEmpresa.Inserir(empresa);
                 TempData["EmpresaSalva"] = "Empresa cadastrada com sucesso";
             } catch (Exception ex) {
                 TempData["FalhaSalvarEmpresa"] = "Falha ao salvar empresa: " + ex.Message;
             }
-            
+
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["SucessoCadastroLogin"] = "Sucesso ao se cadastrar. Por favor, efetue o Login";
+                return RedirectToAction("Login", "Login");
+            }
+
             return RedirectToAction("ConsultarCNPJ", "Empresa");
         }
 

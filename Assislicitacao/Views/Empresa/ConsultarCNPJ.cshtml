@@ -16,13 +16,28 @@
             @TempData["CNPJJacCadastrado"]
         </div>
     }
+
+    if(Context.Session.GetInt32("usuarioId") == null){
+        Layout = "_LayoutLogin";
+    }
 }
 
 <form asp-controller="Empresa" asp-action="ExibirInfomarcoeEmpresaPosConsulta" method="post">
-    <div class="form-group">
-        <label for="nome-usuario">Informar CNPJ:</label>
-        <input type="text" class="form-control" id="nome-usuario" placeholder="CNPJ" asp-for="@Model.CNPJ" required>
-    </div>
+    @{
+        if (Context.Session.GetInt32("usuarioId") == null) {
+            <div class="form-group">
+                <h3 class="text-center mb-4">Informe o CNPJ:</h3>
+                <input type="text" class="form-control" id="nome-usuario" placeholder="CNPJ" asp-for="@Model.CNPJ" required>
+            </div>
+        }else{
+            <div class="form-group">
+                <label for="nome-usuario">Informar CNPJ:</label>
+                <input type="text" class="form-control" id="nome-usuario" placeholder="CNPJ" asp-for="@Model.CNPJ" required>
+            </div>
+        }
+    }
+
+    
 
     <button type="submit" class="btn btn-primary">Consultar</button>
 </form>

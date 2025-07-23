@@ -30,8 +30,22 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            var usuarioId = HttpContext.Session.GetInt32("usuarioId");
+
             var licitacoes = await _facadeLicitacao.Selecionar();
-            return View(licitacoes);
+
+            var licitacoesFiltro = new List<Licitacao>();
+
+            foreach(Licitacao Licitacao in licitacoes) {
+                foreach(LicitacaoEmpresa LicitacaoEmpresa in Licitacao.Empresas) {
+                    if(LicitacaoEmpresa.Empresa.UsusariosVinculados.Any(u => u.Id == usuarioId)) {
+                        licitacoesFiltro.Add(Licitacao);
+                    }
+                    break;
+                }
+            }
+
+            return View(licitacoesFiltro);
         }
 
         public async Task<IActionResult> CadastrarLicitacao() {

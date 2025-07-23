@@ -23,6 +23,7 @@ namespace Assislicitacao.DAO {
      await _context.Licitacoes
          .Include(l => l.Empresas)  //Empresas que poderão particiapr                         
              .ThenInclude(le => le.Empresa) //Dados de cada empresa
+            .ThenInclude(le => le.UsusariosVinculados)
          .Include(l => l.TipoLicitacao)
          .Include(l => l.PortalLicitacao)
          .Include(l => l.StatusLicitacao)

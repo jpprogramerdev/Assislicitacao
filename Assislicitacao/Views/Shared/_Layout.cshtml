@@ -19,7 +19,7 @@
             <div class="container">
                 <a class="navbar-brand fw-bold" asp-area="" asp-page="/Index">Assislicitacao</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -34,7 +34,7 @@
                                 <a class="dropdown-item" asp-controller="Usuario" asp-action="ExibirUsuarios">Todos Usuarios</a>
                             </div>
                         </div>
-                    <div class="dropdown">
+                        <div class="dropdown">
                             <button class="dropdown-toggle bg-transparent border-0 text-dark fw-bold text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Empresa
                             </button>
@@ -43,17 +43,26 @@
                                 <a class="dropdown-item" asp-controller="Empresa" asp-action="ExibirTodasEmpresas">Todas Empresas</a>
                             </div>
                         </div>
-                    }
+                    } else if (tipoUsuario == "REPRESENTANTE LEGAL"){
                         <div class="dropdown">
                             <button class="dropdown-toggle bg-transparent border-0 text-dark fw-bold text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Licitação
+                                Empresa
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-controller="Licitacao" asp-action="CadastrarLicitacao">Cadastrar Licitação</a>
-                                <a class="dropdown-item" asp-controller="Licitacao" asp-action="ExibirTodasLicitacao">Exibir Licitações</a>
+                                <a class="dropdown-item" asp-controller="Empresa" asp-action="ExibirTodasEmpresas">Todas Empresas</a>
                             </div>
                         </div>
+                    }
+                    <div class="dropdown">
+                        <button class="dropdown-toggle bg-transparent border-0 text-dark fw-bold text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Licitação
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" asp-controller="Licitacao" asp-action="CadastrarLicitacao">Cadastrar Licitação</a>
+                            <a class="dropdown-item" asp-controller="Licitacao" asp-action="ExibirTodasLicitacao">Exibir Licitações</a>
+                        </div>
                     </div>
+                </div>
                 <div class="d-flex ms-auto align-items-center">
                     @if (!string.IsNullOrEmpty(usuarioNome)) {
                         <span class="fw-bold text-dark me-2">Olá, @usuarioNome</span>

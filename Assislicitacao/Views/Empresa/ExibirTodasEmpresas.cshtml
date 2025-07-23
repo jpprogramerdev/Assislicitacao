@@ -37,7 +37,7 @@
                     @{
                         var tipoUsuario = Context.Session.GetString("usuarioTipoUsuario");
 
-                        if(tipoUsuario == "SÓCIO-ADMINISTRADOR" || tipoUsuario == "REPRESENTANTE LEGAL"){
+                        if (tipoUsuario == "REPRESENTANTE LEGAL"){
                             <span>|</span>
                             <a asp-controller="Empresa" asp-action="VincularUsuarios" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
                         }

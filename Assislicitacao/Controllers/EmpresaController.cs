@@ -6,6 +6,7 @@ using Assislicitacao.Strategy;
 using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Assislicitacao.Controllers {
@@ -110,7 +111,7 @@ namespace Assislicitacao.Controllers {
             return View(empresa);
         }
 
-        public async Task<IActionResult> VincularUsuarios(int id) {
+        public IActionResult ConfirmarVincularUsuarios() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -122,13 +123,14 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
-            var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == id);
+            var UsuarioVinculadoEmpresaJson = TempData["UsuarioEmpresaJson"].ToString();
 
-            var UsuarioVinculadoEmpresa = new UsuarioVinculadoEmpresaViewModel() {
-                Empresa = empresa,
-                Usuarios = (await _facadeUsuarios.Selecionar()).Cast<Usuario>().Where(u => u.TipoUsuario.Tipo != "USUARIO").ToList(),
-                UsuariosSelecionadosIds = empresa.UsusariosVinculados?.Select(u => u.Id).ToList() ?? new List<int>()
-            };
+            if(TempData["UsuarioEmpresaJson"] == null) {
+                TempData["UsuarioNaoEncontrado"] = "Usuário não encontrado";
+                return RedirectToAction("PesquisarUsuariosPorEmail", "Usuario");
+            }
+
+            var UsuarioVinculadoEmpresa = JsonConvert.DeserializeObject<UsuarioVinculadoEmpresaViewModel>(UsuarioVinculadoEmpresaJson);
 
             return View(UsuarioVinculadoEmpresa);
         }
@@ -137,21 +139,19 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> SalvarVinculacao(UsuarioVinculadoEmpresaViewModel UsuarioVinculadoEmpresa) {
             try {
                 var Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == UsuarioVinculadoEmpresa.Empresa.Id);
+                var Usuario = (await _facadeUsuarios.Selecionar()).Cast<Usuario>().FirstOrDefault(usu => usu.Id == UsuarioVinculadoEmpresa.Usuario.Id);
 
-                if(Empresa == null) {
+                if (Empresa == null) {
                     TempData["FalhaVincular"] = "Empresa não localizada";
                     return RedirectToAction("ExibirTodasEmpresas", "Empresa");
                 }
-                Empresa.UsusariosVinculados = new List<Usuario>();
 
-                foreach (int id in UsuarioVinculadoEmpresa.UsuariosSelecionadosIds) {
-                    Empresa.UsusariosVinculados.Add((await _facadeUsuarios.Selecionar()).Cast<Usuario>().FirstOrDefault(usu => usu.Id == id));
-                }
+                Empresa.UsusariosVinculados.Add(Usuario);
 
                 await _facadeEmpresa.Atualizar(Empresa);
 
                 TempData["SucessoVincular"] = "Sucesso ao vincular os usuários";
-            }catch(Exception ex) {
+            } catch (Exception ex) {
                 TempData["FalhaVincular"] = "Falha ao vincular os usuários";
             }
 

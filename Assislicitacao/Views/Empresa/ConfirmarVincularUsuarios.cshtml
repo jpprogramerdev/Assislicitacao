@@ -1,0 +1,29 @@
+﻿@model UsuarioVinculadoEmpresaViewModel
+
+@{
+    ViewData["Title"] = "Vincular Usuarios";
+}
+
+<p class="fw-bold fs-5 text-dark">Confirme os dados do usuário:</p>
+
+<form asp-controller="Empresa" asp-action="SalvarVinculacao" method="post">
+    <input type="hidden" asp-for="@Model.Empresa.Id" />
+    <input type="hidden" asp-for="@Model.Usuario.Id" />
+
+    <div class="form-group">
+        <label for="nome-usuario">Nome:</label>
+        <input type="text" class="form-control" id="nome-usuario" placeholder="Nome" asp-for="@Model.Usuario.Nome" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">Email:</label>
+        <input type="email" class="form-control" id="email-usuario" placeholder="Nome" asp-for="@Model.Usuario.Email" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="email-usuario">Tipo Usuario:</label>
+        <input type="email" class="form-control" id="email-usuario" placeholder="Nome" asp-for="@Model.Usuario.TipoUsuario.Tipo" readonly>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar</button>
+</form>

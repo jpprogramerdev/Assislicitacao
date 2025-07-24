@@ -1,0 +1,23 @@
+﻿@model UsuarioVinculadoEmpresaViewModel
+
+@{
+    ViewData["Title"] = "Pesquisar Usuário";
+
+    if (TempData["UsuarioNaoEncontrado"] != null) {
+        <div class="alert alert-danger" role="alert">
+            @TempData["UsuarioNaoEncontrado"]
+        </div>
+    }
+}
+
+<form asp-controller="Usuario" asp-action="BuscarUsuario" method="post">
+    <input type="hidden" asp-for="@Model.Empresa.Id" />
+
+
+    <div class="form-group">
+        <label for="nome-usuario">Informe o email do usuário:</label>
+        <input type="text" class="form-control" id="nome-usuario" placeholder="exemplo@email.com" asp-for="@Model.Usuario.Email" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Consultar</button>
+</form>

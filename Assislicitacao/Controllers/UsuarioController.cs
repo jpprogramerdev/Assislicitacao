@@ -4,6 +4,7 @@ using Assislicitacao.Strategy;
 using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Assislicitacao.Controllers {
@@ -46,6 +47,60 @@ namespace Assislicitacao.Controllers {
             var usuarios = (await _facadeUsuario.Selecionar()).Cast<Usuario>();
             
             return View(usuarios);
+        }
+
+        
+        public IActionResult PesquisarUsuariosPorEmail(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
+            var UsuarioVinculadoEmpresa = new UsuarioVinculadoEmpresaViewModel {
+                Empresa = new Empresa {
+                    Id = id
+                }
+            };
+
+            return View(UsuarioVinculadoEmpresa);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BuscarUsuario(UsuarioVinculadoEmpresaViewModel UsuarioVinculadoEmpresa) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
+                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Login");
+            }
+
+            var usuarioFiltrado = new UsuarioVinculadoEmpresaViewModel {
+                Usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Email == UsuarioVinculadoEmpresa.Usuario.Email),
+                Empresa = UsuarioVinculadoEmpresa.Empresa
+            };
+
+            if(usuarioFiltrado.Usuario == null) {
+                TempData["UsuarioNaoEncontrado"] = "Usuário não encontrado";
+                return RedirectToAction("PesquisarUsuariosPorEmail","Usuario");
+            }
+
+            var settings = new JsonSerializerSettings {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            TempData["UsuarioEmpresaJson"] = JsonConvert.SerializeObject(usuarioFiltrado, settings);
+
+            return RedirectToAction("ConfirmarVincularUsuarios","Empresa");
         }
 
         [HttpGet]

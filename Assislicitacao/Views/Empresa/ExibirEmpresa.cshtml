@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Exibir Empresa";
-    
+
     if (TempData["SucessoAtualizarEmpresa"] != null) {
         <div class="alert alert-success" role="alert">
             @TempData["SucessoAtualizarEmpresa"]
@@ -59,3 +59,18 @@
     <label for="tipo-usuario">UF:</label>
     <input type="text" class="form-control" id="tipo-usuario" asp-for="@Model.Endereco.Municipio.Estado.Uf" readonly>
 </div>
+
+@{
+    var tipoUsuario = Context.Session.GetString("usuarioTipoUsuario");
+
+    if (tipoUsuario == "REPRESENTANTE LEGAL" || tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
+        <div class="form-group">
+            <label for="tipo-usuario">Usuários:</label>
+            <div style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+                @foreach (var usuario in Model.UsusariosVinculados) {
+                    <div>@usuario.Nome - @usuario.Email</div>
+                }
+            </div>
+        </div>
+    }
+}

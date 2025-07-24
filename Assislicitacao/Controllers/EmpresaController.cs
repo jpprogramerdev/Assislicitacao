@@ -37,12 +37,6 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
-            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
-                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
-                HttpContext.Session.Clear();
-                return RedirectToAction("Login", "Login");
-            }
-
             var Usuario = new Usuario();
             Usuario.Id = (int)HttpContext.Session.GetInt32("usuarioId");
 
@@ -59,12 +53,6 @@ namespace Assislicitacao.Controllers {
         public async Task<IActionResult> ExibirEmpresa(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
-
-            if (HttpContext.Session.GetString("usuarioTipoUsuario") == "OPERADOR DE LICITAÇÕES") {
-                TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
-                HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Login");
             }
 

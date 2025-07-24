@@ -33,14 +33,16 @@
                 <td>@Empresa.RazaoSocial</td>
                 <td>@Empresa.CNPJ</td>
                 <td>@Empresa.PorteEmpresa.Porte</td>
-                <td>@Empresa.UsusariosVinculados.Count</td>
+                @if (tipoUsuario == "REPRESENTANTE LEGAL" || tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
+                    <td>@Empresa.UsusariosVinculados.Count</td>
+                }
                 <td>
                     <a asp-controller="Empresa" asp-action="ExibirEmpresa" asp-route-id="@Empresa.Id">Exibir</a>
                     @if (tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
                         <span>|</span>
                         <a asp-controller="Empresa" asp-action="ConfirmarExclusaoEmpresa" asp-route-id="@Empresa.Id">Excluir</a>
                     }
-                    @if (tipoUsuario == "REPRESENTANTE LEGAL") {
+                    @if (tipoUsuario == "REPRESENTANTE LEGAL" || tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
                         <span>|</span>
                         <a asp-controller="Usuario" asp-action="PesquisarUsuariosPorEmail" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
                     }

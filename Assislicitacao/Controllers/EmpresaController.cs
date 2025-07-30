@@ -92,6 +92,10 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("ConsultarCNPJ", "Empresa");
             }
 
+            Empresa.CNPJ = Empresa.CNPJ.Replace(".", "");
+            Empresa.CNPJ = Empresa.CNPJ.Replace("/", "");
+            Empresa.CNPJ = Empresa.CNPJ.Replace("-", "");
+
             var empresa = await _facadeEmpresa.ObterEmpresaCNPJ(Empresa.CNPJ);
 
             empresa.TiposUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>().Where(tipo => tipo.Tipo == "REPRESENTANTE LEGAL" || tipo.Tipo == "SÓCIO-ADMINISTRADOR").ToList();

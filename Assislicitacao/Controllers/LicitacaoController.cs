@@ -14,14 +14,16 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadePortalLicitacao _facadePortalLicitacao;
         private readonly IFacadeLicitacao  _facadeLicitacao;
         private readonly IFacadeEmail _facadeEmail;
+        private readonly IFacadeEstado _facadeEstado;
 
 
-        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail) {
+        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado) {
             _facadeEmpresa = facadeEmpresa;
             _facadeTipoLicitacao = facadeTipoLicitacao;
             _facadePortalLicitacao = facadePortalLicitacao;
             _facadeLicitacao = facadeLicitacao;
             _facadeEmail = facadeEmail;
+            _facadeEstado = facadeEstado;
         }
 
         public async Task<IActionResult> ExibirTodasLicitacao() {
@@ -60,7 +62,8 @@ namespace Assislicitacao.Controllers {
             var LicitacaoViewModel = new LicitacaoViewModel {
                 Empresas = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().Where(user => user.UsusariosVinculados.Any(u => u.Id == Usuario.Id)).ToList(),
                 TiposLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().ToList(),
-                PortaisLicitacoes = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().ToList()
+                PortaisLicitacoes = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().ToList(),
+                Estados = (await _facadeEstado.Selecionar()).Cast<Estado>().ToList()
             };
 
             return View(LicitacaoViewModel);

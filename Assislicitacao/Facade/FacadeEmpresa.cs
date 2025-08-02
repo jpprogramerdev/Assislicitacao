@@ -35,10 +35,7 @@ namespace Assislicitacao.Facade {
             Empresa Empresa = (Empresa)entidade;
 
             var estado = (await _daoEstado.SelectAll()).Cast<Estado>().FirstOrDefault(est => est.Uf == Empresa.Endereco.Municipio.Estado.Uf);
-            if (estado == null) {
-                 await _daoEstado.Insert(Empresa.Endereco.Municipio.Estado);
-            }
-            Empresa.Endereco.Municipio.Estado = (await _daoEstado.SelectAll()).Cast<Estado>().FirstOrDefault(est => est.Uf == Empresa.Endereco.Municipio.Estado.Uf);
+            Empresa.Endereco.Municipio.Estado = estado;
 
             var municipio = (await _daoMunicipio.SelectAll()).Cast<Municipio>().FirstOrDefault(mun => mun.Nome == Empresa.Endereco.Municipio.Nome);
             if (municipio == null) {

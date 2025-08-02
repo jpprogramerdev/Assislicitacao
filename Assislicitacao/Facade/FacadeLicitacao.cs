@@ -6,10 +6,12 @@ namespace Assislicitacao.Facade {
     public class FacadeLicitacao : IFacadeLicitacao {
         private readonly IDAOMunicipio _daoMunicipio;
         private readonly IDAOLicitacao _daoLicitacao;
+        private readonly IDAOEstado _daoEstado;
 
-        public FacadeLicitacao(IDAOMunicipio daoMunicipio, IDAOLicitacao daoLicitacao) {
+        public FacadeLicitacao(IDAOMunicipio daoMunicipio, IDAOLicitacao daoLicitacao, IDAOEstado daoEstado) {
             _daoMunicipio = daoMunicipio;
             _daoLicitacao = daoLicitacao;
+            _daoEstado = daoEstado;
         }
 
         public Task Apagar(EntidadeDominio entidade) {
@@ -39,6 +41,10 @@ namespace Assislicitacao.Facade {
                await _daoMunicipio.Insert(Licitacao.Municipio);
             }
 
+            var Estado = (await _daoEstado.SelectAll()).Cast<Estado>().FirstOrDefault(est => est.Id == Licitacao.Municipio.EstadoId);
+
+
+            Licitacao.Municipio.Estado = Estado;
             Licitacao.Municipio = (await _daoMunicipio.SelectAll()).Cast<Municipio>().FirstOrDefault(mun => mun.Nome == Licitacao.Municipio.Nome);
 
             await _daoLicitacao.Insert(Licitacao);

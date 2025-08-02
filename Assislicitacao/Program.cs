@@ -34,6 +34,7 @@ builder.Services.AddScoped<IFacadeTipoLicitacao, FacadeTipoLicitacao>();
 builder.Services.AddScoped<IFacadePortalLicitacao, FacadePortalLicitacao>();
 builder.Services.AddScoped<IFacadeLicitacao, FacadeLicitacao>();
 builder.Services.AddScoped<IFacadeEmail, FacadeEmail>();
+builder.Services.AddScoped<IFacadeEstado, FacadeEstado>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
 

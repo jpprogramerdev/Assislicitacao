@@ -19,7 +19,7 @@
             <th scope="col">TIPO</th>
             <th scope="col">OBJETO</th>
             <th scope="col">DATA</th>
-            <th scope="col">CIDADE/ÓRGÃO</th>
+            <th scope="col">CIDADE / UF</th>
             <th scope="col">EMPRESAS</th>
             <th scope="col">STATUS</th>
             <th scope="col">PORTAL</th>
@@ -32,7 +32,7 @@
                 <td class="table-licitacoes">@Licitacao.TipoLicitacao.Sigla</td>
                 <td class="table-licitacoes">@Licitacao.Objeto</td>
                 <td class="table-licitacoes">@Licitacao.Data.ToString("dd/MM/yyyy")</td>
-                <td class="table-licitacoes">@Licitacao.Municipio.Nome</td>
+                <td class="table-licitacoes">@Licitacao.Municipio.Nome / @Licitacao.Municipio.Estado.Uf</td>
                 <td class="table-licitacoes">
                    @foreach(LicitacaoEmpresa LicitacaoEmpresa in Licitacao.Empresas){
                        if(LicitacaoEmpresa.ConfirmacaoParticipacao){

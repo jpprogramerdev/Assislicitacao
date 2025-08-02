@@ -22,12 +22,13 @@ namespace Assislicitacao.DAO {
         public async Task<IEnumerable<EntidadeDominio>> SelectAll() =>
      await _context.Licitacoes
          .Include(l => l.Empresas)  //Empresas que poderão particiapr                         
-             .ThenInclude(le => le.Empresa) //Dados de cada empresa
+            .ThenInclude(le => le.Empresa) //Dados de cada empresa
             .ThenInclude(le => le.UsusariosVinculados)
          .Include(l => l.TipoLicitacao)
          .Include(l => l.PortalLicitacao)
          .Include(l => l.StatusLicitacao)
          .Include(l => l.Municipio)
+            .ThenInclude(lm => lm.Estado) //Municipio
          .ToListAsync();
 
         public async Task Update(EntidadeDominio entidade) {

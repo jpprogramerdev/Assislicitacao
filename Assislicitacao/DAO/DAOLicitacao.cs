@@ -28,7 +28,7 @@ namespace Assislicitacao.DAO {
          .Include(l => l.PortalLicitacao)
          .Include(l => l.StatusLicitacao)
          .Include(l => l.Municipio)
-            .ThenInclude(lm => lm.Estado) //Municipio
+            .ThenInclude(lm => lm.Estado) //Estado do municipío que será a licitação
          .ToListAsync();
 
         public async Task Update(EntidadeDominio entidade) {

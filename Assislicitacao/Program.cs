@@ -25,6 +25,7 @@ builder.Services.AddTransient<IDAOEmpresa, DAOEmpresa>();
 builder.Services.AddTransient<IDAOTipoLicitacao, DAOTipoLicitacao>();
 builder.Services.AddTransient<IDAOPortalLicitacao, DAOPortalLicitacao>();
 builder.Services.AddTransient<IDAOLicitacao, DAOLicitacao>();
+builder.Services.AddTransient<IDAOStatusLicitacao, DAOStatusLicitacao>();
 
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IFacadeTipoUsuario, FacadeTipoUsuario>();
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IFacadePortalLicitacao, FacadePortalLicitacao>();
 builder.Services.AddScoped<IFacadeLicitacao, FacadeLicitacao>();
 builder.Services.AddScoped<IFacadeEmail, FacadeEmail>();
 builder.Services.AddScoped<IFacadeEstado, FacadeEstado>();
+builder.Services.AddScoped<IFacadeStatusLicitacao, FacadeStatusLicitacao>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
 

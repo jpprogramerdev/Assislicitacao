@@ -46,6 +46,7 @@ namespace Assislicitacao.DAO {
 
             LicitacaoDB.TipoLicitacaoId = LicitacaoAtualizada.TipoLicitacaoId;
             LicitacaoDB.MunicipioId = LicitacaoAtualizada.MunicipioId;
+            LicitacaoDB.Municipio.EstadoId = LicitacaoAtualizada.Municipio.EstadoId;
             LicitacaoDB.PortalLicitacaoId = LicitacaoAtualizada.PortalLicitacaoId;
 
             LicitacaoDB.StatusLicitacaoId = LicitacaoAtualizada.StatusLicitacaoId;

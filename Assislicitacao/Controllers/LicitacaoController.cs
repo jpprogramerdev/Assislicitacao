@@ -12,18 +12,20 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeEmpresa _facadeEmpresa;
         private readonly IFacadeTipoLicitacao _facadeTipoLicitacao;
         private readonly IFacadePortalLicitacao _facadePortalLicitacao;
-        private readonly IFacadeLicitacao  _facadeLicitacao;
+        private readonly IFacadeLicitacao _facadeLicitacao;
         private readonly IFacadeEmail _facadeEmail;
         private readonly IFacadeEstado _facadeEstado;
+        private readonly IFacadeStatusLicitacao _facadeStatusLicitacao;
 
 
-        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado) {
+        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado, IFacadeStatusLicitacao facadeStatusLicitacao) {
             _facadeEmpresa = facadeEmpresa;
             _facadeTipoLicitacao = facadeTipoLicitacao;
             _facadePortalLicitacao = facadePortalLicitacao;
             _facadeLicitacao = facadeLicitacao;
             _facadeEmail = facadeEmail;
             _facadeEstado = facadeEstado;
+            _facadeStatusLicitacao = facadeStatusLicitacao;
         }
 
         public async Task<IActionResult> ExibirTodasLicitacao() {
@@ -38,9 +40,9 @@ namespace Assislicitacao.Controllers {
 
             var licitacoesFiltro = new List<Licitacao>();
 
-            foreach(Licitacao Licitacao in licitacoes) {
-                foreach(LicitacaoEmpresa LicitacaoEmpresa in Licitacao.Empresas) {
-                    if(LicitacaoEmpresa.Empresa.UsusariosVinculados.Any(u => u.Id == usuarioId)) {
+            foreach (Licitacao Licitacao in licitacoes) {
+                foreach (LicitacaoEmpresa LicitacaoEmpresa in Licitacao.Empresas) {
+                    if (LicitacaoEmpresa.Empresa.UsusariosVinculados.Any(u => u.Id == usuarioId)) {
                         licitacoesFiltro.Add(Licitacao);
                     }
                     break;
@@ -69,6 +71,24 @@ namespace Assislicitacao.Controllers {
             return View(LicitacaoViewModel);
         }
 
+        public async Task<IActionResult> AlterarStatus(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            var Usuario = new Usuario();
+            Usuario.Id = (int)HttpContext.Session.GetInt32("usuarioId");
+
+
+            var LicitacaoViewModel = new LicitacaoViewModel {
+                Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id),
+                StatusLicitacao = (await _facadeStatusLicitacao.Selecionar()).Cast<StatusLicitacao>().ToList()
+            };
+
+            return View(LicitacaoViewModel);
+        }
+
         [HttpGet]
         public async Task<IActionResult> EditarLicitacao(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
@@ -90,7 +110,7 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmarLicitacao (int id) {
+        public async Task<IActionResult> ConfirmarLicitacao(int id) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -101,7 +121,7 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> AtaualizarConfirmacaoLicitacao (Licitacao Licitacao) {
+        public async Task<IActionResult> AtaualizarConfirmacaoLicitacao(Licitacao Licitacao) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -110,7 +130,7 @@ namespace Assislicitacao.Controllers {
             try {
                 await _facadeLicitacao.AtualizarConfirmacao(Licitacao);
                 TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 TempData["ErrorAtualizarLicitcao"] = ex.Message;
             }
             return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
@@ -125,7 +145,7 @@ namespace Assislicitacao.Controllers {
 
             var Licitacao = LicitacaoViewModel.Licitacao;
 
-            IStrategy VerificarData = new VerificarData(); 
+            IStrategy VerificarData = new VerificarData();
 
             try {
                 VerificarData.Executar(Licitacao);
@@ -136,7 +156,7 @@ namespace Assislicitacao.Controllers {
                     var EmpresaSelcionada = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(emp => emp.Id == empresaId);
 
                     if (EmpresaSelcionada != null) {
-                        Licitacao.Empresas.Add(new LicitacaoEmpresa { Empresa = EmpresaSelcionada});
+                        Licitacao.Empresas.Add(new LicitacaoEmpresa { Empresa = EmpresaSelcionada });
                     }
                 }
 
@@ -144,7 +164,7 @@ namespace Assislicitacao.Controllers {
                 Licitacao.StatusLicitacaoId = 1;
 
                 await _facadeLicitacao.Inserir(Licitacao);
-                
+
 
                 Licitacao.TipoLicitacao = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().FirstOrDefault(tpl => tpl.Id == Licitacao.TipoLicitacaoId);
                 Licitacao.PortalLicitacao = (await _facadePortalLicitacao.Selecionar()).Cast<PortalLicitacao>().FirstOrDefault(ptl => ptl.Id == Licitacao.PortalLicitacaoId);
@@ -152,13 +172,33 @@ namespace Assislicitacao.Controllers {
                 await _facadeEmail.EnviarNotificacaoNovaLicitacao(Licitacao);
 
                 TempData["SucessoSalvarLicitacao"] = "Sucesso ao salavar Licitação";
-            } catch (DataAnteriorADataAtualException dataEx){
+            } catch (DataAnteriorADataAtualException dataEx) {
                 TempData["FalhaSalvarLicitacao"] = dataEx.Message;
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 TempData["FalhaSalvarLicitacao"] = $"Falha ao salavar Licitação: {ex}";
             }
 
             return RedirectToAction("CadastrarLicitacao", "Licitacao");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SalvarStatusLicitacao(LicitacaoViewModel LicitacaoViewModel) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            var Licitacao = LicitacaoViewModel.Licitacao;
+
+            Licitacao.Empresas = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().First(l => l.Id == Licitacao.Id).Empresas;
+            try {
+                await _facadeLicitacao.Atualizar(Licitacao);
+                TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
+            }  catch (Exception ex) {
+                TempData["ErrorAtualizarLicitcao"] = $"Falha ao salavar Licitação: {ex}";
+            }
+
+            return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
         }
 
         [HttpPost]
@@ -169,7 +209,7 @@ namespace Assislicitacao.Controllers {
             }
 
             var Licitacao = LicitacaoViewModel.Licitacao;
-            
+
             IStrategy VerificarData = new VerificarData();
 
             Licitacao.Empresas = new List<LicitacaoEmpresa>();
@@ -186,7 +226,7 @@ namespace Assislicitacao.Controllers {
                 }
 
                 Licitacao.Municipio.Nome = Licitacao.Municipio.Nome.ToUpper().Trim();
-                
+
                 await _facadeLicitacao.Atualizar(Licitacao);
                 TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
             } catch (DataAnteriorADataAtualException dataEx) {

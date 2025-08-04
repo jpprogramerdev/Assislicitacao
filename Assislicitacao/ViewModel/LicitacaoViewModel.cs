@@ -8,6 +8,7 @@ namespace Assislicitacao.ViewModel {
         public List<int> EmpresasSelecionadasIds { get; set; } = new List<int>();
         public List<TipoLicitacao> TiposLicitacao { get; set; } = new List<TipoLicitacao>();
         public List<PortalLicitacao> PortaisLicitacoes { get; set; } = new List<PortalLicitacao>();
+        public List<StatusLicitacao> StatusLicitacao { get; set; } = new List<StatusLicitacao>();
         
     }
 }

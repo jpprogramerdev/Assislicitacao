@@ -4,43 +4,71 @@
     ViewData["Title"] = "Calculo Data Recurso";
 }
 
-<h3 class="text-center mb-4">Calculo prazo para recurso/contrarrazões:</h3>
+<h3 class="text-center mb-4">Calculo de prazo: </h3>
 <div class="alert alert-warning" role="alert">
     <strong>Atenção:</strong> a data informada pode não ser totalmente precisa, pois considera apenas feriados nacionais. Recomendamos verificar possíveis feriados estaduais e municipais diretamente com o município correspondente.
 </div>
 
-
 <ul class="list-group">
-    <li class="list-group-item active" aria-current="true">Prazo para recurso:</li>
-    @{
-        int diasUteis = 1;
-
-        for (int i = 0; i < 3; i++) {
-            if (i == 2) {
-                <li class="list-group-item">@diasUteis º dia util: <strong>@Model[i].ToString("dd/MM/yyyy")</strong></li>
-            }else {
-                <li class="list-group-item">@diasUteis º dia util: @Model[i].ToString("dd/MM/yyyy")</li>
-            }
-            diasUteis++;
-        }
-    }
+    <li class="list-group-item active" aria-current="true">Data informada: @Model[0].ToString("dd/MM/yyyy")</li>
 </ul>
 
 <br />
 <br />
 
-<ul class="list-group">
-    <li class="list-group-item active" aria-current="true">Prazo para contrarrazões:</li>
-    @{
-        diasUteis = 1;
-        for (int i = 3; i < 6; i++) {
-            if (i == 5) {
-                <li class="list-group-item">@diasUteis º dia util: <strong>@Model[i].ToString("dd/MM/yyyy")</strong></li>
-            } else {
-                <li class="list-group-item">@diasUteis º dia util: @Model[i].ToString("dd/MM/yyyy")</li>
+@if (Model.Count == 7) {
 
+    <ul class="list-group">
+        <li class="list-group-item active" aria-current="true">Prazo para recurso:</li>
+        @{
+            int diasUteis = 1;
+
+            for (int i = 1; i < 4; i++) {
+                if (i == 3) {
+                    <li class="list-group-item">@diasUteis º dia util: <strong>@Model[i].ToString("dd/MM/yyyy")</strong></li>
+                } else {
+                    <li class="list-group-item">@diasUteis º dia util: @Model[i].ToString("dd/MM/yyyy")</li>
+                }
                 diasUteis++;
             }
         }
-    }
-</ul>
+    </ul>
+
+    <br />
+    <br />
+
+    <ul class="list-group">
+        <li class="list-group-item active" aria-current="true">Prazo para contrarrazões:</li>
+        @{
+            diasUteis = 1;
+            for (int i = 4; i < 7; i++) {
+                if (i == 6) {
+                    <li class="list-group-item">@diasUteis º dia util: <strong>@Model[i].ToString("dd/MM/yyyy")</strong></li>
+                } else {
+                    <li class="list-group-item">@diasUteis º dia util: @Model[i].ToString("dd/MM/yyyy")</li>
+
+                    diasUteis++;
+                }
+            }
+        }
+    </ul>
+
+} else {
+
+    <ul class="list-group">
+        <li class="list-group-item active" aria-current="true">Prazo para questionamento/impgunação:</li>
+        @{
+            int diasUteis = 1;
+
+            for (int i = 1; i < 4; i++) {
+                if (i == 3) {
+                    <li class="list-group-item">Data final: <strong>@Model[i].ToString("dd/MM/yyyy")</strong></li>
+                } else {
+                    <li class="list-group-item">@diasUteis º dia util: @Model[i].ToString("dd/MM/yyyy")</li>
+                }
+                diasUteis++;
+            }
+        }
+    </ul>
+
+}

@@ -20,11 +20,20 @@ namespace Assislicitacao.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> InformarDataFinal(DataViewModel DataViewModel) {
-            IStrategyDiasUteis ContarDiasUteis = new ContarDiasUteis();
-
+            IStrategyDiasUteis ContarDiasUteis;
             List<FeriadosResponse> listFeriados = (await _feriadoService.ObterFeriados()).ToList();
+            List<DateTime> Datas = [DataViewModel.Data];
 
-            List<DateTime> Datas = ContarDiasUteis.Executar(6, listFeriados, DataViewModel.Data);
+            switch (DataViewModel.TipoCalculo) {
+                case 1:
+                    ContarDiasUteis = new ContarDiasUteisImpgunacaoQuestionamento();
+                    Datas.AddRange(ContarDiasUteis.Executar(3, listFeriados, DataViewModel.Data));
+                    break ;
+                case 2:
+                    ContarDiasUteis = new ContarDiasUteis();
+                    Datas.AddRange(ContarDiasUteis.Executar(6, listFeriados, DataViewModel.Data)); 
+                    break;
+            }
 
             return View(Datas);
         }

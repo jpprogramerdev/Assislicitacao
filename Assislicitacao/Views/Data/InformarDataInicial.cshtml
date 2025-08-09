@@ -7,9 +7,18 @@
 
 <form asp-controller="Data" asp-action="InformarDataFinal" method="post">
     <div class="form-group">
-        <label for="data-inicial">Informar data da manifestação do Recurso:</label>
+        <label for="data-inicial">Informar data:</label>
         <input type="date" class="form-control" id="data-inicial" asp-for="@Model.Data" required>
     </div>
+
+    <div class="form-group">
+        <label for="data-inicial">Selecione a opção para calculo:</label>
+        <select class="form-select" aria-label="Default select example" asp-for="@Model.TipoCalculo">
+            <option value="1">QUESTIONAMENTO/IMPUGNAÇÃO</option>
+            <option value="2">RECURSO/CONTRARRAZÃO</option>
+        </select>
+    </div>
+
 
     <button type="submit" class="btn btn-primary">Calcular</button>
 </form>

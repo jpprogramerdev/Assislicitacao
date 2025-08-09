@@ -39,6 +39,7 @@ builder.Services.AddScoped<IFacadeEstado, FacadeEstado>();
 builder.Services.AddScoped<IFacadeStatusLicitacao, FacadeStatusLicitacao>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
+builder.Services.AddHttpClient<FeriadoService>();
 
 
 var app = builder.Build();

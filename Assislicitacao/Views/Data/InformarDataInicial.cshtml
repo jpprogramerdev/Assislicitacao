@@ -1,0 +1,15 @@
+﻿@model DataViewModel
+
+@{
+    ViewData["Title"] = "Calculo Data Recurso";
+}
+
+
+<form asp-controller="Data" asp-action="InformarDataFinal" method="post">
+    <div class="form-group">
+        <label for="data-inicial">Informar data da manifestação do Recurso:</label>
+        <input type="date" class="form-control" id="data-inicial" asp-for="@Model.Data" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Calcular</button>
+</form>

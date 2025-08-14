@@ -6,6 +6,7 @@ using Assislicitacao.Strategy;
 using Assislicitacao.Strategy.Interface;
 using Assislicitacao.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Assislicitacao.Controllers {
     public class LicitacaoController : Controller {
@@ -50,6 +51,35 @@ namespace Assislicitacao.Controllers {
             }
 
             return View(licitacoesFiltro);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EscolherEmpresaVitoria(int licitacaoId) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+            var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == licitacaoId);
+            if (Licitacao == null) {
+                TempData["ErroLicitacao"] = "Licitação não encontrada.";
+                return RedirectToAction("ExibirTodasLicitacao");
+            }
+            return View(Licitacao);
+        }
+
+
+        public async Task<IActionResult> ConfirmarVitoria(int empresaId, int licitacaoId) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+
+            var EmpresaVencedora = new LicitacaoEmpresa {
+                Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == licitacaoId),
+                Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == empresaId)
+            };
+
+            return View(EmpresaVencedora);
         }
 
         public async Task<IActionResult> CadastrarLicitacao() {
@@ -234,6 +264,15 @@ namespace Assislicitacao.Controllers {
             } catch (Exception ex) {
                 TempData["ErrorAtualizarLicitcao"] = $"Falha ao salavar Licitação: {ex}";
             }
+            return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SalvarVitoria(LicitacaoEmpresa LicitacaoEmpresa) {
+            await _facadeLicitacao.SalvarVitoriaLicitacao(LicitacaoEmpresa);
+
+            TempData["SucessoAtualizarLicitacao"] = "Parabéns pela vitória na licitação.";
+
             return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
         }
     }

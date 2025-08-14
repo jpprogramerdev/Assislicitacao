@@ -1,6 +1,7 @@
 ﻿using Assislicitacao.Context;
 using Assislicitacao.DAO.Interface;
 using Assislicitacao.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Assislicitacao.DAO {
@@ -19,17 +20,28 @@ namespace Assislicitacao.DAO {
             await _context.SaveChangesAsync();
         }
 
+        public async Task SaveVitoriaLicitacao(EntidadeDominio entidade) {
+            LicitacaoEmpresa licitacaoEmpresa = (LicitacaoEmpresa)entidade;
+
+            string Update = "UPDATE LICITACOES_EMPRESAS SET LCEM_VALOR_GANHO = @ValorGanho WHERE LCEM_EMP_ID = @EmpresaId AND LCEM_LCT_ID = @LicitacaoId";
+
+            await _context.Database.ExecuteSqlRawAsync(Update,
+                new SqlParameter("@ValorGanho", licitacaoEmpresa.ValorGanho),
+                new SqlParameter("@EmpresaId", licitacaoEmpresa.Empresa.Id),
+                new SqlParameter("@LicitacaoId", licitacaoEmpresa.Licitacao.Id));
+        }
+
         public async Task<IEnumerable<EntidadeDominio>> SelectAll() =>
-     await _context.Licitacoes
-         .Include(l => l.Empresas)  //Empresas que poderão particiapr                         
-            .ThenInclude(le => le.Empresa) //Dados de cada empresa
-            .ThenInclude(le => le.UsusariosVinculados)
-         .Include(l => l.TipoLicitacao)
-         .Include(l => l.PortalLicitacao)
-         .Include(l => l.StatusLicitacao)
-         .Include(l => l.Municipio)
-            .ThenInclude(lm => lm.Estado) //Estado do municipío que será a licitação
-         .ToListAsync();
+        await _context.Licitacoes
+             .Include(l => l.Empresas)  //Empresas que poderão particiapr                         
+                .ThenInclude(le => le.Empresa) //Dados de cada empresa
+                .ThenInclude(le => le.UsusariosVinculados)
+             .Include(l => l.TipoLicitacao)
+             .Include(l => l.PortalLicitacao)
+             .Include(l => l.StatusLicitacao)
+             .Include(l => l.Municipio)
+                .ThenInclude(lm => lm.Estado) //Estado do municipío que será a licitação
+             .ToListAsync();
 
         public async Task Update(EntidadeDominio entidade) {
             var LicitacaoAtualizada = (Licitacao)entidade;

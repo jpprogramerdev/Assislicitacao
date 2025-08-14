@@ -38,7 +38,7 @@ namespace Assislicitacao.Facade {
 
             var Municipio = (await _daoMunicipio.SelectAll()).Cast<Municipio>().FirstOrDefault(mun => mun.Nome == Licitacao.Municipio.Nome);
             if (Municipio == null) {
-               await _daoMunicipio.Insert(Licitacao.Municipio);
+                await _daoMunicipio.Insert(Licitacao.Municipio);
             }
 
             var Estado = (await _daoEstado.SelectAll()).Cast<Estado>().FirstOrDefault(est => est.Id == Licitacao.Municipio.EstadoId);
@@ -51,5 +51,7 @@ namespace Assislicitacao.Facade {
         }
 
         public async Task<IEnumerable<EntidadeDominio>> Selecionar() => await _daoLicitacao.SelectAll();
+
+        public async Task SalvarVitoriaLicitacao(EntidadeDominio entidade) => await _daoLicitacao.SaveVitoriaLicitacao(entidade);
     }
 }

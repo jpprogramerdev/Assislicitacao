@@ -8,6 +8,10 @@ namespace Assislicitacao.Models {
         [Key]
         [Column("LCEM_ID")]
         public int Id { get; set; }
+
+        [Column("LCEM_VALOR_GANHO")]
+        public decimal ValorGanho { get; set; }
+
         [Required]
         [Column("LCEM_LCT_ID")]
         public int LicitacaoId { get; set; }

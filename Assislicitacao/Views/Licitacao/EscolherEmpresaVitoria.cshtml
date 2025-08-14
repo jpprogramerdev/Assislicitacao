@@ -1,0 +1,14 @@
+﻿@model Licitacao
+
+@{
+    ViewData["Title"] = "Escolher empresa vencedora";
+}
+
+<div class="list-group">
+    <span class="list-group-item list-group-item-action active" aria-current="true">Escolha a empresa vencedora</span>
+    @foreach(var Empresa in Model.Empresas){
+        <a asp-controller="Licitacao" asp-action="ConfirmarVitoria" asp-route-licitacaoId="@Model.Id" asp-route-empresaId="@Empresa.EmpresaId" class="list-group-item list-group-item-action">
+            @Empresa.Empresa.RazaoSocial
+        </a>
+    }
+</div>

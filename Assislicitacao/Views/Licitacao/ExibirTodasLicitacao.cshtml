@@ -50,6 +50,8 @@
                     <a asp-controller="Licitacao" asp-action="EditarLicitacao" asp-route-id="@Licitacao.Id">Editar</a>
                     <span>|</span>
                     <a asp-controller="Licitacao" asp-action="AlterarStatus" asp-route-id="@Licitacao.Id">Alterar Status</a>
+                    <span>|</span>
+                    <a asp-controller="Licitacao" asp-action="EscolherEmpresaVitoria" asp-route-licitacaoId="@Licitacao.Id">Vitória</a>
                 </td>
             </tr>
         }

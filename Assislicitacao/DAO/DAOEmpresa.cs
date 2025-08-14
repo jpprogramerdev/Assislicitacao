@@ -29,7 +29,24 @@ namespace Assislicitacao.DAO {
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<EntidadeDominio>> SelectAll() => await _context.Empresas.Include(emp => emp.Endereco).ThenInclude(end => end.Municipio).ThenInclude(muc => muc.Estado).Include(emp => emp.PorteEmpresa).Include(usu => usu.UsusariosVinculados).ToListAsync();
+        public async Task<IEnumerable<EntidadeDominio>> SelectAll() =>
+            await _context.Empresas
+            .Include(emp => emp.Licitacoes)
+                .ThenInclude(le => le.Licitacao)
+                    .ThenInclude(l => l.TipoLicitacao)
+            .Include(emp => emp.Licitacoes)
+                .ThenInclude(le => le.Licitacao)
+                    .ThenInclude(l => l.Municipio)
+                        .ThenInclude(m => m.Estado)
+            .Include(emp => emp.Licitacoes)
+                .ThenInclude(le => le.Licitacao)
+                    .ThenInclude(l => l.StatusLicitacao)
+            .Include(emp => emp.Endereco)
+                .ThenInclude(end => end.Municipio)
+                .ThenInclude(muc => muc.Estado)
+            .Include(emp => emp.PorteEmpresa)
+            .Include(usu => usu.UsusariosVinculados)
+            .ToListAsync();
 
         public async Task Update(EntidadeDominio entidade) {
             var empresa = (Empresa)entidade;

@@ -45,6 +45,8 @@
                     @if (tipoUsuario == "REPRESENTANTE LEGAL" || tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
                         <span>|</span>
                         <a asp-controller="Usuario" asp-action="PesquisarUsuariosPorEmail" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
+                        <span>|</span>
+                        <a asp-controller="Empresa" asp-action="EnviarRelatorioLicitacoes" asp-route-empresaId="@Empresa.Id">Gerar Relatório Licitações</a>
                     }
                 </td>
             </tr>

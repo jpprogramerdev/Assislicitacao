@@ -14,11 +14,13 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeEmpresa _facadeEmpresa;
         private readonly IFacadeUsuario _facadeUsuarios;
         private readonly IFacadeTipoUsuario _facadeTipoUsuario;
+        private readonly IFacadeEmail _facadeEmail;
 
-        public EmpresaController(IFacadeEmpresa facadeEmpresa, IFacadeUsuario facadeUsuarios, IFacadeTipoUsuario facadeTipoÚsuario) {
+        public EmpresaController(IFacadeEmpresa facadeEmpresa, IFacadeUsuario facadeUsuarios, IFacadeTipoUsuario facadeTipoÚsuario, IFacadeEmail facadeEmail) {
             _facadeEmpresa = facadeEmpresa;
             _facadeUsuarios = facadeUsuarios;
             _facadeTipoUsuario = facadeTipoÚsuario;
+            _facadeEmail = facadeEmail;
         }
 
         public IActionResult ConsultarCNPJ() {
@@ -101,6 +103,30 @@ namespace Assislicitacao.Controllers {
             empresa.TiposUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>().Where(tipo => tipo.Tipo == "REPRESENTANTE LEGAL" || tipo.Tipo == "SÓCIO-ADMINISTRADOR").ToList();
 
             return View(empresa);
+        }
+
+        public async Task<IActionResult> EnviarRelatorioLicitacoes(int empresaId) {
+            var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == empresaId);
+
+            string mensagem = $"Relatório de Licitações da empresa {empresa.RazaoSocial}";
+
+            empresa.Licitacoes = empresa.Licitacoes.Where(l => l.Licitacao.Data > DateTime.Now).OrderBy(l => l.Licitacao.Data).ToList();
+
+            foreach(var Licitacao in empresa.Licitacoes) {
+                mensagem += $"<br/><br/>{Licitacao.Licitacao.TipoLicitacao.Sigla} {Licitacao.Licitacao.Municipio.Nome} /  {Licitacao.Licitacao.Municipio.Estado.Uf}- {Licitacao.Licitacao.Objeto} - {Licitacao.Licitacao.Data.ToString("dd/MM/yyyy")} <strong>({Licitacao.Licitacao.StatusLicitacao.Status})</strong>";
+            }
+            
+            var email = HttpContext.Session.GetString("usuarioEmail");
+
+            try {
+                await _facadeEmail.EnviarEmail(email, "Relatório de Licitações", mensagem);
+                TempData["SucessoEnvioEmail"] = "Relatório enviado com sucesso!";
+            } catch (Exception ex) {
+                TempData["FalhaEnvioEmail"] = "Falha ao enviar o relatório: " + ex.Message;
+            }
+
+            return RedirectToAction("ExibirTodasEmpresas", "Empresa");
+
         }
 
         public IActionResult ConfirmarVincularUsuarios() {

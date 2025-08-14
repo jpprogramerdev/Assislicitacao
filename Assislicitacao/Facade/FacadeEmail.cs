@@ -10,6 +10,8 @@ namespace Assislicitacao.Facade {
             _emailService = emailService;
         }
 
+        public Task EnviarEmail(string destinatario, string assunto, string mensagem) => _emailService.EnviarEmail(destinatario, assunto, mensagem);
+
         public async Task EnviarNotificacaoNovaLicitacao(EntidadeDominio entidade) {
             var Licitacao = (Licitacao)entidade;
 

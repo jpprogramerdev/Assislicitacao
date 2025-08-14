@@ -17,6 +17,10 @@ namespace Assislicitacao.Models {
         [Required]
         [Column("USU_EMAIL")]
         public string Email { get; set; }
+        [Column("USU_URL_IMAGEM")]
+        public string FotoPerfilUrl { get; set; }
+        [NotMapped]
+        public IFormFile FotoPerfil { get; set; }
 
         //Relacionamentos - Relation
         [Column("USU_TPU_ID")]

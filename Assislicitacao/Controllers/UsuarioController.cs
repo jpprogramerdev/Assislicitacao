@@ -17,6 +17,33 @@ namespace Assislicitacao.Controllers {
             _facadeUsuario = facadeUsuario;
         }
 
+        public async Task<IActionResult> MeuPerfil() {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+            var usuario = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("usuarioId"));
+            return View(usuario);
+        }
+
+        [HttpPost]
+        public IActionResult SalvarFotoPerfil(Usuario Usuario) {
+            IStrategy GerarCaminhoImagem = new GerarCaminhoImagem();
+            GerarCaminhoImagem.Executar(Usuario);
+
+            var UsuarioSession = _facadeUsuario.Selecionar().Result.Cast<Usuario>().FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("usuarioId"));
+            UsuarioSession.FotoPerfilUrl = Usuario.FotoPerfilUrl;
+
+            try {
+                _facadeUsuario.Atualizar(UsuarioSession);
+                TempData["SucessoFotoPerfil"] = "Sucesso ao atualizar a foto de perfil";
+            } catch (Exception ex) {
+                TempData["FalhaFotoPerfil"] = "Falha ao atualizar a foto de perfil";
+            }
+
+            return RedirectToAction("MeuPerfil", "Usuario");
+        }
+
         public async Task<IActionResult> RegistrarUsuario() {
             var TiposUsuario = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>();
 

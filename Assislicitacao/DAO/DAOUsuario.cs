@@ -34,6 +34,7 @@ namespace Assislicitacao.DAO {
             UsuarioDb.Email = UsuarioAtualizado.Email;
             UsuarioDb.TipoId = UsuarioAtualizado.TipoId;
             UsuarioDb.Senha = string.IsNullOrEmpty(UsuarioAtualizado.Senha) ? UsuarioDb.Senha : UsuarioAtualizado.Senha;
+            UsuarioDb.FotoPerfilUrl = UsuarioAtualizado.FotoPerfilUrl;
 
             await _context.SaveChangesAsync();
         }

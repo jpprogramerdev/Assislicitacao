@@ -11,6 +11,7 @@
         border-radius: 50%;
         border: 3px solid #007bff;
     }
+
     .profile-card {
         max-width: 800px;
         margin: 50px auto;
@@ -19,9 +20,11 @@
         border-radius: 15px;
         background-color: #fff;
     }
+
     .profile-info h3 {
         margin-bottom: 15px;
     }
+
     .profile-info p {
         margin-bottom: 10px;
     }
@@ -44,6 +47,13 @@
             <h3>@Model.Nome</h3>
             <p><strong>Email:</strong> @Model.Email</p>
             <p><strong>Tipo usuário:</strong> @Model.TipoUsuario.Tipo</p>
+            <p><strong>Empresas vinculadas:</strong></p>
+            <ul class="list-group">
+                @foreach (var empresa in Model.EmpresasVinculadas) {
+                    <li class="list-group-item">@empresa.RazaoSocial</li>
+
+                }
+            </ul>
         </div>
     </div>
 </div>

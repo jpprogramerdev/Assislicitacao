@@ -22,7 +22,7 @@ namespace Assislicitacao.DAO {
            await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<EntidadeDominio>> SelectAll() => await _context.Usuarios.Include(u => u.TipoUsuario).ToListAsync();
+        public async Task<IEnumerable<EntidadeDominio>> SelectAll() => await _context.Usuarios.Include(u => u.TipoUsuario).Include(u => u.EmpresasVinculadas).ToListAsync();
 
         public async Task Update(EntidadeDominio entidade) {
 

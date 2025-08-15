@@ -32,10 +32,17 @@ namespace Assislicitacao.Controllers {
             GerarCaminhoImagem.Executar(Usuario);
 
             var UsuarioSession = _facadeUsuario.Selecionar().Result.Cast<Usuario>().FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("usuarioId"));
+
+            if(UsuarioSession == null) {
+                TempData["FalhaFotoPerfil"] = "Falha ao atualizar a foto de perfil";
+                return RedirectToAction("MeuPerfil", "Usuario");
+            }
+
             UsuarioSession.FotoPerfilUrl = Usuario.FotoPerfilUrl;
 
             try {
                 _facadeUsuario.Atualizar(UsuarioSession);
+                HttpContext.Session.SetString("usuarioFoto", UsuarioSession.FotoPerfilUrl);
                 TempData["SucessoFotoPerfil"] = "Sucesso ao atualizar a foto de perfil";
             } catch (Exception ex) {
                 TempData["FalhaFotoPerfil"] = "Falha ao atualizar a foto de perfil";
@@ -186,6 +193,8 @@ namespace Assislicitacao.Controllers {
                 CriptografarSenha.Executar(Usuario);
 
                 Usuario.EmpresasVinculadas = new List<Empresa>();
+
+                Usuario.FotoPerfilUrl = "/FotosPerfil/fotoPerfilPadrao.jpg";
 
                 _facadeUsuario.Inserir(Usuario);
                 TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuário";

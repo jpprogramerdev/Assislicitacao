@@ -60,6 +60,7 @@ namespace Assislicitacao.Controllers {
 
             Empresa Empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == id);
 
+
             return View(Empresa);
         }
 

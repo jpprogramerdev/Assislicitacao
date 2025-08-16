@@ -4,6 +4,8 @@ using Assislicitacao.DAO.Interface;
 using Assislicitacao.Facade;
 using Assislicitacao.Facade.Interface;
 using Assislicitacao.Service;
+using Assislicitacao.Strategy;
+using Assislicitacao.Strategy.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +39,8 @@ builder.Services.AddScoped<IFacadeLicitacao, FacadeLicitacao>();
 builder.Services.AddScoped<IFacadeEmail, FacadeEmail>();
 builder.Services.AddScoped<IFacadeEstado, FacadeEstado>();
 builder.Services.AddScoped<IFacadeStatusLicitacao, FacadeStatusLicitacao>();
+
+builder.Services.AddScoped<IStrategyRelatorioPDF, GerarRelatorioPDF>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
 builder.Services.AddHttpClient<FeriadoService>();

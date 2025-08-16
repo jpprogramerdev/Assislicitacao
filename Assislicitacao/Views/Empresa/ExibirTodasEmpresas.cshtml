@@ -46,7 +46,9 @@
                         <span>|</span>
                         <a asp-controller="Usuario" asp-action="PesquisarUsuariosPorEmail" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
                         <span>|</span>
-                        <a asp-controller="Empresa" asp-action="EnviarRelatorioLicitacoes" asp-route-empresaId="@Empresa.Id">Gerar Relatório Licitações</a>
+                        <a asp-controller="Empresa" asp-action="EnviarRelatorioLicitacoes" asp-route-empresaId="@Empresa.Id">Relatório Licitações (email)</a>
+                        <span>|</span>
+                        <a asp-controller="Relatorio" asp-action="GerarRelatorioLicitacoes" asp-route-empresaId="@Empresa.Id" target="_blank">Relatório Licitações (PDF)</a>
                     }
                 </td>
             </tr>

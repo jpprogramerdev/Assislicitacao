@@ -106,30 +106,6 @@ namespace Assislicitacao.Controllers {
             return View(empresa);
         }
 
-        public async Task<IActionResult> EnviarRelatorioLicitacoes(int empresaId) {
-            var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == empresaId);
-
-            string mensagem = $"Relatório de Licitações da empresa {empresa.RazaoSocial}";
-
-            empresa.Licitacoes = empresa.Licitacoes.Where(l => l.Licitacao.Data > DateTime.Now).OrderBy(l => l.Licitacao.Data).ToList();
-
-            foreach(var Licitacao in empresa.Licitacoes) {
-                mensagem += $"<br/><br/>{Licitacao.Licitacao.TipoLicitacao.Sigla} {Licitacao.Licitacao.Municipio.Nome} /  {Licitacao.Licitacao.Municipio.Estado.Uf}- {Licitacao.Licitacao.Objeto} - {Licitacao.Licitacao.Data.ToString("dd/MM/yyyy")} <strong>({Licitacao.Licitacao.StatusLicitacao.Status})</strong>";
-            }
-            
-            var email = HttpContext.Session.GetString("usuarioEmail");
-
-            try {
-                await _facadeEmail.EnviarEmail(email, "Relatório de Licitações", mensagem);
-                TempData["SucessoEnvioEmail"] = "Relatório enviado com sucesso!";
-            } catch (Exception ex) {
-                TempData["FalhaEnvioEmail"] = "Falha ao enviar o relatório: " + ex.Message;
-            }
-
-            return RedirectToAction("ExibirTodasEmpresas", "Empresa");
-
-        }
-
         public IActionResult ConfirmarVincularUsuarios() {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";

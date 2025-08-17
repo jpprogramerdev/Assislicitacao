@@ -41,6 +41,7 @@ builder.Services.AddScoped<IFacadeEstado, FacadeEstado>();
 builder.Services.AddScoped<IFacadeStatusLicitacao, FacadeStatusLicitacao>();
 
 builder.Services.AddScoped<IStrategyRelatorioPDF, GerarRelatorioPDF>();
+builder.Services.AddScoped<IStrategyRelatorioEmail, GerarRelatorioEmail>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
 builder.Services.AddHttpClient<FeriadoService>();

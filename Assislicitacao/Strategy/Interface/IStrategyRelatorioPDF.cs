@@ -2,6 +2,6 @@
 
 namespace Assislicitacao.Strategy.Interface {
     public interface IStrategyRelatorioPDF {
-        public byte[] Gerar(EntidadeDominio entidadeDominio);
+        public byte[] Gerar(EntidadeDominio entidadeDominio, RelatorioLicitacao filtroRelatorio);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assislicitacao.Models;
+using Assislicitacao.Models.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Assislicitacao.Strategy.Interface;
 using Azure;
@@ -11,7 +12,7 @@ using System.Globalization;
 
 namespace Assislicitacao.Strategy {
     public class GerarRelatorioPDF : IStrategyRelatorioPDF {
-        public byte[] Gerar(EntidadeDominio EntidadeDominio) {
+        public byte[] Gerar(EntidadeDominio EntidadeDominio, RelatorioLicitacao filtroRelatorio) {
             var empresa = (Empresa)EntidadeDominio;
 
             empresa.Licitacoes = empresa.Licitacoes.OrderBy(l => l.Licitacao.Data).ToList();

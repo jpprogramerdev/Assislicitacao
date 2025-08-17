@@ -1,0 +1,22 @@
+﻿@model RelatorioLicitacao
+
+@{
+        ViewData["Title"] = "Selecionar tipo de relatório";
+}
+
+
+<form asp-controller="Relatorio" asp-action="GerarRelatorioLicitacoes" method="post" target="_blank">
+    <input type="hidden" asp-for="@Model.EmpresaId" />
+
+    <div class="form-group">
+        <label for="tipo-licitacao">Tipo Relatorio:</label>
+        <select asp-for="@Model.TipoRelatorio" class="form-control" id="tipo-relatorio" asp-items="Html.GetEnumSelectList<TipoRelatorio>() "></select>
+    </div>
+
+    <div class="form-group">
+        <label for="tipo-licitacao">Periodo Relatorio:</label>
+        <select asp-for="@Model.PeriodoRelatorio" class="form-control" id="periodo-relatorio" asp-items="Html.GetEnumSelectList<PeriodoRelatorio>()"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Gerar</button>
+</form>

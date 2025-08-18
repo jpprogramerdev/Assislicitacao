@@ -17,9 +17,10 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeEmail _facadeEmail;
         private readonly IFacadeEstado _facadeEstado;
         private readonly IFacadeStatusLicitacao _facadeStatusLicitacao;
+        private readonly IStrategyFiltro _filtrarLicitacoes;
 
 
-        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado, IFacadeStatusLicitacao facadeStatusLicitacao) {
+        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado, IFacadeStatusLicitacao facadeStatusLicitacao, IStrategyFiltro filtrarLicitacoes) {
             _facadeEmpresa = facadeEmpresa;
             _facadeTipoLicitacao = facadeTipoLicitacao;
             _facadePortalLicitacao = facadePortalLicitacao;
@@ -27,9 +28,12 @@ namespace Assislicitacao.Controllers {
             _facadeEmail = facadeEmail;
             _facadeEstado = facadeEstado;
             _facadeStatusLicitacao = facadeStatusLicitacao;
+            _filtrarLicitacoes = filtrarLicitacoes;
         }
 
-        public async Task<IActionResult> ExibirTodasLicitacao() {
+
+        [HttpGet]
+        public async Task<IActionResult> ExibirTodasLicitacao(string? filtroCidade, string? filtroTipoLicitacao, string? filtroData, string? filtroStatusLicitacao, string? filtroObjeto, bool? mostrarSuspensos) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -41,20 +45,30 @@ namespace Assislicitacao.Controllers {
 
             var licitacoesFiltro = new List<Licitacao>();
 
-            foreach (Licitacao Licitacao in licitacoes) {
-                foreach (LicitacaoEmpresa LicitacaoEmpresa in Licitacao.Empresas) {
-                    if (LicitacaoEmpresa.Empresa.UsusariosVinculados.Any(u => u.Id == usuarioId)) {
-                        licitacoesFiltro.Add(Licitacao);
-                    }
-                    break;
-                }
+            licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoes.Cast<Licitacao>().ToList(), (int)usuarioId);
+
+            if (mostrarSuspensos != true) {
+                licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro, new List<string> { "ADJUDICADA/HOMOLAGADA", "REVOGADO", "SUSPENSO" });
             }
 
-            var statusNaoPermetidos = new List<string> { "ADJUDICADA/HOMOLAGADA", "REVOGADO", "SUSPENSO" };
+            licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro,
+                ("cidade", filtroCidade ?? string.Empty),
+                ("tipo", filtroTipoLicitacao ?? string.Empty),
+                ("status", filtroStatusLicitacao ?? string.Empty),
+                ("objeto", filtroObjeto ?? string.Empty),
+                ("data", filtroData ?? string.Empty)
+            );
 
-            licitacoesFiltro = licitacoesFiltro.Where(l => l.Data >= DateTime.Now && !statusNaoPermetidos.Contains(l.StatusLicitacao.Status)).ToList();
 
-            return View(licitacoesFiltro);
+            var todasLicitacoesViewModel = new TodasLicitacoesViewModel {
+                Licitacoes = licitacoesFiltro,
+                StatusLicitacoes = (await _facadeStatusLicitacao.Selecionar()).Cast<StatusLicitacao>().ToList(),
+                TiposLicitacoes = (await _facadeTipoLicitacao.Selecionar()).Cast<TipoLicitacao>().ToList()
+            };
+
+
+
+            return View(todasLicitacoesViewModel);
         }
 
         [HttpGet]
@@ -228,7 +242,7 @@ namespace Assislicitacao.Controllers {
             try {
                 await _facadeLicitacao.Atualizar(Licitacao);
                 TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
-            }  catch (Exception ex) {
+            } catch (Exception ex) {
                 TempData["ErrorAtualizarLicitcao"] = $"Falha ao salavar Licitação: {ex}";
             }
 

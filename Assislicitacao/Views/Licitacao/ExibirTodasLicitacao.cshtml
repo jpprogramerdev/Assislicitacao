@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Licitacao>
+﻿@model TodasLicitacoesViewModel
 
 @{
     ViewData["Title"] = "Exibir Licitações";
@@ -13,6 +13,49 @@
         </div>
     }
 }
+
+<form asp-controller="Licitacao" asp-action="ExibirTodasLicitacao" method="get">
+    <div class="row align-items-end">
+        <div class="col-md-3">
+            <label for="tipo-licitacao-filtro">Tipo Licitação:</label>
+            <select  class="form-control" id="tipo-licitacao-filtro" name="filtroTipoLicitacao" asp-items="@(new SelectList(Model.TiposLicitacoes.Select(t => new {Tipo = t.Tipo, Texto = t.Tipo + " - " + t.Sigla}), "Tipo", "Texto"))">
+                <option value="">Selecione um opção</option>
+            </select>
+            
+        </div>
+
+        <div class="col-md-3">
+            <label for="status-licitacao-filtro">Status Licitação:</label>
+            <select  class="form-control" id="status-licitacao-filtro" name="filtroStatusLicitacao" asp-items="@(new SelectList(Model.StatusLicitacoes, "Status", "Status"))">
+                 <option value="">Selecione um opção</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="cidade-licitacao">Cidade:</label>
+            <input type="text" class="form-control" id="cidade-licitacao" placeholder="Cidade" name="filtroCidade">
+        </div>
+
+        <div class="col-md-3">
+            <label for="objeto-licitacao">Objeto:</label>
+            <input type="text" class="form-control" id="objeto-licitacao" placeholder="Objeto" name="filtroObjeto">
+        </div>
+
+        <div class="col-md-3">
+            <label for="data-licitacao">Data Licitação:</label>
+            <input type="date" class="form-control" id="data-licitacao" name="filtroData">
+        </div>
+
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" value="true" id="flexCheckDefault" name="mostrarSuspensos">
+          <label class="form-check-label" for="flexCheckDefault">Mostrar Suspensos/Revogados</label>
+        </div>
+        
+    </div>
+
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +70,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Licitacao Licitacao in Model) {
+        @foreach (Licitacao Licitacao in Model.Licitacoes) {
             <tr>
                 <td class="table-licitacoes">@Licitacao.TipoLicitacao.Sigla</td>
                 <td class="table-licitacoes">@Licitacao.Objeto</td>

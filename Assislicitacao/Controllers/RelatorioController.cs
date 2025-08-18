@@ -6,6 +6,7 @@ using Assislicitacao.Strategy;
 using Assislicitacao.Strategy.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Assislicitacao.Controllers {
     public class RelatorioController : Controller {
@@ -35,6 +36,7 @@ namespace Assislicitacao.Controllers {
             var empresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().FirstOrDefault(e => e.Id == RelatorioLicitacao.EmpresaId);
 
             if(RelatorioLicitacao.TipoRelatorio == TipoRelatorio.Email) {
+                TempData["filtroRelatorio"] = JsonSerializer.Serialize(RelatorioLicitacao);
                 return RedirectToAction("EnviarRelatorioEmail", "Relatorio", new { empresaId = RelatorioLicitacao.EmpresaId });
             }
 
@@ -52,10 +54,13 @@ namespace Assislicitacao.Controllers {
 
             var email = HttpContext.Session.GetString("usuarioEmail");
 
+            var relatorioJson = TempData["filtroRelatorio"] as string;
+            var relatorioLicitacao = JsonSerializer.Deserialize<RelatorioLicitacao>(relatorioJson);
+
             IStrategyRelatorioEmail gerarEmail = new GerarRelatorioEmail();
 
             try {
-                await _facadeEmail.EnviarEmail(email, "Relatório de Licitações", gerarEmail.Gerar(empresa,null));
+                await _facadeEmail.EnviarEmail(email, "Relatório de Licitações", gerarEmail.Gerar(empresa, relatorioLicitacao));
                 TempData["SucessoEnvioEmail"] = "Relatório enviado com sucesso!";
             } catch (Exception ex) {
                 TempData["FalhaEnvioEmail"] = "Falha ao enviar o relatório: " + ex.Message;

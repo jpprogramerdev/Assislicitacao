@@ -27,11 +27,11 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpPost]
-        public IActionResult SalvarFotoPerfil(Usuario Usuario) {
+        public async Task<IActionResult> SalvarFotoPerfil(Usuario Usuario) {
             IStrategy GerarCaminhoImagem = new GerarCaminhoImagem();
             GerarCaminhoImagem.Executar(Usuario);
 
-            var UsuarioSession = _facadeUsuario.Selecionar().Result.Cast<Usuario>().FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("usuarioId"));
+            var UsuarioSession = (await _facadeUsuario.Selecionar()).Cast<Usuario>().FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("usuarioId"));
 
             if(UsuarioSession == null) {
                 TempData["FalhaFotoPerfil"] = "Falha ao atualizar a foto de perfil";

@@ -37,7 +37,7 @@
             <form asp-controller="Usuario" asp-action="SalvarFotoPerfil" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="@Model.Id">
                 <div class="mb-3">
-                    <input type="file" class="form-control mt-3" accept="image/*" asp-for="@Model.FotoPerfil">
+                    <input type="file" name="FotoPerfil" class="form-control mt-3" accept="image/*">
                     <button type="submit" class="btn btn-primary mt-2">Salvar</button>
                 </div>
             </form>

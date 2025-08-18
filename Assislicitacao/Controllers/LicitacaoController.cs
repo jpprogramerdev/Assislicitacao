@@ -50,6 +50,10 @@ namespace Assislicitacao.Controllers {
                 }
             }
 
+            var statusNaoPermetidos = new List<string> { "ADJUDICADA/HOMOLAGADA", "REVOGADO", "SUSPENSO" };
+
+            licitacoesFiltro = licitacoesFiltro.Where(l => l.Data >= DateTime.Now && !statusNaoPermetidos.Contains(l.StatusLicitacao.Status)).ToList();
+
             return View(licitacoesFiltro);
         }
 

@@ -2,6 +2,7 @@
     public enum PeriodoRelatorio {
         Anual,
         Mensal,
-        Semanal
+        Semanal,
+        Geral
     }
 }

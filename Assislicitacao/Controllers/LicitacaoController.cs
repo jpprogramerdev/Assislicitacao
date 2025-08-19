@@ -85,6 +85,19 @@ namespace Assislicitacao.Controllers {
             return View(Licitacao);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ExibirLicitacao(int id) {
+            if (HttpContext.Session.GetInt32("usuarioId") == null) {
+                TempData["ErroLogin"] = "É necessário estar logado";
+                return RedirectToAction("Login", "Login");
+            }
+            var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id);
+            if (Licitacao == null) {
+                TempData["ErroLicitacao"] = "Licitação não encontrada.";
+                return RedirectToAction("ExibirTodasLicitacao");
+            }
+            return View(Licitacao);
+        }
 
         public async Task<IActionResult> ConfirmarVitoria(int empresaId, int licitacaoId) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {

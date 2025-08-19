@@ -37,9 +37,9 @@
                 <td>@Usuario.Email</td>
                 <td>@Usuario.TipoUsuario.Tipo</td>
                 <td>
-                    <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@Usuario.Id">Editar</a>
+                    <a asp-controller="Usuario" asp-action="EditarUsuario" asp-route-id="@Usuario.Id"><i class="bi bi-pencil-fill"></i></a>
                     <span>|</span>
-                    <a asp-controller="Usuario" asp-action="ConfirmarExclusaoUsuario" asp-route-id="@Usuario.Id">Excluir</a>
+                    <a asp-controller="Usuario" asp-action="ConfirmarExclusaoUsuario" asp-route-id="@Usuario.Id"><i class="bi bi-trash-fill"></i></a>
                 </td>
             </tr>
         }

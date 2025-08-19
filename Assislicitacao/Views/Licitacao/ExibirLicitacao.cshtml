@@ -1,0 +1,43 @@
+﻿@using System.Globalization
+@model Licitacao
+
+@{
+    ViewData["Title"] = "Exibir Licitacao";
+}
+
+
+<div class="form-group">
+    <label for="tipo-licitacao">Tipo Licitacao:</label>
+    <input type="text" class="form-control" id="tipo-licitacao-licitacao"value="@Model.TipoLicitacao.Tipo" readonly>
+</div>
+
+<div class="form-group">
+    <label for="objeto-licitacao">Objeto:</label>
+    <input type="text" class="form-control" id="objeto-licitacao" value="@Model.Objeto" readonly>
+</div>
+
+<div class="form-group">
+    <label for="data-licitacao">Data:</label>
+    <input type="text" class="form-control" id="data-licitacao" value="@Model.Data.ToString("dd/MM/yyyy")" readonly>
+</div>
+
+<div class="form-group">
+    <label for="valor-estimado-licitacao">Valor Estimado:</label>
+    <input type="text" class="form-control" id="valor-estimado-licitacao" value="R$ @(Model.ValorEstimado?.ToString("N2", new CultureInfo("pt-BR")) ?? "0.00")" readonly>
+</div>
+
+<div class="form-group">
+    <label for="municipio-licitacao">Municipio:</label>
+    <input type="text" class="form-control" id="municipio-licitacao" value="@Model.Municipio.Nome" readonly>
+</div>
+
+<div class="form-group">
+    <label for="estado-licitacao">UF:</label>
+    <input type="text" class="form-control" id="estado-licitacao"  value="@Model.Municipio.Estado.Uf" readonly>
+</div>
+
+<div class="form-group">
+    <label for="portal-licitacao">Portal Licitacao:</label>
+    <input type="text" class="form-control" id="portal-licitacao" value="@Model.PortalLicitacao.Nome" readonly>
+</div>
+

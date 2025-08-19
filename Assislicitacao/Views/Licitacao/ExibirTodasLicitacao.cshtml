@@ -88,13 +88,16 @@
                 <td class="table-licitacoes">@Licitacao.StatusLicitacao.Status</td>
                 <td><a href="@Licitacao.PortalLicitacao.link">@Licitacao.PortalLicitacao.Nome</a></td>
                 <td>
-                    <a asp-controller="Licitacao" asp-action="ConfirmarLicitacao" asp-route-id="@Licitacao.Id">Confimar</a>
+                    <a asp-controller="Licitacao" asp-action="ExibirLicitacao" asp-route-id="@Licitacao.Id"><i class="bi bi-info-circle-fill"></i></a>
                     <span>|</span>
-                    <a asp-controller="Licitacao" asp-action="EditarLicitacao" asp-route-id="@Licitacao.Id">Editar</a>
+                    <a asp-controller="Licitacao" asp-action="ConfirmarLicitacao" asp-route-id="@Licitacao.Id"><i class="bi bi-check-square-fill"></i></a>
                     <span>|</span>
-                    <a asp-controller="Licitacao" asp-action="AlterarStatus" asp-route-id="@Licitacao.Id">Alterar Status</a>
+                    <a asp-controller="Licitacao" asp-action="EditarLicitacao" asp-route-id="@Licitacao.Id"><i class="bi bi-pencil-fill"></i></a>
                     <span>|</span>
-                    <a asp-controller="Licitacao" asp-action="EscolherEmpresaVitoria" asp-route-licitacaoId="@Licitacao.Id">Vitória</a>
+                    <a asp-controller="Licitacao" asp-action="AlterarStatus" asp-route-id="@Licitacao.Id"><i class="bi bi-arrow-repeat"></i></a>
+                    <span>|</span>
+                    <a asp-controller="Licitacao" asp-action="EscolherEmpresaVitoria" asp-route-licitacaoId="@Licitacao.Id"><i class="bi bi-trophy-fill"></i>
+</a>
                 </td>
             </tr>
         }

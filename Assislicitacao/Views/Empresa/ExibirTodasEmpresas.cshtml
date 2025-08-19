@@ -37,16 +37,16 @@
                     <td>@Empresa.UsusariosVinculados.Count</td>
                 }
                 <td>
-                    <a asp-controller="Empresa" asp-action="ExibirEmpresa" asp-route-id="@Empresa.Id">Exibir</a>
+                    <a asp-controller="Empresa" asp-action="ExibirEmpresa" asp-route-id="@Empresa.Id"><i class="bi bi-info-circle-fill"></i></a>
                     @if (tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
                         <span>|</span>
-                        <a asp-controller="Empresa" asp-action="ConfirmarExclusaoEmpresa" asp-route-id="@Empresa.Id">Excluir</a>
+                        <a asp-controller="Empresa" asp-action="ConfirmarExclusaoEmpresa" asp-route-id="@Empresa.Id"><i class="bi bi-trash-fill"></i></a>
                     }
                     @if (tipoUsuario == "REPRESENTANTE LEGAL" || tipoUsuario == "ADMINISTRADOR DE SISTEMA") {
                         <span>|</span>
-                        <a asp-controller="Usuario" asp-action="PesquisarUsuariosPorEmail" asp-route-id="@Empresa.Id">Vincular Usuarios</a>
+                        <a asp-controller="Usuario" asp-action="PesquisarUsuariosPorEmail" asp-route-id="@Empresa.Id"><i class="bi bi-person-plus"></i></a>
                         <span>|</span>
-                        <a asp-controller="Relatorio" asp-action="SelecionarTipoRelatorio" asp-route-empresaId="@Empresa.Id">Relatório Licitações</a>
+                        <a asp-controller="Relatorio" asp-action="SelecionarTipoRelatorio" asp-route-empresaId="@Empresa.Id"><i class="bi bi-file-earmark-text-fill"></i></a>
                     }
                 </td>
             </tr>

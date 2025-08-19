@@ -47,6 +47,8 @@
                         <a asp-controller="Usuario" asp-action="PesquisarUsuariosPorEmail" asp-route-id="@Empresa.Id"><i class="bi bi-person-plus"></i></a>
                         <span>|</span>
                         <a asp-controller="Relatorio" asp-action="SelecionarTipoRelatorio" asp-route-empresaId="@Empresa.Id"><i class="bi bi-file-earmark-text-fill"></i></a>
+                        <span>|</span>
+                        <a asp-controller="Grafico" asp-action="Grafico" asp-route-id="@Empresa.Id"><i class="bi bi-bar-chart-fill"></i></a>
                     }
                 </td>
             </tr>

@@ -2,8 +2,6 @@
     ViewData["Title"] = "Gráfico de Licitações";
 }
 
-<h2>@ViewData["Title"]</h2>
-
 <canvas id="graficoMeses" width="800" height="400"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,15 +10,17 @@
     var ctx = document.getElementById('graficoMeses').getContext('2d');
 
     var grafico = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Meses)),
-            datasets: [{
+             datasets: [{
                 label: 'Total Ganho por Mês',
                 data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ValoresPorMes)),
-                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
+                backgroundColor: 'transparent',       // sem preenchimento
+                borderColor: 'rgba(75, 192, 75, 1)',  // verde chamativo para a linha
+                borderWidth: 2,
+                fill: false,                           // desativa preenchimento
+                tension: 0.2                           // suaviza a linha
             }]
         },
         options: {

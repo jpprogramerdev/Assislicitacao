@@ -79,7 +79,12 @@
                                      style="width: 40px; height: 40px; object-fit: cover;">
                             }
 
-                            <span class="fw-bold text-dark">Olá, @usuarioNome</span>
+                            @{
+                                var nomeSepara = @usuarioNome.Split(' ');
+                                var nomeSaudacoes = nomeSepara.Length > 1 ? nomeSepara[0] + " " + nomeSepara[1] : nomeSepara[0];
+                            }
+
+                            <span class="fw-bold text-dark">Olá, @nomeSaudacoes</span>
                         </a>
                         <a class="btn btn-outline-secondary btn-sm" asp-controller="Login" asp-action="Logout">Sair</a>
                     }

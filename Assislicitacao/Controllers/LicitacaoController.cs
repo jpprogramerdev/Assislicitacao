@@ -17,10 +17,10 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeEmail _facadeEmail;
         private readonly IFacadeEstado _facadeEstado;
         private readonly IFacadeStatusLicitacao _facadeStatusLicitacao;
-        private readonly IStrategyFiltro _filtrarLicitacoes;
+        private readonly IEnumerable<IStrategyFiltro> _filtros;
 
 
-        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado, IFacadeStatusLicitacao facadeStatusLicitacao, IStrategyFiltro filtrarLicitacoes) {
+        public LicitacaoController(IFacadeEmpresa facadeEmpresa, IFacadeTipoLicitacao facadeTipoLicitacao, IFacadePortalLicitacao facadePortalLicitacao, IFacadeLicitacao facadeLicitacao, IFacadeEmail facadeEmail, IFacadeEstado facadeEstado, IFacadeStatusLicitacao facadeStatusLicitacao, IEnumerable<IStrategyFiltro> filtros) {
             _facadeEmpresa = facadeEmpresa;
             _facadeTipoLicitacao = facadeTipoLicitacao;
             _facadePortalLicitacao = facadePortalLicitacao;
@@ -28,7 +28,7 @@ namespace Assislicitacao.Controllers {
             _facadeEmail = facadeEmail;
             _facadeEstado = facadeEstado;
             _facadeStatusLicitacao = facadeStatusLicitacao;
-            _filtrarLicitacoes = filtrarLicitacoes;
+            _filtros = filtros;
         }
 
 
@@ -39,21 +39,23 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
+            var filtrarLicitacoes = _filtros.OfType<FiltrarLicitacoes>().FirstOrDefault();
+
             var usuarioId = HttpContext.Session.GetInt32("usuarioId");
 
             var licitacoes = await _facadeLicitacao.Selecionar();
 
             var licitacoesFiltro = new List<Licitacao>();
 
-            licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoes.Cast<Licitacao>().ToList(), (int)usuarioId);
+            licitacoesFiltro = filtrarLicitacoes.Executar(licitacoes.Cast<Licitacao>().ToList(), (int)usuarioId);
 
             var statusBloqueados = new List<string> { "ADJUDICADA/HOMOLAGADA", "REVOGADO", "SUSPENSO" };
 
             if (mostrarSuspensos != true && !statusBloqueados.Contains(filtroStatusLicitacao)) {
-                licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro, statusBloqueados);
+                licitacoesFiltro = filtrarLicitacoes.Executar(licitacoesFiltro, statusBloqueados);
             }
 
-            licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro,
+            licitacoesFiltro = filtrarLicitacoes.Executar(licitacoesFiltro,
                 ("cidade", filtroCidade ?? string.Empty),
                 ("tipo", filtroTipoLicitacao ?? string.Empty),
                 ("status", filtroStatusLicitacao ?? string.Empty),

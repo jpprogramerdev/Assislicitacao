@@ -39,10 +39,13 @@ builder.Services.AddScoped<IFacadeLicitacao, FacadeLicitacao>();
 builder.Services.AddScoped<IFacadeEmail, FacadeEmail>();
 builder.Services.AddScoped<IFacadeEstado, FacadeEstado>();
 builder.Services.AddScoped<IFacadeStatusLicitacao, FacadeStatusLicitacao>();
+builder.Services.AddScoped<IFacadePorteEmpresa, FacadePorteEmpresa>();
 
 builder.Services.AddScoped<IStrategyRelatorioPDF, GerarRelatorioPDF>();
 builder.Services.AddScoped<IStrategyRelatorioEmail, GerarRelatorioEmail>();
 builder.Services.AddScoped<IStrategyFiltro, FiltrarLicitacoes>();
+builder.Services.AddScoped<IStrategyFiltro, FiltrarUsuarios>();
+builder.Services.AddScoped<IStrategyFiltro, FiltrarEmpresa>();
 
 builder.Services.AddHttpClient<ReceitaWsService>();
 builder.Services.AddHttpClient<FeriadoService>();

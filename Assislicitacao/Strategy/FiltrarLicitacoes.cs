@@ -5,7 +5,9 @@ using System.Globalization;
 namespace Assislicitacao.Strategy {
     public class FiltrarLicitacoes : IStrategyFiltro {
 
-        public List<Licitacao> Executar(List<Licitacao> licitacoesFiltro, params (string tipoFiltro, string valor)[] filtros) {
+        public List<T> Executar<T>(List<T> listFiltro, params (string tipoFiltro, string valor)[] filtros) {
+            var licitacoesFiltro = listFiltro.Cast<Licitacao>().ToList();
+
             foreach (var filtro in filtros) {
                 if (string.IsNullOrWhiteSpace(filtro.valor)) continue;
                 switch (filtro.tipoFiltro) {
@@ -36,10 +38,12 @@ namespace Assislicitacao.Strategy {
                         break;
                 }
             }
-            return licitacoesFiltro;
+            return licitacoesFiltro.Cast<T>().ToList();
         }
 
-        public List<Licitacao> Executar(List<Licitacao> licitacoesBancoDeDados, int usuarioId) {
+        public List<T> Executar<T>(List<T> listBancoDeDados, int usuarioId) {
+            var licitacoesBancoDeDados = listBancoDeDados.Cast<Licitacao>().ToList();
+
             var licitacoesFiltro = new List<Licitacao>();
 
             foreach (Licitacao Licitacao in licitacoesBancoDeDados) {
@@ -50,12 +54,17 @@ namespace Assislicitacao.Strategy {
                     break;
                 }
             }
-            return licitacoesFiltro;
+            return licitacoesFiltro.Cast<T>().ToList();
         }
 
-        public List<Licitacao> Executar(List<Licitacao> licitacoesFiltro, List<string> statusNaoPermetidos) => licitacoesFiltro
+        public List<T> Executar<T>(List<T> listFiltro, List<string> statusNaoPermetidos) {
+            var licitacoesFiltro = listFiltro.Cast<Licitacao>().ToList();
+
+            licitacoesFiltro = licitacoesFiltro
                     .Where(l => l.Data >= DateTime.Now && !statusNaoPermetidos.Contains(l.StatusLicitacao.Status))
                     .ToList();
-        
+
+            return licitacoesFiltro.Cast<T>().ToList();
+        }
     }
 }

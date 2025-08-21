@@ -15,12 +15,16 @@ namespace Assislicitacao.Controllers {
         private readonly IFacadeUsuario _facadeUsuarios;
         private readonly IFacadeTipoUsuario _facadeTipoUsuario;
         private readonly IFacadeEmail _facadeEmail;
+        private readonly IFacadePorteEmpresa _facadePorteEmpresa;
+        private readonly IEnumerable<IStrategyFiltro> _filtro;
 
-        public EmpresaController(IFacadeEmpresa facadeEmpresa, IFacadeUsuario facadeUsuarios, IFacadeTipoUsuario facadeTipoÚsuario, IFacadeEmail facadeEmail) {
+        public EmpresaController(IFacadeEmpresa facadeEmpresa, IFacadeUsuario facadeUsuarios, IFacadeTipoUsuario facadeTipoÚsuario, IFacadeEmail facadeEmail, IFacadePorteEmpresa facadePorteEmpresa, IEnumerable<IStrategyFiltro> filtro) {
             _facadeEmpresa = facadeEmpresa;
             _facadeUsuarios = facadeUsuarios;
             _facadeTipoUsuario = facadeTipoÚsuario;
             _facadeEmail = facadeEmail;
+            _facadePorteEmpresa = facadePorteEmpresa;
+            _filtro = filtro;
         }
 
         public IActionResult ConsultarCNPJ() {
@@ -33,7 +37,8 @@ namespace Assislicitacao.Controllers {
             return View();
         }
 
-        public async Task<IActionResult> ExibirTodasEmpresas() {
+        [HttpGet]
+        public async Task<IActionResult> ExibirTodasEmpresas(string? filtroPorteEmpresa, string? filtroCNPJ, string? filtroRazaoSocial) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -42,13 +47,27 @@ namespace Assislicitacao.Controllers {
             var Usuario = new Usuario();
             Usuario.Id = (int)HttpContext.Session.GetInt32("usuarioId");
 
+            var filtrarEmpresa = _filtro.OfType<FiltrarEmpresa>().FirstOrDefault();
+
             List<Empresa> ListEmpresa = (await _facadeEmpresa.Selecionar()).Cast<Empresa>().Where(user => user.UsusariosVinculados.Any(u => u.Id == Usuario.Id)).ToList();
 
-            foreach(Empresa Empresa in ListEmpresa) {
+            var todasEmpresasViewModel = new TodosEmpresaViewModel {
+                Empresas = ListEmpresa,
+                PorteEmpresas = (await _facadePorteEmpresa.Selecionar()).Cast<PorteEmpresa>().ToList()
+            };
+
+            todasEmpresasViewModel.Empresas = filtrarEmpresa.Executar(
+                todasEmpresasViewModel.Empresas,
+                ("porte", filtroPorteEmpresa ?? string.Empty),
+                ("cnpj", filtroCNPJ ?? string.Empty),
+                ("nome", filtroRazaoSocial ?? string.Empty) 
+            );
+
+            foreach (Empresa Empresa in todasEmpresasViewModel.Empresas) {
                 Empresa.CNPJ = Convert.ToUInt64(Empresa.CNPJ).ToString(@"00\.000\.000\/0000\-00");
             }
 
-            return View(ListEmpresa);
+            return View(todasEmpresasViewModel);
         }
 
         [HttpGet]

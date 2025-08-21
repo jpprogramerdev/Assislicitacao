@@ -11,10 +11,12 @@ namespace Assislicitacao.Controllers {
     public class UsuarioController : Controller {
         private readonly IFacadeTipoUsuario _facadeTipoUsuario;
         private readonly IFacadeUsuario _facadeUsuario;
+        private readonly IEnumerable<IStrategyFiltro> _filtros;
 
-        public UsuarioController(IFacadeTipoUsuario facadeTipoUsuario, IFacadeUsuario facadeUsuario) {
+        public UsuarioController(IFacadeTipoUsuario facadeTipoUsuario, IFacadeUsuario facadeUsuario, IEnumerable<IStrategyFiltro> filtros) {
             _facadeTipoUsuario = facadeTipoUsuario;
             _facadeUsuario = facadeUsuario;
+            _filtros = filtros;
         }
 
         public async Task<IActionResult> MeuPerfil() {
@@ -66,7 +68,8 @@ namespace Assislicitacao.Controllers {
             return View(usuarioViewModel);
         }
 
-        public async Task<IActionResult> ExibirUsuarios() {
+        [HttpGet]
+        public async Task<IActionResult> ExibirUsuarios(string? filtroTipoUsuario, string? filtroNomeUsuario, string? filtroEmail) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -78,9 +81,21 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
 
-            var usuarios = (await _facadeUsuario.Selecionar()).Cast<Usuario>();
-            
-            return View(usuarios);
+            var filtrarUsuarios = _filtros.OfType<FiltrarUsuarios>().FirstOrDefault();
+
+            var todosUsuarioViewModel = new TodosUsuariosViewModel { 
+                Usuarios = (await _facadeUsuario.Selecionar()).Cast<Usuario>().ToList(),
+                TipoUsuarios = (await _facadeTipoUsuario.Selecionar()).Cast<TipoUsuario>().ToList()
+            };
+
+            todosUsuarioViewModel.Usuarios = filtrarUsuarios.Executar(
+                todosUsuarioViewModel.Usuarios,
+                ("tipo", filtroTipoUsuario ?? string.Empty),
+                ("nome", filtroNomeUsuario ?? string.Empty),
+                ("email", filtroEmail ?? string.Empty)
+            );
+
+            return View(todosUsuarioViewModel);
         }
 
         

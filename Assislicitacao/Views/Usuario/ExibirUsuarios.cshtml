@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Usuario>
+﻿@model TodosUsuariosViewModel
 
 @{
     ViewData["Title"] = "Exibir Usuarios";
@@ -21,6 +21,31 @@
         </div>
     }
 }
+
+<form asp-controller="Usuario" asp-action="ExibirUsuarios" method="get">
+    <div class="row align-items-end">
+        <div class="col-md-3">
+            <label for="tipo-usuario-filtro">Tipo de Usuario:</label>
+            <select class="form-control" id="tipo-usuario-filtro" name="filtroTipoUsuario" asp-items="@(new SelectList(Model.TipoUsuarios, "Tipo", "Tipo"))">
+                <option value="">Selecione um opção</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="nome-usuario">Nome:</label>
+            <input type="text" class="form-control" id="nome-usuario" placeholder="Nome usuario" name="filtroNomeUsuario">
+        </div>
+
+        <div class="col-md-3">
+            <label for="email-usuario">Email:</label>
+            <input type="text" class="form-control" id="email-usuario" placeholder="exemplo@email.com" name="filtroEmail">
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +56,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Usuario Usuario in Model) {
+        @foreach (Usuario Usuario in Model.Usuarios) {
             <tr>
                 <td>@Usuario.Nome</td>
                 <td>@Usuario.Email</td>

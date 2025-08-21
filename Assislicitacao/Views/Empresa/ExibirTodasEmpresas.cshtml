@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Empresa>
+﻿@model TodosEmpresaViewModel
 
 @{
     ViewData["Title"] = "Exibir Empresas";
@@ -15,6 +15,31 @@
 
     var tipoUsuario = Context.Session.GetString("usuarioTipoUsuario");
 }
+
+<form asp-controller="Empresa" asp-action="ExibirTodasEmpresas" method="get">
+    <div class="row align-items-end">
+        <div class="col-md-3">
+            <label for="porte-empresa-filtro">Tipo de Usuario:</label>
+            <select class="form-control" id="porte-empresa-filtro" name="filtroPorteEmpresa" asp-items="@(new SelectList(Model.PorteEmpresas, "Porte", "Porte"))">
+                <option value="">Selecione um opção</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="razao-social-filtro">Razão Social:</label>
+            <input type="text" class="form-control" id="razao-social-filtro" placeholder="Razão Social" name="filtroRazaoSocial">
+        </div>
+
+        <div class="col-md-3">
+            <label for="cnpj-filtro">CNPJ:</label>
+            <input type="text" class="form-control" id="cnpj-filtro" placeholder="00.000.000/0000-00" name="filtroCNPJ">
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -28,7 +53,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Empresa Empresa in Model) {
+        @foreach (Empresa Empresa in Model.Empresas) {
             <tr>
                 <td>@Empresa.RazaoSocial</td>
                 <td>@Empresa.CNPJ</td>

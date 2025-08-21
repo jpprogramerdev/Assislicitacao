@@ -174,33 +174,6 @@ namespace Assislicitacao.Controllers {
             return View(LicitacaoViewModel);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ConfirmarLicitacao(int id) {
-            if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
-
-            var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == id);
-            return View(Licitacao);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AtaualizarConfirmacaoLicitacao(Licitacao Licitacao) {
-            if (HttpContext.Session.GetInt32("usuarioId") == null) {
-                TempData["ErroLogin"] = "É necessário estar logado";
-                return RedirectToAction("Login", "Login");
-            }
-
-            try {
-                await _facadeLicitacao.AtualizarConfirmacao(Licitacao);
-                TempData["SucessoAtualizarLicitacao"] = "Sucesso ao atualizar a licitação";
-            } catch (Exception ex) {
-                TempData["ErrorAtualizarLicitcao"] = ex.Message;
-            }
-            return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
-        }
-
         [HttpPost]
         public async Task<IActionResult> SalvarLicitacao(LicitacaoViewModel LicitacaoViewModel) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {

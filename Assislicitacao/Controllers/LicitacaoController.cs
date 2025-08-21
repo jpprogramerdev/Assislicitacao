@@ -47,8 +47,10 @@ namespace Assislicitacao.Controllers {
 
             licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoes.Cast<Licitacao>().ToList(), (int)usuarioId);
 
-            if (mostrarSuspensos != true) {
-                licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro, new List<string> { "ADJUDICADA/HOMOLAGADA", "REVOGADO", "SUSPENSO" });
+            var statusBloqueados = new List<string> { "ADJUDICADA/HOMOLAGADA", "REVOGADO", "SUSPENSO" };
+
+            if (mostrarSuspensos != true && !statusBloqueados.Contains(filtroStatusLicitacao)) {
+                licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro, statusBloqueados);
             }
 
             licitacoesFiltro = _filtrarLicitacoes.Executar(licitacoesFiltro,

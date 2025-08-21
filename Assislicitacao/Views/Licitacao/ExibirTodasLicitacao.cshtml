@@ -95,9 +95,14 @@
                     <a asp-controller="Licitacao" asp-action="EditarLicitacao" asp-route-id="@Licitacao.Id"><i class="bi bi-pencil-fill"></i></a>
                     <span>|</span>
                     <a asp-controller="Licitacao" asp-action="AlterarStatus" asp-route-id="@Licitacao.Id"><i class="bi bi-arrow-repeat"></i></a>
-                    <span>|</span>
-                    <a asp-controller="Licitacao" asp-action="EscolherEmpresaVitoria" asp-route-licitacaoId="@Licitacao.Id"><i class="bi bi-trophy-fill"></i>
-</a>
+                    @{
+                        var statusBloqueados = new[] { "ADJUDICADA/HOMOLAGADA", "SUSPENSO", "REVOGADO" };
+                        if (!statusBloqueados.Contains(Licitacao.StatusLicitacao.Status)){
+                            <span>|</span>
+                            <a asp-controller="Licitacao" asp-action="EscolherEmpresaVitoria" asp-route-licitacaoId="@Licitacao.Id"><i class="bi bi-trophy-fill"></i></a>
+                        }
+                    }
+
                 </td>
             </tr>
         }

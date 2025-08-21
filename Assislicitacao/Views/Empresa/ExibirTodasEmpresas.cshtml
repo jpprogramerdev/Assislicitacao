@@ -19,7 +19,7 @@
 <form asp-controller="Empresa" asp-action="ExibirTodasEmpresas" method="get">
     <div class="row align-items-end">
         <div class="col-md-3">
-            <label for="porte-empresa-filtro">Tipo de Usuario:</label>
+            <label for="porte-empresa-filtro">Porte da Empresa:</label>
             <select class="form-control" id="porte-empresa-filtro" name="filtroPorteEmpresa" asp-items="@(new SelectList(Model.PorteEmpresas, "Porte", "Porte"))">
                 <option value="">Selecione um opção</option>
             </select>

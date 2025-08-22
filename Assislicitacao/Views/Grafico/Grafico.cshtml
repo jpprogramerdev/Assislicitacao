@@ -6,6 +6,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<div class="valor-ganho">
+    <p>
+        💰 Valor Total Ganho: R$ @ViewBag.ValorTotal.ToString("N2", new System.Globalization.CultureInfo("pt-BR"))
+    </p>
+</div>
+
 <script>
     var ctx = document.getElementById('graficoMeses').getContext('2d');
 

@@ -1,24 +1,24 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 table td a {
@@ -27,7 +27,7 @@ table td a {
     color: #808080
 }
 
-table td{
+table td {
     font-size: 1.2rem;
     font-weight: bold;
     color: #5201ffea
@@ -52,7 +52,7 @@ td.table-licitacoes {
     margin-bottom: 0.5rem; /* Espaço abaixo do título (opcional) */
 }
 
-.confirmacao-participacao{
+.confirmacao-participacao {
     color: #00ff0d
 }
 
@@ -69,3 +69,22 @@ fieldset.form-group {
     padding: 0 8px;
     color: #555;
 }
+
+div.valor-ganho {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+    div.valor-ganho p {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2e7d32;
+        background-color: #e8f5e9;
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: inline-block;
+        margin-top: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }

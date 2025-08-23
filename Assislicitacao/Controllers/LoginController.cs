@@ -44,7 +44,7 @@ namespace Assislicitacao.Controllers {
                     return RedirectToAction("ExibirTodasLicitacao", "Licitacao");
                 }
             }catch(Exception ex) {
-                TempData["ErroLogin"] = "Email e/ou senha inválidos";
+                TempData["ErroLogin"] = "Erro ao efetuar o login: " + ex.Message;
             }
             TempData["ErroLogin"] = "Email e/ou senha inválidos";
 

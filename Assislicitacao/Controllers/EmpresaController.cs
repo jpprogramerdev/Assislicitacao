@@ -186,6 +186,8 @@ namespace Assislicitacao.Controllers {
 
                 CriptografarSenha.Executar(usuario);
 
+                usuario.FotoPerfilUrl = "/FotosPerfil/fotoPerfilPadrao.jpg";
+
                 await _facadeUsuarios.Inserir(usuario);
 
                 var empresa = EmpresaMapper.ConverteEmpresaResponseToEmpresa(EmpresaReceitaWsResponse);

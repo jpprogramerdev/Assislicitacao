@@ -2,6 +2,24 @@
     ViewData["Title"] = "Gráfico de Licitações";
 }
 
+<form asp-controller="Grafico" asp-action="Grafico" method="get">
+    <div class="row align-items-end">
+
+        <div class="col-md-3">
+            <label for="razao-social-filtro">Data inicial:</label>
+            <input type="date" class="form-control" id="razao-social-filtro" name="dataInicio">
+        </div>
+
+        <div class="col-md-3">
+            <label for="razao-social-filtro">Data final:</label>
+            <input type="date" class="form-control" id="razao-social-filtro" name="dataFim">
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
 <canvas id="graficoMeses" width="800" height="400"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

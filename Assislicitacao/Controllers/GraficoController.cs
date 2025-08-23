@@ -11,7 +11,8 @@ namespace Assislicitacao.Controllers {
             _facadeEmpresa = facadeEmpresa;
         }
 
-        public async Task<IActionResult> Grafico(int id) {
+        [HttpGet]
+        public async Task<IActionResult> Grafico(int id, string? dataInicio, string? dataFim) {
             if (HttpContext.Session.GetInt32("usuarioId") == null) {
                 TempData["ErroLogin"] = "É necessário estar logado";
                 return RedirectToAction("Login", "Login");
@@ -21,6 +22,16 @@ namespace Assislicitacao.Controllers {
 
             if(empresa == null) {
                 return View();
+            }
+
+            if (!string.IsNullOrEmpty(dataInicio)) {
+                DateTime inicio = DateTime.Parse(dataInicio);
+                empresa.Licitacoes = empresa.Licitacoes.Where(l => l.Licitacao.Data >= inicio).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(dataFim)) {
+                DateTime fim = DateTime.Parse(dataFim);
+                empresa.Licitacoes = empresa.Licitacoes.Where(l => l.Licitacao.Data <= fim).ToList();
             }
 
             var licitacoes = empresa.Licitacoes.Where(l => l.ValorGanho != null && l.Licitacao.Data.Year == DateTime.Now.Year).GroupBy(l => l.Licitacao.Data.Month).ToList();

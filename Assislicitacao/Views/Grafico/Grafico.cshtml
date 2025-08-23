@@ -15,10 +15,16 @@
             <input type="date" class="form-control" id="razao-social-filtro" name="dataFim">
         </div>
 
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+
     </div>
 
-    <button type="submit" class="btn btn-primary">Filtrar</button>
+    
 </form>
+
+<p class="titulo-grafico">Gráfico de Ganho em Licitações</p>
 
 <canvas id="graficoMeses" width="800" height="400"></canvas>
 
@@ -26,7 +32,7 @@
 
 <div class="valor-ganho">
     <p>
-        💰 Valor Total Ganho: R$ @ViewBag.ValorTotal.ToString("N2", new System.Globalization.CultureInfo("pt-BR"))
+        Valor Total Ganho: R$ @ViewBag.ValorTotal.ToString("N2", new System.Globalization.CultureInfo("pt-BR"))
     </p>
 </div>
 
@@ -40,15 +46,20 @@
              datasets: [{
                 label: 'Total Ganho por Mês',
                 data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ValoresPorMes)),
-                backgroundColor: 'transparent',       // sem preenchimento
-                borderColor: 'rgba(75, 192, 75, 1)',  // verde chamativo para a linha
+                backgroundColor: 'transparent',       
+                borderColor: 'rgba(75, 192, 75, 1)',  
                 borderWidth: 2,
-                fill: false,                           // desativa preenchimento
-                tension: 0.2                           // suaviza a linha
+                fill: false,                           
+                tension: 0.2                       
             }]
         },
         options: {
             responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true,

@@ -82,10 +82,16 @@ namespace Assislicitacao.Controllers {
                 return RedirectToAction("Login", "Login");
             }
             var Licitacao = (await _facadeLicitacao.Selecionar()).Cast<Licitacao>().FirstOrDefault(l => l.Id == licitacaoId);
+
             if (Licitacao == null) {
                 TempData["ErroLicitacao"] = "Licitação não encontrada.";
                 return RedirectToAction("ExibirTodasLicitacao");
             }
+            
+            if(Licitacao.Empresas.Count == 1) {
+                return RedirectToAction("ConfirmarVitoria", new { empresaId = Licitacao.Empresas.First().EmpresaId, licitacaoId = Licitacao.Id });
+            }
+
             return View(Licitacao);
         }
 

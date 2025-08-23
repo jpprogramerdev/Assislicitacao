@@ -192,7 +192,7 @@ namespace Assislicitacao.Controllers {
         }
 
         [HttpPost]
-        public IActionResult SalvarUsuario(UsuarioViewModel UsuarioViewModel) {
+        public async Task<IActionResult> SalvarUsuario(UsuarioViewModel UsuarioViewModel) {
             if (HttpContext.Session.GetInt32("usuarioId") != null && HttpContext.Session.GetString("usuarioTipoUsuario") != "ADMINISTRADOR DE SISTEMA") {
 
                 TempData["ErroLogin"] = "Você não tem permissão para acessar esta página. Por medidas de segurança será deslogado.";
@@ -211,7 +211,7 @@ namespace Assislicitacao.Controllers {
 
                 Usuario.FotoPerfilUrl = "/FotosPerfil/fotoPerfilPadrao.jpg";
 
-                _facadeUsuario.Inserir(Usuario);
+                await _facadeUsuario.Inserir(Usuario);
                 TempData["SucessoCadastro"] = "Sucesso ao cadastrar o usuário";
 
                 if (HttpContext.Session.GetInt32("usuarioId") == null) {

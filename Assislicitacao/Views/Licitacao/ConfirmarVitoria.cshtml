@@ -1,0 +1,58 @@
+﻿@model LicitacaoEmpresa
+
+@{
+    ViewData["Title"] = "Confirmar Vitória";
+}
+
+
+<form asp-controller="Licitacao" asp-action="SalvarVitoria" method="post">
+    <input type="hidden" asp-for="@Model.Licitacao.Id" />
+    <input type="hidden" asp-for="@Model.Empresa.Id" />
+    <input type="hidden" asp-for="@Model.Licitacao.MunicipioId" />
+    <input type="hidden" asp-for="@Model.Licitacao.PortalLicitacaoId" />
+    <input type="hidden" asp-for="@Model.Licitacao.TipoLicitacaoId" />
+    <input type="hidden" asp-for="@Model.Licitacao.Municipio.EstadoId" />
+
+    <div class="form-group">
+        <label for="tipo-licitacao">Tipo Licitacao:</label>
+        <input type="text" class="form-control" id="objeto-licitacao" asp-for="@Model.Licitacao.TipoLicitacao.Tipo" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="objeto-licitacao">Objeto:</label>
+        <input type="text" class="form-control" id="objeto-licitacao" asp-for="@Model.Licitacao.Objeto" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="data-licitacao">Data:</label>
+        <input type="date" class="form-control" id="data-licitacao" asp-for="@Model.Licitacao.Data" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="valor-estimado-licitacao">Valor Estimado:</label>
+        <input type="number" class="form-control" id="valor-estimado-licitacao" placeholder="R$ 0,00" asp-for="@Model.Licitacao.ValorEstimado" step="0.01" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="municipio-licitacao">Municipio:</label>
+        <input type="text" class="form-control" id="municipio-licitacao" placeholder="Municipio" asp-for="@Model.Licitacao.Municipio.Nome" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="municipio-licitacao">UF:</label>
+        <input type="text" class="form-control" id="objeto-licitacao" placeholder="Objeto" asp-for="@Model.Licitacao.Municipio.Estado.Uf" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="portal-licitacao">Portal Licitacao:</label>
+        <input type="text" class="form-control" id="objeto-licitacao" placeholder="Objeto" asp-for="@Model.Licitacao.PortalLicitacao.Nome" readonly>
+    </div>
+
+
+    <div class="form-group">
+        <label for="portal-licitacao">Valor ganho:</label>
+        <input type="number" class="form-control" id="valor-estimado-licitacao" placeholder="R$ 0,00" asp-for="@Model.ValorGanho" step="0.01" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>

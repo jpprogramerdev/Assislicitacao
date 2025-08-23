@@ -194,6 +194,10 @@ namespace Assislicitacao.Controllers {
 
                 empresa.UsusariosVinculados = [usuario];
 
+                empresa.CNPJ = empresa.CNPJ.Replace(".", "");
+                empresa.CNPJ = empresa.CNPJ.Replace("/", "");
+                empresa.CNPJ = empresa.CNPJ.Replace("-", "");
+
                 await _facadeEmpresa.Inserir(empresa);
                 TempData["EmpresaSalva"] = "Empresa cadastrada com sucesso";
             } catch (Exception ex) {
